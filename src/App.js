@@ -1,19 +1,19 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { Route, Switch } from "react-router-dom";
+import { BrowserRouter as Browser, Route, Routes } from "react-router-dom";
+
 import Home from "./components/Home";
 import Sidebar from "./components/Sidebar";
 
 const App = () => {
   return (
-    <div>
+    <Browser basename="/">
       <Sidebar />
-      <Switch>
+      <Routes>
         <Route exact path="/">
           <Home />
         </Route>
-      </Switch>
-    </div>
+      </Routes>
+    </Browser>
   );
 };
 
