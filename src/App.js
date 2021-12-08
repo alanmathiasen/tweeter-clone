@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter as Browser, Route, Routes } from "react-router-dom";
 
@@ -6,6 +7,9 @@ import Home from "./components/Home";
 import Sidebar from "./components/Sidebar";
 import Perfil from "./pages/Perfil";
 import Registro from "./pages/Registro";
+
+import { auth } from "./firebase/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 
 const App = () => {
   return (
