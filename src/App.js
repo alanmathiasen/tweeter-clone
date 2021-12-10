@@ -12,12 +12,27 @@ import { auth } from "./firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
 const App = () => {
+  const [usuarioLogueado, setUsuarioLogueado] = useState({});
+
+  onAuthStateChanged(auth, (currentUser) => {
+    setUsuarioLogueado(currentUser);
+  });
+
   return (
     <Browser>
       <AppWrapper>
         <Sidebar />
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          {usuarioLogueado ? (
+            <Route
+              exact
+              path="/"
+              element={<Home correoUsuario={usuarioLogueado.email} />}
+            />
+          ) : (
+            <Route exact path="/" element={<Home />} />
+          )}
+
           <Route exact path="/perfil" element={<Perfil />} />
           <Route exact path="/registro" element={<Registro />} />
         </Routes>

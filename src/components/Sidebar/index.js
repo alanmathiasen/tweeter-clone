@@ -8,11 +8,6 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 
 const Sidebar = () => {
-  const [usuarioLogueado, setUsuarioLogueado] = useState({});
-
-  onAuthStateChanged(auth, (currentUser) => {
-    setUsuarioLogueado(currentUser);
-  });
   return (
     <Wrapper>
       <ul>
