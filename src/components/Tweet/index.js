@@ -11,9 +11,6 @@ import {
 import imgPerfil from "../../imgs/perfil.jpg";
 
 const Tweet = ({ correoUsuario, arrayTweets, eliminarTweet }) => {
-  const [descripcion, setDescripcion] = useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at euismod arcu. Sed ultrices ipsum nulla, sed fermentum ante laoreet eu."
-  );
   const [imagenTweet, setImagenTweet] = useState(imgPerfil);
 
   return (
@@ -31,7 +28,7 @@ const Tweet = ({ correoUsuario, arrayTweets, eliminarTweet }) => {
                   <a href="/0223comar/status/1466783975939223559">{tweet.id}</a>
                 </TweetNav>
                 <TweetContent>
-                  {descripcion && <p>{tweet.detalles}</p>}
+                  {tweet.detalles && <p>{tweet.detalles}</p>}
                   {imagenTweet && <TweetImagen src={imagenTweet} />}
                 </TweetContent>
                 <button onClick={() => eliminarTweet(tweet.id)}>

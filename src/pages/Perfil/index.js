@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import {
   PerfilWrapper,
@@ -13,17 +13,25 @@ import {
   InfoPerfil,
   SeguidoresYSeguidosWrapper,
   SeguidoresYSeguidos,
+  PerfilModalContainer,
 } from "./Perfil.styles";
 import { BiArrowBack } from "react-icons/bi";
-
 import ImgPortada from "../../imgs/portada.jpg";
 import imgPerfil from "../../imgs/perfil.jpg";
-
+// COMPONENTES
 import TweetsNavbar from "../../components/TweetsNavbar";
 import Tweet from "../../components/Tweet";
+import PerfilModal from "../../components/PerfilModal";
 
 const Perfil = () => {
   const navigate = useNavigate();
+  const [perfilModalOpen, setPerfilModalOpen] = useState(false);
+
+  const handlePerfilModal = () => {
+    setPerfilModalOpen(!perfilModalOpen);
+    if (perfilModalOpen) {
+    }
+  };
 
   return (
     <PerfilWrapper>
@@ -42,7 +50,7 @@ const Perfil = () => {
           <Portada src={ImgPortada} alt="portada" />
         </PortadaContainer>
         <ImgPerfil src={imgPerfil} />
-        <EditarPerfil>Editar Perfil</EditarPerfil>
+        <EditarPerfil onClick={handlePerfilModal}>Editar Perfil</EditarPerfil>
         <InfoPerfil>
           <h2>Rick Sanchez</h2>
           <span>@RickSanchez</span>
@@ -57,6 +65,10 @@ const Perfil = () => {
           </SeguidoresYSeguidosWrapper>
         </InfoPerfil>
       </PerfilContainer>
+
+      <PerfilModalContainer perfilModalOpen={perfilModalOpen}>
+        <PerfilModal />
+      </PerfilModalContainer>
       <TweetsNavbar />
       <Tweet />
     </PerfilWrapper>

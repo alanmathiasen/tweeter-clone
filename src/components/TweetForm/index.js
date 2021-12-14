@@ -1,41 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import { TweetFormWrapper, ButtonTwittear } from "./TweetForm.styles";
-import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
 const TweetForm = ({ correoUsuario, arrayTweets, setArrayTweets }) => {
   async function agregarTweet(e) {
     e.preventDefault();
-    const detalles = e.target.detalles.value;
+    const descripcion = e.target.detalles.value;
 
-    if (arrayTweets) {
-      const nuevoArrayTweets = [
-        ...arrayTweets,
-        { id: +new Date(), detalles: detalles },
-      ];
-      setArrayTweets(nuevoArrayTweets);
-    } else {
-      const nuevoArrayTweets = [{ id: +new Date(), detalles: detalles }];
-      setArrayTweets(nuevoArrayTweets);
-    }
+    // if (arrayTweets) {
+    //   const nuevoArrayTweets = [
+    //     ...arrayTweets,
+    //     { timestamp: +new Date(), detalles: descripcion },
+    //   ];
+    //   setArrayTweets(nuevoArrayTweets);
+    // } else {
+    //   const nuevoArrayTweets = [
+    //     { timestamp: +new Date(), detalles: descripcion },
+    //   ];
+    //   setArrayTweets(nuevoArrayTweets);
+    // }
 
-    const docuRef = doc(db, `usuarios/${correoUsuario}`);
-    const docuSnap = await getDoc(docuRef);
-    if (docuSnap.exists()) {
-      updateDoc(docuRef, {
-        tweets: {
-          id: +new Date(),
-          detalles: detalles,
-        },
-      });
-    } else {
-      await setDoc(docuRef, {
-        tweets: {
-          id: +new Date(),
-          detalles: detalles,
-        },
-      });
-    }
+    const docRef = await addDoc(collection(db, "tweets"), {
+      usuario: correoUsuario,
+      descripcion: descripcion,
+      timestamp: +new Date(),
+    });
     e.target.detalles.value = "";
   }
 

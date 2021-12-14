@@ -109,3 +109,7 @@ export const SeguidoresYSeguidos = styled.p`
     font-weight: 700;
   }
 `;
+
+export const PerfilModalContainer = styled.div`
+  display: ${(props) => (props.perfilModalOpen ? "flex" : "none")};
+`;

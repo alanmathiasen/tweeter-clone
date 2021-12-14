@@ -8,6 +8,8 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 
 const Sidebar = () => {
+  const handleModal = () => {};
+
   return (
     <Wrapper>
       <ul>
@@ -29,7 +31,7 @@ const Sidebar = () => {
           </Icon>
           Perfil
         </Link>
-        <ButtonTweet>Tweet</ButtonTweet>
+        <ButtonTweet onClick={handleModal}>Tweet</ButtonTweet>
 
         {auth.currentUser && (
           <button onClick={() => signOut(auth)}>Cerrar Sesión</button>
