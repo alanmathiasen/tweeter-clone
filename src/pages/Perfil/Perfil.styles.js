@@ -113,3 +113,12 @@ export const SeguidoresYSeguidos = styled.p`
 export const PerfilModalContainer = styled.div`
   display: ${(props) => (props.perfilModalOpen ? "flex" : "none")};
 `;
+
+export const OverlayModal = styled.div`
+  display: ${(props) => (props.perfilModalOpen ? "felx" : "none")};
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  width: 100%;
+  left: 0;
+  position: absolute;
+`;
