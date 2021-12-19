@@ -13,10 +13,6 @@ import IndividualTweet from "../IndividualTweet";
 
 const Tweet = ({ correoUsuario, arrayTweets, eliminarTweet }) => {
   const [imagenTweet, setImagenTweet] = useState(imgPerfil);
-  console.log(arrayTweets);
-  if (arrayTweets) {
-    console.log(arrayTweets[0]);
-  }
 
   return (
     <TweetWrapper>
@@ -27,6 +23,7 @@ const Tweet = ({ correoUsuario, arrayTweets, eliminarTweet }) => {
               key={tweet.id}
               tweet={tweet}
               correoUsuario={correoUsuario}
+              eliminarTweet={eliminarTweet}
             />
             /*<div key={tweet.id}>
               <TweetContainer>

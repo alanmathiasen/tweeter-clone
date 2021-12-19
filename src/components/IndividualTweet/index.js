@@ -6,10 +6,12 @@ import {
   TweetImg,
   Username,
 } from "./IndividualTweet.styled";
+import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
-const IndividualTweet = ({ key, tweet, correoUsuario }) => {
+const IndividualTweet = ({ key, tweet, correoUsuario, eliminarTweet }) => {
   return (
     <TweetContainer>
+      <button onClick={() => eliminarTweet(tweet.id)}>Eliminar Tweet</button>
       <ImgPerfil>
         <img src={imgPerfil} alt="" />
       </ImgPerfil>
@@ -23,6 +25,7 @@ const IndividualTweet = ({ key, tweet, correoUsuario }) => {
         {tweet.descripcion && <p>{tweet.descripcion}</p>}
         {imgPerfil && <TweetImg src={imgPerfil} />}
       </TweetContent>
+      <TweetForm parentId={key} correoUsuario={correoUsuario} />
     </TweetContainer>
   );
 };
