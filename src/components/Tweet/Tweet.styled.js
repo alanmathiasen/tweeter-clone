@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 export const TweetWrapper = styled.div`
   display: flex;
-  padding: 0 1rem;
+  flex-direction: column;
+  width: 100%;
+  padding: 2rem 0;
   cursor: pointer;
 `;
 
