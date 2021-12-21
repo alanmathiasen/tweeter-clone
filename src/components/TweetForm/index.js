@@ -1,6 +1,12 @@
 import React from "react";
 import { TweetFormWrapper, ButtonTwittear } from "./TweetForm.styles";
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
 const TweetForm = ({
@@ -9,6 +15,8 @@ const TweetForm = ({
   setArrayTweets,
   parentId,
 }) => {
+  const tweetsCollectionRef = collection(db, "tweets");
+
   async function agregarTweet(e) {
     e.preventDefault();
     const descripcion = e.target.detalles.value;
@@ -26,13 +34,23 @@ const TweetForm = ({
     //   setArrayTweets(nuevoArrayTweets);
     // }
 
-    const docRef = await addDoc(collection(db, "tweets"), {
+    const docRef = await addDoc(tweetsCollectionRef, {
       usuario: correoUsuario,
       descripcion: descripcion,
       timestamp: +new Date(),
       parentId: parentId ? parentId : null,
+      children: [],
     });
+    if (parentId) await addChildren(parentId, docRef.id);
     e.target.detalles.value = "";
+  }
+
+  async function addChildren(parentId, childId) {
+    const parentDocRef = doc(db, "tweets", parentId);
+    console.log(childId);
+    await updateDoc(parentDocRef, {
+      children: arrayUnion(childId),
+    });
   }
 
   return (

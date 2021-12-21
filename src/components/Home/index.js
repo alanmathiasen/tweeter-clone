@@ -44,7 +44,7 @@ const Home = ({ correoUsuario }) => {
   }, []);
 
   useEffect(() => {
-    console.log(arrayTweets);
+    //console.log(arrayTweets);
   }, [arrayTweets]);
 
   return (
