@@ -3,7 +3,12 @@ import { TweetFormWrapper, ButtonTwittear } from "./TweetForm.styles";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
-const TweetForm = ({ correoUsuario, arrayTweets, setArrayTweets }) => {
+const TweetForm = ({
+  correoUsuario,
+  arrayTweets,
+  setArrayTweets,
+  parentId,
+}) => {
   async function agregarTweet(e) {
     e.preventDefault();
     const descripcion = e.target.detalles.value;
@@ -25,6 +30,7 @@ const TweetForm = ({ correoUsuario, arrayTweets, setArrayTweets }) => {
       usuario: correoUsuario,
       descripcion: descripcion,
       timestamp: +new Date(),
+      parentId: parentId ? parentId : null,
     });
     e.target.detalles.value = "";
   }
@@ -32,6 +38,10 @@ const TweetForm = ({ correoUsuario, arrayTweets, setArrayTweets }) => {
   return (
     <TweetFormWrapper onSubmit={agregarTweet}>
       <input type="text" placeholder="Qué está pasando?" id="detalles" />
+      {/*
+       TODO
+       no dejar twittear si no se esta loggeado 
+       */}
       <ButtonTwittear type="submit">Tweet</ButtonTwittear>
     </TweetFormWrapper>
   );
