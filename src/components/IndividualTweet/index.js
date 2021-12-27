@@ -12,22 +12,49 @@ import { collection, doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const IndividualTweet = ({ id, tweet, correoUsuario, eliminarTweet }) => {
   const [children, setChildren] = useState([]);
 
-  const getChildren = async () => {
-    const tweetRef = doc(db, "tweets", id);
+  const getTweet = async (idTweet) => {
+    const tweetRef = doc(db, "tweets", idTweet);
     const tweetSnap = await getDoc(tweetRef);
-    const arr = [];
     if (tweetSnap.exists()) {
-      console.log(tweetSnap.children);
+      const tweet = { ...tweetSnap.data() };
+      console.log("Tweet:", tweet);
+      return tweet;
+    } else {
+      return "Tweet doesn't exist.";
     }
   };
 
-  useEffect(() => {
-    getChildren();
+  const getChildren = async () => {
+    const tweetRef = doc(db, "tweets", id);
+    const tweetSnap = await getDoc(tweetRef);
+    let childs = [];
+    if (tweetSnap.exists()) {
+      childs = await Promise.all(
+        tweetSnap.data().children.map(async (idChild) => {
+          const newChild = await getTweet(idChild);
+          return newChild;
+        })
+      );
+      console.log(childs);
+    } else {
+      console.log("no tweets??");
+    }
+    return childs;
+  };
+
+  useEffect(async () => {
+    setChildren(await getChildren());
   }, []);
+
+  useEffect(() => {
+    console.log("HOLA", children);
+  }, [children]);
+
   return (
     <TweetContainer>
       <button onClick={() => eliminarTweet(tweet.id)}>Eliminar Tweet</button>
@@ -45,7 +72,10 @@ const IndividualTweet = ({ id, tweet, correoUsuario, eliminarTweet }) => {
         {imgPerfil && <TweetImg src={imgPerfil} />}
       </TweetContent>
       <TweetForm parentId={id} correoUsuario={correoUsuario} />
-      <div></div>
+
+      <div>
+        {children && children.map((child) => <div>{child.descripcion}</div>)}
+      </div>
     </TweetContainer>
   );
 };
