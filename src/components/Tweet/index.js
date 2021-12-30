@@ -9,7 +9,7 @@ import {
 } from "./Tweet.styled";
 
 import imgPerfil from "../../imgs/perfil.jpg";
-import IndividualTweet from "../IndividualTweet";
+import TweetGroup from "../TweetGroup";
 
 const Tweet = ({ correoUsuario, arrayTweets, eliminarTweet }) => {
   const [imagenTweet, setImagenTweet] = useState(imgPerfil);
@@ -20,7 +20,7 @@ const Tweet = ({ correoUsuario, arrayTweets, eliminarTweet }) => {
         arrayTweets.map((tweet) => {
           if (!tweet.parentId) {
             return (
-              <IndividualTweet
+              <TweetGroup
                 key={tweet.id}
                 id={tweet.id}
                 tweet={tweet}
