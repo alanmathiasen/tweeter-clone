@@ -80,6 +80,9 @@ export const EditarPerfil = styled.button`
   padding: 0.5rem 1rem;
   margin: 1rem;
   font-weight: 600;
+  color: ${(props) => (props.itsCurrentUserProfile ? "#000" : "#fff")};
+  background-color: ${(props) =>
+    props.itsCurrentUserProfile ? "#fff" : "#000"};
   cursor: pointer;
 `;
 

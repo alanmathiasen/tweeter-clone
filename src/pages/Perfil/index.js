@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
 import {
   PerfilWrapper,
   ButtonBack,
@@ -23,28 +24,47 @@ import imgPerfil from "../../imgs/perfil.jpg";
 import TweetsNavbar from "../../components/TweetsNavbar";
 import Tweet from "../../components/Tweet";
 import PerfilModal from "../../components/PerfilModal";
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  query,
-  QuerySnapshot,
-} from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db, auth } from "../../firebase/firebaseConfig";
 
 const Perfil = ({ correoUsuario, emailLogueado, datosUser, setDatosUser }) => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [perfilModalOpen, setPerfilModalOpen] = useState(false);
-  const { biografia, nombre, sitioWeb, ubicacion } = datosUser;
+  const [currentPerfil, setCurrentPerfil] = useState({});
+  const [currentPerfilMail, setCurrentPerfilMail] = useState("");
+  const [itsCurrentUserProfile, setItsCurrentUserProfile] = useState(false);
 
   const handlePerfilModal = () => {
     setPerfilModalOpen(!perfilModalOpen);
   };
 
+  const user = auth.currentUser;
+
+  const getDatosPerfil = async () => {
+    const usuariosRef = collection(db, "usuarios");
+    const currentPerfil = query(usuariosRef, where("ruta", "==", id));
+
+    const querySnapshot = await getDocs(currentPerfil);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      setCurrentPerfil(doc.data());
+      setCurrentPerfilMail(doc.id);
+    });
+  };
+
+  const handleItsCurrentUserProfile = () => {
+    if (id === datosUser.ruta) {
+      setItsCurrentUserProfile(true);
+    } else {
+      setItsCurrentUserProfile(false);
+    }
+  };
+
   useEffect(() => {
-    console.log("State email:", emailLogueado);
-  }, [emailLogueado]);
+    getDatosPerfil();
+    handleItsCurrentUserProfile();
+  }, [currentPerfil]);
 
   return (
     <PerfilWrapper>
@@ -53,7 +73,7 @@ const Perfil = ({ correoUsuario, emailLogueado, datosUser, setDatosUser }) => {
           <BiArrowBack />
         </ButtonBack>
         <NavInfo>
-          <h3>{nombre}</h3>
+          <h3>{currentPerfil.nombre}</h3>
           <p>250 Tweets</p>
         </NavInfo>
       </PerfilNav>
@@ -63,11 +83,24 @@ const Perfil = ({ correoUsuario, emailLogueado, datosUser, setDatosUser }) => {
           <Portada src={ImgPortada} alt="portada" />
         </PortadaContainer>
         <ImgPerfil src={imgPerfil} />
-        <EditarPerfil onClick={handlePerfilModal}>Editar Perfil</EditarPerfil>
+
+        {itsCurrentUserProfile ? (
+          <EditarPerfil
+            itsCurrentUserProfile={itsCurrentUserProfile}
+            onClick={handlePerfilModal}
+          >
+            Editar Perfil
+          </EditarPerfil>
+        ) : (
+          <EditarPerfil itsCurrentUserProfile={itsCurrentUserProfile}>
+            Seguir
+          </EditarPerfil>
+        )}
+
         <InfoPerfil>
-          <h2>{nombre}</h2>
-          <span>{emailLogueado}</span>
-          <p>{biografia}</p>
+          <h2>{currentPerfil.nombre}</h2>
+          <span>{currentPerfilMail}</span>
+          <p>{currentPerfil.biografia}</p>
           <SeguidoresYSeguidosWrapper>
             <SeguidoresYSeguidos>
               <span>1,235 </span>Seguidos

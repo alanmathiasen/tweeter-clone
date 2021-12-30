@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Wrapper, ButtonTweet, Icon } from "./Sidebar.styles";
 import { Link } from "react-router-dom";
 
@@ -7,8 +7,12 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 
-const Sidebar = () => {
+const Sidebar = ({ correoUsuario }) => {
   const handleModal = () => {};
+  const [usuarioSinArroba, setUsuarioSinArroba] = useState("");
+
+  let usuario = String(correoUsuario);
+  const [name, email] = usuario.split("@");
 
   return (
     <Wrapper>
@@ -25,7 +29,7 @@ const Sidebar = () => {
           </Icon>
           Notificaciones
         </Link>
-        <Link to="/perfil">
+        <Link to={`/${name}`}>
           <Icon>
             <HiOutlineUser />
           </Icon>

@@ -15,7 +15,6 @@ const App = () => {
   const [usuarioLogueado, setUsuarioLogueado] = useState({});
   const [emailLogueado, setEmailLogueado] = useState("");
   const [datosUser, setDatosUser] = useState({});
-
   const user = auth.currentUser;
 
   onAuthStateChanged(auth, (currentUser) => {
@@ -37,6 +36,7 @@ const App = () => {
           nombre: docSnap.data().nombre,
           sitioWeb: docSnap.data().sitioWeb,
           ubicacion: docSnap.data().ubicacion,
+          ruta: docSnap.data().ruta,
         };
         setDatosUser(detallesUser);
       } else {
@@ -52,7 +52,7 @@ const App = () => {
   return (
     <Browser>
       <AppWrapper>
-        <Sidebar />
+        <Sidebar correoUsuario={emailLogueado} />
         <Routes>
           {usuarioLogueado ? (
             <Route
@@ -66,7 +66,7 @@ const App = () => {
 
           <Route
             exact
-            path="/perfil"
+            path="/:id"
             element={
               <Perfil
                 correoUsuario={usuarioLogueado}

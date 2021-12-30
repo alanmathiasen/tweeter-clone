@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormWrapper, FormContent } from "./Registro.style";
 import { auth, db } from "../../firebase/firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 import { useNavigate } from "react-router";
 
@@ -45,8 +45,16 @@ const Registro = () => {
           email,
           password
         );
-        console.log(user);
       }
+
+      //crea ruta del perfil
+      let usuario = String(email);
+      const [name, mail] = usuario.split("@");
+      const ruta = name;
+      const docRef = await setDoc(doc(db, "usuarios", email), {
+        ruta: ruta,
+      });
+
       navigate("/");
     } catch (error) {
       console.log(error.message);

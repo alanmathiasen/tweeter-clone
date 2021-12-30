@@ -7,7 +7,7 @@ import {
   FormWrapper,
   Campo,
 } from "./PerfilModal.styles";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { VscClose } from "react-icons/vsc";
 
@@ -18,11 +18,6 @@ const PerfilModal = ({
   datosUser,
   setDatosUser,
 }) => {
-  const [nombre, setNombre] = useState("");
-  const [biografia, setBiografia] = useState("");
-  const [ubicacion, setUbicacion] = useState("");
-  const [web, setWeb] = useState("");
-
   const handleChange = (e) => {
     setDatosUser({
       ...datosUser,
@@ -39,11 +34,16 @@ const PerfilModal = ({
     const ubicacion = e.target.ubicacion.value;
     const sitioWeb = e.target.sitioWeb.value;
 
+    let usuario = String(emailLogueado);
+    const [name, email] = usuario.split("@");
+    const ruta = name;
+
     const docRef = await setDoc(doc(db, "usuarios", emailLogueado), {
       nombre: nombre,
       biografia: biografia,
       ubicacion: ubicacion,
       sitioWeb: sitioWeb,
+      ruta: ruta,
     });
     handlePerfilModal();
   };
