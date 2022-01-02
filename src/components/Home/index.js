@@ -7,8 +7,11 @@ import {
   doc,
   query,
   onSnapshot,
+  updateDoc,
   getDocs,
   deleteDoc,
+  getDoc,
+  arrayRemove,
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
@@ -17,7 +20,7 @@ const Home = ({ correoUsuario }) => {
 
   const [tweetsConQuery, setTweetsConQuery] = useState([]);
 
-  const getTweets = async () => {
+  const getTweets = () => {
     const docQuery = query(collection(db, "tweets"));
 
     const misDatos = onSnapshot(docQuery, (querySnapshot) => {
@@ -34,6 +37,22 @@ const Home = ({ correoUsuario }) => {
     const nuevoArrayTweets = arrayTweets.filter(
       (tweet) => tweet.id !== idTweetAEliminar
     );
+
+    const tweetRef = doc(db, "tweets", idTweetAEliminar);
+    const tweetSnap = await getDoc(tweetRef);
+    if (tweetSnap.data().parentId) {
+      const parentRef = doc(db, "tweets", tweetSnap.data().parentId);
+
+      await updateDoc(parentRef, {
+        children: arrayRemove(idTweetAEliminar),
+      });
+    }
+    if (tweetSnap.data().children) {
+      tweetSnap.data().children.forEach(async (child) => {
+        await deleteDoc(doc(db, "tweets", child));
+      });
+    }
+
     //actualizar base de datos
     await deleteDoc(doc(db, "tweets", idTweetAEliminar));
     setArrayTweets(nuevoArrayTweets);

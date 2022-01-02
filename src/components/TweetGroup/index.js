@@ -9,7 +9,7 @@ import {
   TweetImg,
   Username,
 } from "./TweetGroup.styles";
-import { collection, doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import TweetForm from "../TweetForm";
 import TweetIndividual from "../TweetIndividual";
@@ -17,6 +17,7 @@ import imgPerfil from "../../imgs/perfil.jpg";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const TweetGroup = ({ tweet, correoUsuario, eliminarTweet }) => {
+  const [childrenIds, setChildrenIds] = useState([]);
   const [children, setChildren] = useState([]);
 
   const getTweet = async (idTweet) => {
@@ -24,7 +25,6 @@ const TweetGroup = ({ tweet, correoUsuario, eliminarTweet }) => {
     const tweetSnap = await getDoc(tweetRef);
     if (tweetSnap.exists()) {
       const twit = { ...tweetSnap.data() };
-      console.log("Tweet:", twit);
       return twit;
     } else {
       return "ERROR";
@@ -35,11 +35,11 @@ const TweetGroup = ({ tweet, correoUsuario, eliminarTweet }) => {
     const tweetRef = doc(db, "tweets", tweet.id);
     const tweetSnap = await getDoc(tweetRef);
     let childs = [];
+
     if (tweetSnap.exists() && tweetSnap.data().children) {
       childs = await Promise.all(
         tweetSnap.data().children.map(async (idChild) => {
           const newChild = await getTweet(idChild);
-          console.log(newChild);
           if (newChild != "ERROR") newChild.id = idChild;
           return newChild;
         })
@@ -48,21 +48,29 @@ const TweetGroup = ({ tweet, correoUsuario, eliminarTweet }) => {
     } else {
       console.log("no tweets??");
     }
+
     const lastChilds = childs.filter((child) => {
-      console.log(child);
+      console.log(childs);
       if (child === "ERROR") {
         return false;
       }
       return true;
     });
 
-    console.log("last childs", lastChilds);
     return lastChilds;
   };
 
+  useEffect(() => {
+    const tweetRef = doc(db, "tweets", tweet.id);
+    const unsubscribe = onSnapshot(tweetRef, (snap) => {
+      setChildrenIds(snap.data().children);
+    });
+    return () => unsubscribe();
+  }, []);
+
   useEffect(async () => {
     setChildren(await getChildren());
-  }, []);
+  }, [childrenIds]);
 
   return (
     <Wrapper>
