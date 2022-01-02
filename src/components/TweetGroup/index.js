@@ -63,7 +63,8 @@ const TweetGroup = ({ tweet, correoUsuario, eliminarTweet }) => {
   useEffect(() => {
     const tweetRef = doc(db, "tweets", tweet.id);
     const unsubscribe = onSnapshot(tweetRef, (snap) => {
-      setChildrenIds(snap.data().children);
+      if (snap.data()) setChildrenIds(snap.data().children);
+      else setChildrenIds([]);
     });
     return () => unsubscribe();
   }, []);
