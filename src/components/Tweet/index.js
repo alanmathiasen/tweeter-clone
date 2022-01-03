@@ -9,7 +9,7 @@ import {
 } from "./Tweet.styled";
 
 import imgPerfil from "../../imgs/perfil.jpg";
-import IndividualTweet from "../IndividualTweet";
+import TweetGroup from "../TweetGroup";
 
 const Tweet = ({ correoUsuario, arrayTweets, eliminarTweet }) => {
   const [imagenTweet, setImagenTweet] = useState(imgPerfil);
@@ -18,14 +18,20 @@ const Tweet = ({ correoUsuario, arrayTweets, eliminarTweet }) => {
     <TweetWrapper>
       {arrayTweets &&
         arrayTweets.map((tweet) => {
-          return (
-            <IndividualTweet
-              key={tweet.id}
-              tweet={tweet}
-              correoUsuario={correoUsuario}
-              eliminarTweet={eliminarTweet}
-            />
-            /*<div key={tweet.id}>
+          if (!tweet.parentId) {
+            return (
+              <TweetGroup
+                key={tweet.id}
+                id={tweet.id}
+                tweet={tweet}
+                correoUsuario={correoUsuario}
+                eliminarTweet={eliminarTweet}
+              />
+            );
+          } else {
+            return null;
+          }
+          /*<div key={tweet.id}>
               <TweetContainer>
                 <ImgPerfil src={imgPerfil} />
                 <TweetNav>
@@ -43,7 +49,6 @@ const Tweet = ({ correoUsuario, arrayTweets, eliminarTweet }) => {
                 </button>
               </TweetContainer>
             </div>*/
-          );
         })}
     </TweetWrapper>
   );

@@ -10,7 +10,7 @@ export const TweetContainer = styled.div`
 
 export const ImgPerfil = styled.div`
   margin: 0 auto;
-  grid-row: 1 / span 3;
+  grid-row: 1 / span 5;
   img {
     height: 48px;
     width: 48px;
