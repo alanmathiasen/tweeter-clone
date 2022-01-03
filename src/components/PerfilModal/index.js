@@ -10,6 +10,8 @@ import {
 import { setDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { VscClose } from "react-icons/vsc";
+import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
 
 const PerfilModal = ({
   handlePerfilModal,
@@ -18,6 +20,9 @@ const PerfilModal = ({
   datosUser,
   setDatosUser,
 }) => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const handleChange = (e) => {
     setDatosUser({
       ...datosUser,
@@ -46,6 +51,7 @@ const PerfilModal = ({
       ruta: ruta,
     });
     handlePerfilModal();
+    navigate(`/${id}`);
   };
 
   return (

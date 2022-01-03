@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   PerfilWrapper,
   ButtonBack,
@@ -25,32 +25,19 @@ import TweetsNavbar from "../../components/TweetsNavbar";
 import Tweet from "../../components/Tweet";
 import PerfilModal from "../../components/PerfilModal";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db, auth } from "../../firebase/firebaseConfig";
+import { db } from "../../firebase/firebaseConfig";
 
 const Perfil = ({ correoUsuario, emailLogueado, datosUser, setDatosUser }) => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
   const [perfilModalOpen, setPerfilModalOpen] = useState(false);
   const [currentPerfil, setCurrentPerfil] = useState({});
   const [currentPerfilMail, setCurrentPerfilMail] = useState("");
-  const [itsCurrentUserProfile, setItsCurrentUserProfile] = useState(false);
+  const [itsCurrentUserProfile, setItsCurrentUserProfile] = useState(true);
 
   const handlePerfilModal = () => {
     setPerfilModalOpen(!perfilModalOpen);
-  };
-
-  const user = auth.currentUser;
-
-  const getDatosPerfil = async () => {
-    const usuariosRef = collection(db, "usuarios");
-    const currentPerfil = query(usuariosRef, where("ruta", "==", id));
-
-    const querySnapshot = await getDocs(currentPerfil);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      setCurrentPerfil(doc.data());
-      setCurrentPerfilMail(doc.id);
-    });
   };
 
   const handleItsCurrentUserProfile = () => {
@@ -61,15 +48,35 @@ const Perfil = ({ correoUsuario, emailLogueado, datosUser, setDatosUser }) => {
     }
   };
 
+  const getDatosPerfil = async () => {
+    const usuariosRef = collection(db, "usuarios");
+    const currentPerfil = query(usuariosRef, where("ruta", "==", id));
+
+    const querySnapshot = await getDocs(currentPerfil);
+    querySnapshot.forEach((doc) => {
+      // console.log(doc.id, " => ", doc.data());
+      setCurrentPerfil(doc.data());
+      setCurrentPerfilMail(doc.id);
+    });
+  };
+  const goBack = () => {
+    navigate(-1);
+    setItsCurrentUserProfile(true);
+  };
+
   useEffect(() => {
     getDatosPerfil();
     handleItsCurrentUserProfile();
-  }, [currentPerfil]);
+  }, [location]);
+
+  // useEffect(() => {
+  //   navigate(`/${id}`);
+  // }, [navigate]);
 
   return (
     <PerfilWrapper>
       <PerfilNav>
-        <ButtonBack onClick={() => navigate(-1)}>
+        <ButtonBack onClick={() => goBack()}>
           <BiArrowBack />
         </ButtonBack>
         <NavInfo>

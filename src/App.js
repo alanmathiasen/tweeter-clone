@@ -27,7 +27,6 @@ const App = () => {
       setEmailLogueado(email);
 
       const docRef = doc(db, "usuarios", email);
-
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
