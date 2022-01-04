@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import { HomeWrapper } from "./Home.styles";
 import TweetForm from "../TweetForm";
 import Tweet from "../Tweet";
@@ -32,32 +33,6 @@ const Home = ({ correoUsuario }) => {
     });
   };
 
-  async function eliminarTweet(idTweetAEliminar) {
-    //actualizar state con nuevo array
-    const nuevoArrayTweets = arrayTweets.filter(
-      (tweet) => tweet.id !== idTweetAEliminar
-    );
-
-    const tweetRef = doc(db, "tweets", idTweetAEliminar);
-    const tweetSnap = await getDoc(tweetRef);
-    if (tweetSnap.data().parentId) {
-      const parentRef = doc(db, "tweets", tweetSnap.data().parentId);
-
-      await updateDoc(parentRef, {
-        children: arrayRemove(idTweetAEliminar),
-      });
-    }
-    if (tweetSnap.data().children) {
-      tweetSnap.data().children.forEach(async (child) => {
-        await deleteDoc(doc(db, "tweets", child));
-      });
-    }
-
-    //actualizar base de datos
-    await deleteDoc(doc(db, "tweets", idTweetAEliminar));
-    setArrayTweets(nuevoArrayTweets);
-  }
-
   useEffect(() => {
     getTweets();
   }, []);
@@ -74,11 +49,7 @@ const Home = ({ correoUsuario }) => {
         arrayTweets={arrayTweets}
         setArrayTweets={setArrayTweets}
       />
-      <Tweet
-        correoUsuario={correoUsuario}
-        arrayTweets={arrayTweets}
-        eliminarTweet={eliminarTweet}
-      />
+      <Tweet correoUsuario={correoUsuario} arrayTweets={arrayTweets} />
     </HomeWrapper>
   );
 };

@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 
 import { Wrapper } from "./TweetGroup.styles";
-import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
-import TweetForm from "../TweetForm";
-import TweetIndividual from "../TweetIndividual";
-import imgPerfil from "../../imgs/perfil.jpg";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 
-const TweetGroup = ({ tweet, correoUsuario, eliminarTweet }) => {
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/firebaseConfig";
+
+import TweetIndividual from "../TweetIndividual";
+
+const TweetGroup = ({ tweet, correoUsuario }) => {
   const [childrenIds, setChildrenIds] = useState([]);
   const [children, setChildren] = useState([]);
 
@@ -52,6 +51,7 @@ const TweetGroup = ({ tweet, correoUsuario, eliminarTweet }) => {
     return lastChilds;
   };
 
+  //setChildrensId con onSnapshot
   useEffect(() => {
     const tweetRef = doc(db, "tweets", tweet.id);
     const unsubscribe = onSnapshot(tweetRef, (snap) => {
@@ -69,15 +69,14 @@ const TweetGroup = ({ tweet, correoUsuario, eliminarTweet }) => {
     <Wrapper>
       <TweetIndividual
         tweet={tweet}
-        eliminarTweet={eliminarTweet}
         correoUsuario={correoUsuario}
         key={tweet.id}
       />
+
       {children &&
         children.map((child) => (
           <TweetIndividual
             tweet={child}
-            eliminarTweet={eliminarTweet}
             correoUsuario={correoUsuario}
             key={child.id}
           />

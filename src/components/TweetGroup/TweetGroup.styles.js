@@ -3,6 +3,9 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   margin: 20px auto;
   border: 1px solid red;
+  a {
+    text-decoration: none;
+  }
 `;
 
 export const TweetContainer = styled.div`
