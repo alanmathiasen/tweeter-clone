@@ -1,14 +1,6 @@
 import { useState, useEffect } from "react";
 
-import {
-  Wrapper,
-  ImgPerfil,
-  TweetContainer,
-  TweetNav,
-  TweetContent,
-  TweetImg,
-  Username,
-} from "./TweetGroup.styles";
+import { Wrapper } from "./TweetGroup.styles";
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import TweetForm from "../TweetForm";
