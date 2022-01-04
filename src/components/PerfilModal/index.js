@@ -7,7 +7,7 @@ import {
   FormWrapper,
   Campo,
 } from "./PerfilModal.styles";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { VscClose } from "react-icons/vsc";
 import { useNavigate } from "react-router";
@@ -43,7 +43,7 @@ const PerfilModal = ({
     const [name, email] = usuario.split("@");
     const ruta = name;
 
-    const docRef = await setDoc(doc(db, "usuarios", emailLogueado), {
+    const docRef = await updateDoc(doc(db, "usuarios", emailLogueado), {
       nombre: nombre,
       biografia: biografia,
       ubicacion: ubicacion,

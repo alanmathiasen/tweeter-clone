@@ -36,6 +36,8 @@ const App = () => {
           sitioWeb: docSnap.data().sitioWeb,
           ubicacion: docSnap.data().ubicacion,
           ruta: docSnap.data().ruta,
+          siguiendo: docSnap.data().siguiendo,
+          seguidores: docSnap.data().seguidores,
         };
         setDatosUser(detallesUser);
       } else {
@@ -72,6 +74,7 @@ const App = () => {
                 emailLogueado={emailLogueado}
                 datosUser={datosUser}
                 setDatosUser={setDatosUser}
+                getDatosUsuario={getDatosUsuario}
               />
             }
           />

@@ -24,17 +24,36 @@ import imgPerfil from "../../imgs/perfil.jpg";
 import TweetsNavbar from "../../components/TweetsNavbar";
 import Tweet from "../../components/Tweet";
 import PerfilModal from "../../components/PerfilModal";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
-const Perfil = ({ correoUsuario, emailLogueado, datosUser, setDatosUser }) => {
+const Perfil = ({
+  correoUsuario,
+  emailLogueado,
+  datosUser,
+  setDatosUser,
+  getDatosUsuario,
+}) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
+
   const [perfilModalOpen, setPerfilModalOpen] = useState(false);
   const [currentPerfil, setCurrentPerfil] = useState({});
   const [currentPerfilMail, setCurrentPerfilMail] = useState("");
   const [itsCurrentUserProfile, setItsCurrentUserProfile] = useState(true);
+  const [handleFollowButton, setHandleFollowButton] = useState(false);
+  const [siguiendo, setSiguiendo] = useState(0);
+  const [seguidores, setSeguidores] = useState(0);
 
   const handlePerfilModal = () => {
     setPerfilModalOpen(!perfilModalOpen);
@@ -57,21 +76,87 @@ const Perfil = ({ correoUsuario, emailLogueado, datosUser, setDatosUser }) => {
       // console.log(doc.id, " => ", doc.data());
       setCurrentPerfil(doc.data());
       setCurrentPerfilMail(doc.id);
+      if (doc.data().siguiendo) {
+        setSiguiendo(doc.data().siguiendo.length);
+      } else {
+        setSiguiendo(0);
+      }
+      if (doc.data().seguidores) {
+        setSeguidores(doc.data().seguidores.length);
+      } else {
+        setSeguidores(0);
+      }
     });
   };
+
+  const checkFollowAlready = () => {
+    let mail = String(currentPerfilMail);
+    let arr = [];
+    if (datosUser.siguiendo) {
+      arr = datosUser.siguiendo;
+      console.log(arr);
+    }
+    if (arr) {
+      let respuesta = arr.includes(mail);
+      if (respuesta === true) {
+        setHandleFollowButton(true);
+      } else {
+        setHandleFollowButton(false);
+      }
+    } else {
+      setHandleFollowButton(false);
+    }
+  };
+
   const goBack = () => {
     navigate(-1);
     setItsCurrentUserProfile(true);
   };
 
+  const handleFollow = async () => {
+    setHandleFollowButton(!handleFollowButton);
+    let mailASeguir = currentPerfilMail;
+    if (mailASeguir) {
+      if (handleFollowButton) {
+        const logguedUserRef = await updateDoc(
+          doc(db, "usuarios", emailLogueado),
+          {
+            siguiendo: arrayRemove(mailASeguir),
+          }
+        );
+
+        const seguidoRef = await updateDoc(doc(db, "usuarios", mailASeguir), {
+          seguidores: arrayRemove(emailLogueado),
+        });
+      } else {
+        const logguedUserRef = await updateDoc(
+          doc(db, "usuarios", emailLogueado),
+          {
+            siguiendo: arrayUnion(mailASeguir),
+          }
+        );
+
+        const seguidoRef = await updateDoc(doc(db, "usuarios", mailASeguir), {
+          seguidores: arrayUnion(emailLogueado),
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     getDatosPerfil();
     handleItsCurrentUserProfile();
+    checkFollowAlready();
   }, [location]);
 
+  useEffect(() => {
+    checkFollowAlready();
+  }, [currentPerfilMail]);
+
   // useEffect(() => {
-  //   navigate(`/${id}`);
-  // }, [navigate]);
+  //   getDatosUsuario();
+  //   getDatosPerfil();
+  // }, [handleFollowButton]);
 
   return (
     <PerfilWrapper>
@@ -99,8 +184,12 @@ const Perfil = ({ correoUsuario, emailLogueado, datosUser, setDatosUser }) => {
             Editar Perfil
           </EditarPerfil>
         ) : (
-          <EditarPerfil itsCurrentUserProfile={itsCurrentUserProfile}>
-            Seguir
+          <EditarPerfil
+            itsCurrentUserProfile={itsCurrentUserProfile}
+            handleFollowButton={handleFollowButton}
+            onClick={handleFollow}
+          >
+            {handleFollowButton ? "Dejar de seguir" : "Seguir"}
           </EditarPerfil>
         )}
 
@@ -110,10 +199,10 @@ const Perfil = ({ correoUsuario, emailLogueado, datosUser, setDatosUser }) => {
           <p>{currentPerfil.biografia}</p>
           <SeguidoresYSeguidosWrapper>
             <SeguidoresYSeguidos>
-              <span>1,235 </span>Seguidos
+              <span>{siguiendo}</span>Siguiendo
             </SeguidoresYSeguidos>
             <SeguidoresYSeguidos>
-              <span>11.5K </span>Seguidores
+              <span>{seguidores}</span>Seguidores
             </SeguidoresYSeguidos>
           </SeguidoresYSeguidosWrapper>
         </InfoPerfil>
