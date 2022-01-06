@@ -69,17 +69,14 @@ const Perfil = ({
   const handleLoad = () => {
     if (currentPerfilMail) {
       setPageItsLoad(true);
-      console.log("pagina cargada");
     }
   };
 
   const handleItsCurrentUserProfile = () => {
     if (id === datosUser.ruta) {
       setItsCurrentUserProfile(true);
-      console.log("mismo usuario");
     } else {
       setItsCurrentUserProfile(false);
-      console.log("No el mismo usuario");
     }
   };
 
@@ -89,10 +86,8 @@ const Perfil = ({
 
     const querySnapshot = await getDocs(currentPerfil);
     querySnapshot.forEach((doc) => {
-      // console.log(doc.id, " => ", doc.data());
       setCurrentPerfil(doc.data());
       setCurrentPerfilMail(doc.id);
-      console.log("current perfil mail actualizado");
 
       if (doc.data().siguiendo) {
         setSiguiendo(doc.data().siguiendo.length);
@@ -111,18 +106,13 @@ const Perfil = ({
   const checkFollowAlready = () => {
     let mail = String(currentPerfilMail);
     let array = [];
-    console.log("chekFollow activada");
-
     if (datosUser.siguiendo) {
       array = datosUser.siguiendo;
       let resp = array.includes(mail);
-      console.log("buscando el mail en array");
       if (resp) {
         setHandleFollowButton(true);
-        console.log("el mail si se encuentra");
       } else {
         setHandleFollowButton(false);
-        console.log("el mail no se encuentra");
       }
     }
   };
@@ -163,7 +153,6 @@ const Perfil = ({
   };
 
   useEffect(() => {
-    console.log("cargando pagina");
     setPageItsLoad(false);
   }, []);
 
@@ -173,10 +162,10 @@ const Perfil = ({
 
   useEffect(() => {
     handleLoad();
+    checkFollowAlready();
   }, [datosUser]);
 
   useEffect(() => {
-    checkFollowAlready();
     handleItsCurrentUserProfile();
   });
 

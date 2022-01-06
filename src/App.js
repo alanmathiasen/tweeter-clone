@@ -40,7 +40,6 @@ const App = () => {
           seguidores: docSnap.data().seguidores,
         };
         setDatosUser(detallesUser);
-        console.log("datos user actualizado");
       } else {
         console.log("No such document!");
       }
