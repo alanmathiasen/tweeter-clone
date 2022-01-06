@@ -16,6 +16,9 @@ import {
   SeguidoresYSeguidos,
   PerfilModalContainer,
   OverlayModal,
+  AllLinksWrapper,
+  LinkWrapper,
+  InfoIcon,
 } from "./Perfil.styles";
 import { BiArrowBack } from "react-icons/bi";
 import ImgPortada from "../../imgs/portada.jpg";
@@ -35,6 +38,9 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
+import { GoLocation } from "react-icons/go";
+import { IoIosLink } from "react-icons/io";
+import { BsCalendarEvent } from "react-icons/bs";
 
 const Perfil = ({
   correoUsuario,
@@ -54,16 +60,26 @@ const Perfil = ({
   const [handleFollowButton, setHandleFollowButton] = useState(false);
   const [siguiendo, setSiguiendo] = useState(0);
   const [seguidores, setSeguidores] = useState(0);
+  const [pageItsLoad, setPageItsLoad] = useState(true);
 
   const handlePerfilModal = () => {
     setPerfilModalOpen(!perfilModalOpen);
   };
 
+  const handleLoad = () => {
+    if (currentPerfilMail) {
+      setPageItsLoad(true);
+      console.log("pagina cargada");
+    }
+  };
+
   const handleItsCurrentUserProfile = () => {
     if (id === datosUser.ruta) {
       setItsCurrentUserProfile(true);
+      console.log("mismo usuario");
     } else {
       setItsCurrentUserProfile(false);
+      console.log("No el mismo usuario");
     }
   };
 
@@ -76,6 +92,8 @@ const Perfil = ({
       // console.log(doc.id, " => ", doc.data());
       setCurrentPerfil(doc.data());
       setCurrentPerfilMail(doc.id);
+      console.log("current perfil mail actualizado");
+
       if (doc.data().siguiendo) {
         setSiguiendo(doc.data().siguiendo.length);
       } else {
@@ -87,24 +105,25 @@ const Perfil = ({
         setSeguidores(0);
       }
     });
+    setPageItsLoad(true);
   };
 
   const checkFollowAlready = () => {
     let mail = String(currentPerfilMail);
-    let arr = [];
+    let array = [];
+    console.log("chekFollow activada");
+
     if (datosUser.siguiendo) {
-      arr = datosUser.siguiendo;
-      console.log(arr);
-    }
-    if (arr) {
-      let respuesta = arr.includes(mail);
-      if (respuesta === true) {
+      array = datosUser.siguiendo;
+      let resp = array.includes(mail);
+      console.log("buscando el mail en array");
+      if (resp) {
         setHandleFollowButton(true);
+        console.log("el mail si se encuentra");
       } else {
         setHandleFollowButton(false);
+        console.log("el mail no se encuentra");
       }
-    } else {
-      setHandleFollowButton(false);
     }
   };
 
@@ -144,19 +163,35 @@ const Perfil = ({
   };
 
   useEffect(() => {
+    console.log("cargando pagina");
+    setPageItsLoad(false);
+  }, []);
+
+  useEffect(() => {
     getDatosPerfil();
-    handleItsCurrentUserProfile();
-    checkFollowAlready();
   }, [location]);
 
   useEffect(() => {
-    checkFollowAlready();
-  }, [currentPerfilMail]);
+    handleLoad();
+  }, [datosUser]);
 
-  // useEffect(() => {
-  //   getDatosUsuario();
-  //   getDatosPerfil();
-  // }, [handleFollowButton]);
+  useEffect(() => {
+    checkFollowAlready();
+    handleItsCurrentUserProfile();
+  });
+
+  if (!pageItsLoad) {
+    return (
+      <PerfilWrapper>
+        <PerfilContainer>
+          <PortadaContainer>
+            <Portada src={ImgPortada} alt="portada" />
+          </PortadaContainer>
+          <ImgPerfil src={imgPerfil} />
+        </PerfilContainer>
+      </PerfilWrapper>
+    );
+  }
 
   return (
     <PerfilWrapper>
@@ -182,6 +217,7 @@ const Perfil = ({
             onClick={handlePerfilModal}
           >
             Editar Perfil
+            {console.log("editar perfil")}
           </EditarPerfil>
         ) : (
           <EditarPerfil
@@ -190,6 +226,7 @@ const Perfil = ({
             onClick={handleFollow}
           >
             {handleFollowButton ? "Dejar de seguir" : "Seguir"}
+            {console.log("dejar de seguir o seguir")}
           </EditarPerfil>
         )}
 
@@ -197,6 +234,29 @@ const Perfil = ({
           <h2>{currentPerfil.nombre}</h2>
           <span>{currentPerfilMail}</span>
           <p>{currentPerfil.biografia}</p>
+          <AllLinksWrapper>
+            <LinkWrapper>
+              <InfoIcon>
+                <GoLocation />
+              </InfoIcon>
+              <p>{currentPerfil.ubicacion}</p>
+            </LinkWrapper>
+            <LinkWrapper>
+              <InfoIcon>
+                <IoIosLink />
+              </InfoIcon>
+              <a href={currentPerfil.sitioWeb} target="_blank" rel="noreferrer">
+                {currentPerfil.sitioWeb}
+              </a>
+            </LinkWrapper>
+            <LinkWrapper>
+              <InfoIcon>
+                <BsCalendarEvent />
+              </InfoIcon>
+              <p>Se unió en ...</p>
+            </LinkWrapper>
+          </AllLinksWrapper>
+
           <SeguidoresYSeguidosWrapper>
             <SeguidoresYSeguidos>
               <span>{siguiendo}</span>Siguiendo

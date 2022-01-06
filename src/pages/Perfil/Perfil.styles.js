@@ -102,6 +102,27 @@ export const InfoPerfil = styled.div`
   }
 `;
 
+export const AllLinksWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const LinkWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  p,
+  a {
+    margin-left: 0.5rem;
+    margin-right: 3rem;
+  }
+  a {
+    text-decoration: none;
+    color: #00acee;
+  }
+`;
+
+export const InfoIcon = styled.div``;
+
 export const SeguidoresYSeguidosWrapper = styled.div`
   display: flex;
 `;
