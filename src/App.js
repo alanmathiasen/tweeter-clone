@@ -8,6 +8,7 @@ import Sidebar from "./components/Sidebar";
 import Perfil from "./pages/Perfil";
 import Registro from "./pages/Registro";
 import TweetGroup from "./components/TweetGroup";
+import TweetPage from "./pages/TweetPage";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "./firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
@@ -81,7 +82,7 @@ const App = () => {
           <Route
             exact
             path="/tweet/:id/:correoUsuario"
-            element={<TweetGroup />}
+            element={<TweetPage />}
           />
         </Routes>
       </AppWrapper>

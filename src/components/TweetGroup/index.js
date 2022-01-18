@@ -7,7 +7,7 @@ import { db } from "../../firebase/firebaseConfig";
 
 import TweetIndividual from "../TweetIndividual";
 
-const TweetGroup = ({ tweet, correoUsuario }) => {
+const TweetGroup = ({ tweetId, correoUsuario }) => {
   const [childrenIds, setChildrenIds] = useState([]);
   const [children, setChildren] = useState([]);
 
@@ -23,7 +23,8 @@ const TweetGroup = ({ tweet, correoUsuario }) => {
   };
 
   const getChildren = async () => {
-    const tweetRef = doc(db, "tweets", tweet.id);
+    console.log(tweetId, "twwrsdtdsfds");
+    const tweetRef = doc(db, "tweets", tweetId);
     const tweetSnap = await getDoc(tweetRef);
     let childs = [];
 
@@ -53,7 +54,7 @@ const TweetGroup = ({ tweet, correoUsuario }) => {
 
   //setChildrensId con onSnapshot
   useEffect(() => {
-    const tweetRef = doc(db, "tweets", tweet.id);
+    const tweetRef = doc(db, "tweets", tweetId);
     const unsubscribe = onSnapshot(tweetRef, (snap) => {
       if (snap.data()) setChildrenIds(snap.data().children);
       else setChildrenIds([]);
@@ -62,21 +63,24 @@ const TweetGroup = ({ tweet, correoUsuario }) => {
   }, []);
 
   useEffect(async () => {
+    console.log(childrenIds, "CHILDREN");
     setChildren(await getChildren());
   }, [childrenIds]);
 
   return (
     <Wrapper>
-      <TweetIndividual
-        tweet={tweet}
-        correoUsuario={correoUsuario}
-        key={tweet.id}
-      />
-
+      {childrenIds &&
+        childrenIds.map((cId) => {
+          <TweetIndividual
+            tweetId={cId}
+            correoUsuario={correoUsuario}
+            key={cId}
+          />;
+        })}
       {children &&
         children.map((child) => (
           <TweetIndividual
-            tweet={child}
+            tweetId={child.id}
             correoUsuario={correoUsuario}
             key={child.id}
           />

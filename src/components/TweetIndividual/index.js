@@ -6,7 +6,7 @@ import {
   TweetImg,
   Username,
 } from "./TweetIndividual.styles";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   doc,
   updateDoc,
@@ -17,14 +17,22 @@ import {
 import { db } from "../../firebase/firebaseConfig";
 import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
+import { useEffect, useState } from "react/cjs/react.development";
 
-const TweetIndividual = ({ tweet, correoUsuario }) => {
+const TweetIndividual = ({ tweetId, correoUsuario }) => {
+  const [tweet, setTweet] = useState([{}]);
+
+  const getTweet = async () => {
+    const tweetRef = doc(db, "tweets", tweetId);
+    const tweetSnap = await getDoc(tweetRef);
+    setTweet({ ...tweetSnap.data(), tweetId });
+  };
+
   async function eliminarTweet(idTweetAEliminar) {
     //actualizar state con nuevo array
     /*const nuevoArrayTweets = arrayTweets.filter(
       (tweet) => tweet.id !== idTweetAEliminar
     );*/
-
     const tweetRef = doc(db, "tweets", idTweetAEliminar);
     const tweetSnap = await getDoc(tweetRef);
     if (tweetSnap.data().parentId) {
@@ -39,46 +47,37 @@ const TweetIndividual = ({ tweet, correoUsuario }) => {
         await deleteDoc(doc(db, "tweets", child));
       });
     }
-
     //actualizar base de datos
     await deleteDoc(doc(db, "tweets", idTweetAEliminar));
     /*setArrayTweets(nuevoArrayTweets);*/
   }
+
+  useEffect(() => {
+    getTweet();
+  }, []);
+
   return (
     <TweetContainer>
-      <Link
-        to={"/tweet/" + tweet.id + "/" + correoUsuario}
-        onClick={(e) => {
-          if (e.target !== e.currentTarget) {
-            if (["A", "BUTTON"].includes(e.target.nodeName)) {
-              e.preventDefault();
-            }
-          }
-        }}
-        state={{
-          tweet: tweet,
-          correoUsuario: correoUsuario,
-          eliminarTweet: eliminarTweet,
-        }}
-      >
-        <button onClick={() => eliminarTweet(tweet.id)}>Eliminar Tweet</button>
+      <Link to={"/tweet/" + tweetId + "/" + correoUsuario}>GOTO</Link>
 
-        <ImgPerfil>
-          <img src={imgPerfil} alt="" />
-        </ImgPerfil>
+      <button onClick={() => eliminarTweet(tweetId)}>Eliminar Tweet</button>
 
-        <TweetNav>
-          <Username>Nombre</Username>
-          <span>{correoUsuario}</span>
-          <span>·</span>
-        </TweetNav>
+      <ImgPerfil>
+        <img src={imgPerfil} alt="" />
+      </ImgPerfil>
 
-        <TweetContent>
-          {tweet.descripcion && <p>{tweet.descripcion}</p>}
-          {imgPerfil && <TweetImg src={imgPerfil} />}
-        </TweetContent>
-        <TweetForm parentId={tweet.id} correoUsuario={correoUsuario} />
-      </Link>
+      <TweetNav>
+        <Username>Nombre</Username>
+        <span>{correoUsuario}</span>
+        <span>·</span>
+      </TweetNav>
+
+      <TweetContent>
+        <div>{tweetId}</div>
+        {tweet.descripcion && <p>{tweet.descripcion}</p>}
+        {imgPerfil && <TweetImg src={imgPerfil} />}
+      </TweetContent>
+      <TweetForm parentId={tweetId} correoUsuario={correoUsuario} />
     </TweetContainer>
   );
 };

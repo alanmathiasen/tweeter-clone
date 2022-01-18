@@ -6,6 +6,9 @@ export const TweetContainer = styled.div`
   grid-gap: 5px;
   border-bottom: 1px solid lightgrey;
   padding: 20px;
+  a {
+    text-decoration: none;
+  }
 `;
 
 export const ImgPerfil = styled.div`
