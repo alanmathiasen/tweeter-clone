@@ -60,7 +60,7 @@ const TweetGroup = ({ tweetId, correoUsuario }) => {
       else setChildrenIds([]);
     });
     return () => unsubscribe();
-  }, []);
+  }, [tweetId]);
 
   useEffect(async () => {
     console.log(childrenIds, "CHILDREN");

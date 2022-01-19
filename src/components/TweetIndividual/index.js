@@ -54,7 +54,7 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
 
   useEffect(() => {
     getTweet();
-  }, []);
+  }, [tweetId]);
 
   return (
     <TweetContainer>
