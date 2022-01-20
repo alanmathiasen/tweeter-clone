@@ -13,23 +13,23 @@ const TweetPage = () => {
   const [idState, setIdState] = useState(id);
   const [correo, setCorreo] = useState(correoUsuario);
   //const location = useLocation();
-  useEffect(()=>{
+  useEffect(() => {
     setIdState(id);
     setCorreo(correo);
   }, [id]);
 
   return (
     <Wrapper>
-      {idState}
-      <button onClick={()=>navigate(`/tweet/2/${correoUsuario}`)}>GOOOO</button>
       {idState && (
         <TweetIndividual
           tweetId={idState}
-          correoUsuario={correo}
+          correoUsuario="@alan_mathiasen"
           className="main"
         />
       )}
-      {idState && <TweetGroup tweetId={idState} correoUsuario={correo} />}
+      {idState && (
+        <TweetGroup tweetId={idState} correoUsuario="@alan_mathiasen" />
+      )}
       <div>HOLA</div>
       <button onClick={() => console.log(idState, correo)}>ADAS</button>
     </Wrapper>

@@ -8,3 +8,8 @@ export const AppWrapper = styled.div`
   grid-row-gap: 0px;
   margin: 0 3rem;
 `;
+
+export const RoutesWrapper = styled.div`
+  border: 1px solid lightgray;
+  border-width: 0px 1px;
+`;

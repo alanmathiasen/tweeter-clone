@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Browser, Route, Routes } from "react-router-dom";
 
-import { AppWrapper } from "./App.styles";
+import { AppWrapper, RoutesWrapper } from "./App.styles";
 import Home from "./components/Home";
 import Sidebar from "./components/Sidebar";
 import Perfil from "./pages/Perfil";
@@ -55,36 +55,38 @@ const App = () => {
     <Browser>
       <AppWrapper>
         <Sidebar />
-        <Routes>
-          {usuarioLogueado ? (
+        <RoutesWrapper>
+          <Routes>
+            {usuarioLogueado ? (
+              <Route
+                exact
+                path="/"
+                element={<Home correoUsuario={usuarioLogueado.email} />}
+              />
+            ) : (
+              <Route exact path="/" element={<Home />} />
+            )}
+
             <Route
               exact
-              path="/"
-              element={<Home correoUsuario={usuarioLogueado.email} />}
+              path="/perfil"
+              element={
+                <Perfil
+                  correoUsuario={usuarioLogueado}
+                  emailLogueado={emailLogueado}
+                  datosUser={datosUser}
+                  setDatosUser={setDatosUser}
+                />
+              }
             />
-          ) : (
-            <Route exact path="/" element={<Home />} />
-          )}
-
-          <Route
-            exact
-            path="/perfil"
-            element={
-              <Perfil
-                correoUsuario={usuarioLogueado}
-                emailLogueado={emailLogueado}
-                datosUser={datosUser}
-                setDatosUser={setDatosUser}
-              />
-            }
-          />
-          <Route exact path="/registro" element={<Registro />} />
-          <Route
-            exact
-            path="/tweet/:id/:correoUsuario"
-            element={<TweetPage />}
-          />
-        </Routes>
+            <Route exact path="/registro" element={<Registro />} />
+            <Route
+              exact
+              path="/tweet/:id/:correoUsuario"
+              element={<TweetPage />}
+            />
+          </Routes>
+        </RoutesWrapper>
       </AppWrapper>
     </Browser>
   );

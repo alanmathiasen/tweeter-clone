@@ -2,13 +2,16 @@ import styled from "styled-components";
 
 export const TweetContainer = styled.div`
   display: grid;
-  grid-template-columns: 2fr 10fr;
-  grid-gap: 5px;
+  grid-template-columns: 100px 5fr 100px;
   border-bottom: 1px solid lightgrey;
-  padding: 20px;
+  padding: 5px;
   a {
     text-decoration: none;
   }
+  p {
+    margin: 0;
+  }
+  font-size: 16px;
 `;
 
 export const ImgPerfil = styled.div`
@@ -21,9 +24,13 @@ export const ImgPerfil = styled.div`
   }
 `;
 
+export const BorrarTweet = styled.div`
+  grid-column: 3;
+  grid-row: 1 / span 5;
+`;
+
 export const TweetNav = styled.div`
   display: flex;
-  font-size: 1rem;
 
   h4 {
     margin: 0;
@@ -40,16 +47,29 @@ export const TweetNav = styled.div`
 `;
 
 export const TweetContent = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  font-size: 15px;
+  font-size: 15px; */
 `;
 export const Username = styled.span`
   color: #292b2b !important;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const TweetImg = styled.img`
   max-width: 60%;
   max-height: 60%;
   border-radius: 20px;
+`;
+
+export const Icon = styled.span`
+  float: right;
+`;
+
+export const ButtonRow = styled.div`
+  display: flex;
+  font-size: px;
 `;

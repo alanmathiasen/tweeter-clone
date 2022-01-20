@@ -5,8 +5,12 @@ import {
   TweetContent,
   TweetImg,
   Username,
+  BorrarTweet,
+  ButtonRow,
 } from "./TweetIndividual.styles";
 import { Link } from "react-router-dom";
+import { GiCancel } from "react-icons/gi";
+import { BiComment } from "react-icons/bi";
 import {
   doc,
   updateDoc,
@@ -58,26 +62,25 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
 
   return (
     <TweetContainer>
-      <Link to={"/tweet/" + tweetId + "/" + correoUsuario}>GOTO</Link>
-
-      <button onClick={() => eliminarTweet(tweetId)}>Eliminar Tweet</button>
-
+      {/* <Link to={"/tweet/" + tweetId + "/" + correoUsuario}>GOTO</Link> */}
+      <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
+        <GiCancel />
+      </BorrarTweet>
       <ImgPerfil>
         <img src={imgPerfil} alt="" />
       </ImgPerfil>
-
       <TweetNav>
         <Username>Nombre</Username>
         <span>{correoUsuario}</span>
         <span>·</span>
       </TweetNav>
-
       <TweetContent>
-        <div>{tweetId}</div>
         {tweet.descripcion && <p>{tweet.descripcion}</p>}
-        {imgPerfil && <TweetImg src={imgPerfil} />}
       </TweetContent>
-      <TweetForm parentId={tweetId} correoUsuario={correoUsuario} />
+      <ButtonRow>
+        <BiComment />
+      </ButtonRow>
+      {/* <TweetForm parentId={tweetId} correoUsuario={correoUsuario} /> */}
     </TweetContainer>
   );
 };
