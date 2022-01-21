@@ -1,46 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
 import { useParams, useLocation } from "react-router-dom";
 import {
   PerfilWrapper,
-  ButtonBack,
-  PerfilNav,
-  NavInfo,
   PerfilContainer,
   PortadaContainer,
   Portada,
   ImgPerfil,
-  EditarPerfil,
-  InfoPerfil,
-  SeguidoresYSeguidosWrapper,
-  SeguidoresYSeguidos,
   PerfilModalContainer,
   OverlayModal,
-  AllLinksWrapper,
-  LinkWrapper,
-  InfoIcon,
 } from "./Perfil.styles";
-import { BiArrowBack } from "react-icons/bi";
 import ImgPortada from "../../imgs/portada.jpg";
 import imgPerfil from "../../imgs/perfil.jpg";
 // COMPONENTES
 import TweetsNavbar from "../../components/TweetsNavbar";
 import Tweet from "../../components/Tweet";
-import PerfilModal from "../../components/PerfilModal";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  doc,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-} from "firebase/firestore";
+import PerfilModal from "../../components/PerfilComponents/PerfilModal";
+import PerfilNav from "../../components/PerfilComponents/PerfilNav";
+import DatosPerfil from "../../components/PerfilComponents/DatosPerfil";
+import { useGlobalContext } from "../../context/Context";
+
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
-import { GoLocation } from "react-icons/go";
-import { IoIosLink } from "react-icons/io";
-import { BsCalendarEvent } from "react-icons/bs";
 
 const Perfil = ({
   correoUsuario,
@@ -49,18 +29,15 @@ const Perfil = ({
   setDatosUser,
   getDatosUsuario,
 }) => {
-  const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
 
+  const { getDatosPerfil, currentPerfilMail, pageItsLoad, setPageItsLoad } =
+    useGlobalContext();
+
   const [perfilModalOpen, setPerfilModalOpen] = useState(false);
-  const [currentPerfil, setCurrentPerfil] = useState({});
-  const [currentPerfilMail, setCurrentPerfilMail] = useState("");
   const [itsCurrentUserProfile, setItsCurrentUserProfile] = useState(true);
   const [handleFollowButton, setHandleFollowButton] = useState(false);
-  const [siguiendo, setSiguiendo] = useState(0);
-  const [seguidores, setSeguidores] = useState(0);
-  const [pageItsLoad, setPageItsLoad] = useState(true);
 
   const handlePerfilModal = () => {
     setPerfilModalOpen(!perfilModalOpen);
@@ -80,29 +57,6 @@ const Perfil = ({
     }
   };
 
-  const getDatosPerfil = async () => {
-    const usuariosRef = collection(db, "usuarios");
-    const currentPerfil = query(usuariosRef, where("ruta", "==", id));
-
-    const querySnapshot = await getDocs(currentPerfil);
-    querySnapshot.forEach((doc) => {
-      setCurrentPerfil(doc.data());
-      setCurrentPerfilMail(doc.id);
-
-      if (doc.data().siguiendo) {
-        setSiguiendo(doc.data().siguiendo.length);
-      } else {
-        setSiguiendo(0);
-      }
-      if (doc.data().seguidores) {
-        setSeguidores(doc.data().seguidores.length);
-      } else {
-        setSeguidores(0);
-      }
-    });
-    setPageItsLoad(true);
-  };
-
   const checkFollowAlready = () => {
     let mail = String(currentPerfilMail);
     let array = [];
@@ -114,12 +68,9 @@ const Perfil = ({
       } else {
         setHandleFollowButton(false);
       }
+    } else {
+      return;
     }
-  };
-
-  const goBack = () => {
-    navigate(-1);
-    setItsCurrentUserProfile(true);
   };
 
   const handleFollow = async () => {
@@ -157,7 +108,7 @@ const Perfil = ({
   }, []);
 
   useEffect(() => {
-    getDatosPerfil();
+    getDatosPerfil(id);
   }, [location]);
 
   useEffect(() => {
@@ -184,78 +135,14 @@ const Perfil = ({
 
   return (
     <PerfilWrapper>
-      <PerfilNav>
-        <ButtonBack onClick={() => goBack()}>
-          <BiArrowBack />
-        </ButtonBack>
-        <NavInfo>
-          <h3>{currentPerfil.nombre}</h3>
-          <p>250 Tweets</p>
-        </NavInfo>
-      </PerfilNav>
+      <PerfilNav />
 
-      <PerfilContainer>
-        <PortadaContainer>
-          <Portada src={ImgPortada} alt="portada" />
-        </PortadaContainer>
-        <ImgPerfil src={imgPerfil} />
-
-        {itsCurrentUserProfile ? (
-          <EditarPerfil
-            itsCurrentUserProfile={itsCurrentUserProfile}
-            onClick={handlePerfilModal}
-          >
-            Editar Perfil
-            {console.log("editar perfil")}
-          </EditarPerfil>
-        ) : (
-          <EditarPerfil
-            itsCurrentUserProfile={itsCurrentUserProfile}
-            handleFollowButton={handleFollowButton}
-            onClick={handleFollow}
-          >
-            {handleFollowButton ? "Dejar de seguir" : "Seguir"}
-            {console.log("dejar de seguir o seguir")}
-          </EditarPerfil>
-        )}
-
-        <InfoPerfil>
-          <h2>{currentPerfil.nombre}</h2>
-          <span>{currentPerfilMail}</span>
-          <p>{currentPerfil.biografia}</p>
-          <AllLinksWrapper>
-            <LinkWrapper>
-              <InfoIcon>
-                <GoLocation />
-              </InfoIcon>
-              <p>{currentPerfil.ubicacion}</p>
-            </LinkWrapper>
-            <LinkWrapper>
-              <InfoIcon>
-                <IoIosLink />
-              </InfoIcon>
-              <a href={currentPerfil.sitioWeb} target="_blank" rel="noreferrer">
-                {currentPerfil.sitioWeb}
-              </a>
-            </LinkWrapper>
-            <LinkWrapper>
-              <InfoIcon>
-                <BsCalendarEvent />
-              </InfoIcon>
-              <p>Se unió en ...</p>
-            </LinkWrapper>
-          </AllLinksWrapper>
-
-          <SeguidoresYSeguidosWrapper>
-            <SeguidoresYSeguidos>
-              <span>{siguiendo}</span>Siguiendo
-            </SeguidoresYSeguidos>
-            <SeguidoresYSeguidos>
-              <span>{seguidores}</span>Seguidores
-            </SeguidoresYSeguidos>
-          </SeguidoresYSeguidosWrapper>
-        </InfoPerfil>
-      </PerfilContainer>
+      <DatosPerfil
+        itsCurrentUserProfile={itsCurrentUserProfile}
+        handlePerfilModal={handlePerfilModal}
+        handleFollowButton={handleFollowButton}
+        handleFollow={handleFollow}
+      />
 
       <OverlayModal
         perfilModalOpen={perfilModalOpen}

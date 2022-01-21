@@ -45,16 +45,15 @@ const Registro = () => {
           email,
           password
         );
+        let usuario = String(email);
+        const [name, mail] = usuario.split("@");
+        const ruta = name;
+        const docRef = await setDoc(doc(db, "usuarios", email), {
+          ruta: ruta,
+          seguidores: [],
+          siguiendo: [],
+        });
       }
-
-      //crea ruta del perfil
-      let usuario = String(email);
-      const [name, mail] = usuario.split("@");
-      const ruta = name;
-      const docRef = await updateDoc(doc(db, "usuarios", email), {
-        ruta: ruta,
-      });
-
       navigate("/");
     } catch (error) {
       console.log(error.message);

@@ -8,7 +8,7 @@ import {
   Campo,
 } from "./PerfilModal.styles";
 import { setDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
+import { db } from "../../../firebase/firebaseConfig";
 import { VscClose } from "react-icons/vsc";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
@@ -29,8 +29,6 @@ const PerfilModal = ({
       [e.target.id]: e.target.value,
     });
   };
-
-  useEffect(() => {}, []);
 
   const handleEditarPerfil = async (e) => {
     e.preventDefault();

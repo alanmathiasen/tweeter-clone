@@ -7,6 +7,8 @@ import Home from "./components/Home";
 import Sidebar from "./components/Sidebar";
 import Perfil from "./pages/Perfil";
 import Registro from "./pages/Registro";
+import Siguiendo from "./pages/Siguiendo";
+import Seguidores from "./pages/Seguidores";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "./firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
@@ -29,7 +31,7 @@ const App = () => {
       const docRef = doc(db, "usuarios", email);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
+        // console.log("Document data:", docSnap.data());
         const detallesUser = {
           biografia: docSnap.data().biografia,
           nombre: docSnap.data().nombre,
@@ -79,6 +81,8 @@ const App = () => {
             }
           />
           <Route exact path="/registro" element={<Registro />} />
+          <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
+          <Route exact path="/:id/seguidores" element={<Seguidores />} />
         </Routes>
       </AppWrapper>
     </Browser>
