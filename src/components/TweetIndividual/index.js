@@ -3,14 +3,15 @@ import {
   TweetContainer,
   TweetNav,
   TweetContent,
-  TweetImg,
   Username,
   BorrarTweet,
-  ButtonRow,
 } from "./TweetIndividual.styles";
+
+import { useEffect, useState } from "react/cjs/react.development";
 import { Link } from "react-router-dom";
 import { GiCancel } from "react-icons/gi";
-import { BiComment } from "react-icons/bi";
+import { BiComment, BiHeart } from "react-icons/bi";
+
 import {
   doc,
   updateDoc,
@@ -19,9 +20,10 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
+
+import ButtonGroup from "./ButtonGroup";
 import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
-import { useEffect, useState } from "react/cjs/react.development";
 
 const TweetIndividual = ({ tweetId, correoUsuario }) => {
   const [tweet, setTweet] = useState([{}]);
@@ -71,15 +73,14 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
       </ImgPerfil>
       <TweetNav>
         <Username>Nombre</Username>
-        <span>{correoUsuario}</span>
+        <span>@alan_wtf</span>
         <span>·</span>
+        <span>6h</span>
       </TweetNav>
       <TweetContent>
         {tweet.descripcion && <p>{tweet.descripcion}</p>}
       </TweetContent>
-      <ButtonRow>
-        <BiComment />
-      </ButtonRow>
+      <ButtonGroup />
       {/* <TweetForm parentId={tweetId} correoUsuario={correoUsuario} /> */}
     </TweetContainer>
   );

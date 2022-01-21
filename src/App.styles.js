@@ -10,6 +10,6 @@ export const AppWrapper = styled.div`
 `;
 
 export const RoutesWrapper = styled.div`
-  border: 1px solid lightgray;
+  border: solid lightgray;
   border-width: 0px 1px;
 `;
