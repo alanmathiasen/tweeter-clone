@@ -2,11 +2,11 @@ import React from "react";
 import { PerfilNavbar, ButtonBack, NavInfo } from "./PerfilNav.styles";
 import { BiArrowBack } from "react-icons/bi";
 import { useNavigate } from "react-router";
-import { useGlobalContext } from "../../../context/Context";
+import { usePerfilContext } from "../../../context/PerfilContext";
 
 const PerfilNav = () => {
   const navigate = useNavigate();
-  const { currentPerfil } = useGlobalContext();
+  const { currentPerfil } = usePerfilContext();
 
   return (
     <PerfilNavbar>

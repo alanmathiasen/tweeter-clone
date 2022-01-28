@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   ModalWrapper,
   ModalNav,
@@ -7,19 +7,15 @@ import {
   FormWrapper,
   Campo,
 } from "./PerfilModal.styles";
-import { setDoc, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
 import { VscClose } from "react-icons/vsc";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import { useGlobalContext } from "../../../context/GlobalContext";
 
-const PerfilModal = ({
-  handlePerfilModal,
-  correoUsuario,
-  emailLogueado,
-  datosUser,
-  setDatosUser,
-}) => {
+const PerfilModal = ({ handlePerfilModal }) => {
+  const { emailLogueado, datosUser, setDatosUser } = useGlobalContext();
   const navigate = useNavigate();
   const { id } = useParams();
 

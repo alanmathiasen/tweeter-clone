@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Wrapper, ButtonTweet, Icon } from "./Sidebar.styles";
 import { Link } from "react-router-dom";
 
 import { HiHome, HiOutlineUser } from "react-icons/hi";
 import { IoNotificationsOutline } from "react-icons/io5";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
+import { ButtonColored } from "../Utils/ButtonColored";
+import { useGlobalContext } from "../../context/GlobalContext";
 
-const Sidebar = ({ correoUsuario }) => {
-  const handleModal = () => {};
-  const [usuarioSinArroba, setUsuarioSinArroba] = useState("");
+const Sidebar = () => {
+  const { emailLogueado } = useGlobalContext();
 
-  let usuario = String(correoUsuario);
+  let usuario = String(emailLogueado);
   const [name, email] = usuario.split("@");
 
   return (
@@ -35,7 +36,7 @@ const Sidebar = ({ correoUsuario }) => {
           </Icon>
           Perfil
         </Link>
-        <ButtonTweet onClick={handleModal}>Tweet</ButtonTweet>
+        <ButtonColored children="Tweet" />
 
         {auth.currentUser && (
           <button onClick={() => signOut(auth)}>Cerrar Sesión</button>

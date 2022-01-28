@@ -86,4 +86,7 @@ export const SeguidoresYSeguidos = styled.p`
     color: #000;
     font-weight: 700;
   }
+  a {
+    text-decoration: none;
+  }
 `;

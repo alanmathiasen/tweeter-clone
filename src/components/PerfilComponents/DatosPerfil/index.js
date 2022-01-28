@@ -14,7 +14,7 @@ import {
   LinkWrapper,
   InfoIcon,
 } from "./DatosPerfil.styles";
-import { useGlobalContext } from "../../../context/Context";
+import { usePerfilContext } from "../../../context/PerfilContext";
 
 import ImgPortada from "../../../imgs/portada.jpg";
 import imgPerfil from "../../../imgs/perfil.jpg";
@@ -23,15 +23,17 @@ import { GoLocation } from "react-icons/go";
 import { IoIosLink } from "react-icons/io";
 import { BsCalendarEvent } from "react-icons/bs";
 
-const DatosPerfil = ({
-  itsCurrentUserProfile,
-  handlePerfilModal,
-  handleFollowButton,
-  handleFollow,
-}) => {
+const DatosPerfil = ({ itsCurrentUserProfile, handlePerfilModal }) => {
   const { id } = useParams();
-  const { currentPerfil, currentPerfilMail, siguiendo, seguidores } =
-    useGlobalContext();
+
+  const {
+    currentPerfil,
+    currentPerfilMail,
+    siguiendo,
+    seguidores,
+    handleFollowButton,
+    handleFollow,
+  } = usePerfilContext();
 
   return (
     <PerfilContainer>

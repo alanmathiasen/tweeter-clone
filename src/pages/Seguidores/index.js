@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
+  FollowWrapper,
   SectionWrapper,
   LinkText,
   Line,
@@ -8,24 +9,38 @@ import {
   ArticleWrapper,
   NoContentWrpapper,
   UserCard,
+  SiguiendoBtn,
+  UserCardContent,
 } from "../Siguiendo/Siguiendo.styles.js";
 import PerfilNav from "../../components/PerfilComponents/PerfilNav";
-import { useGlobalContext } from "../../context/Context";
 import { Link } from "react-router-dom";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { usePerfilContext } from "../../context/PerfilContext.js";
 
 const Seguidores = () => {
-  const { currentPerfil, currentPerfilMail } = useGlobalContext();
+  const { datosUser } = useGlobalContext();
+  const {
+    currentPerfil,
+    currentPerfilMail,
+    handleLoad,
+    setPageItsLoad,
+    pageItsLoad,
+    getDatosPerfil,
+  } = usePerfilContext();
+
   const { id } = useParams();
   const [mailsToCheck, setMailsToCheck] = useState([]);
   const [usersFollowers, setUsersFollowers] = useState([]);
 
   const handleFollowers = () => {
-    let result = currentPerfil.siguiendo.map((item) => {
-      return item;
-    });
-    setMailsToCheck(result);
+    if (currentPerfil.seguidores) {
+      let result = currentPerfil.siguiendo.map((item) => {
+        return item;
+      });
+      setMailsToCheck(result);
+    }
   };
 
   const getFollowers = async () => {
@@ -57,12 +72,22 @@ const Seguidores = () => {
   };
 
   useEffect(() => {
-    handleFollowers();
-    getFollowers();
+    setPageItsLoad(false);
+    getDatosPerfil(id);
   }, []);
 
+  useEffect(() => {
+    handleLoad();
+    handleFollowers();
+    getFollowers();
+  }, [pageItsLoad]);
+
+  if (!pageItsLoad) {
+    return <div></div>;
+  }
+
   return (
-    <div>
+    <FollowWrapper>
       <PerfilNav />
       <SectionWrapper>
         <Link to={`/${id}/seguidores`}>
@@ -74,13 +99,25 @@ const Seguidores = () => {
         </Link>
       </SectionWrapper>
       <ArticleWrapper>
-        {currentPerfil.seguidores.length > 0 ? (
+        {currentPerfil.seguidores && currentPerfil.seguidores.length > 0 ? (
           usersFollowers.map((user, index) => {
+            let newRute = user.ruta;
             return (
               <UserCard key={index}>
-                <h3>{user.nombre}</h3>
-                <span>{user.id}</span>
-                <p>{user.biografia}</p>
+                <Link to={`/${newRute}`}>
+                  <UserCardContent>
+                    <h3>{user.nombre}</h3>
+                    <span>{user.id}</span>
+                    <p>{user.biografia}</p>
+                  </UserCardContent>
+                  {datosUser.siguiendo.includes(user.id) ? (
+                    <SiguiendoBtn>
+                      <span>Siguiendo</span>
+                    </SiguiendoBtn>
+                  ) : (
+                    <button>Seguir</button>
+                  )}
+                </Link>
               </UserCard>
             );
           })
@@ -91,7 +128,7 @@ const Seguidores = () => {
           </NoContentWrpapper>
         )}
       </ArticleWrapper>
-    </div>
+    </FollowWrapper>
   );
 };
 

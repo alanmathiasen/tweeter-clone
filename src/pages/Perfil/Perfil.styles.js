@@ -6,7 +6,7 @@ export const PerfilWrapper = styled.div`
   border-right: 1px solid #eee;
   border-left: 1px solid #eee;
   grid-column-start: 2;
-  grid-column-end: 4;
+  grid-column-end: 2;
 `;
 
 export const PerfilContainer = styled.div``;

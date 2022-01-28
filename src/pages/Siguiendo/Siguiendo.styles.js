@@ -1,5 +1,14 @@
 import styled from "styled-components";
 
+export const FollowWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #eee;
+  border-left: 1px solid #eee;
+  grid-column-start: 2;
+  grid-column-end: 2;
+`;
+
 export const SectionWrapper = styled.div`
   display: flex;
   justify-content: space-around;
@@ -43,6 +52,7 @@ export const ArticleWrapper = styled.div`
   position: relative;
   flex-direction: column;
   align-items: center;
+  align-items: flex-start;
 `;
 
 export const NoContentWrpapper = styled.div`
@@ -50,8 +60,9 @@ export const NoContentWrpapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 70%;
-
   align-items: flex-start;
+  max-width: 400px;
+  margin: auto;
 
   h2 {
     font-size: 2.3rem;
@@ -67,5 +78,59 @@ export const NoContentWrpapper = styled.div`
 export const UserCard = styled.div`
   display: flex;
   flex-direction: column;
-  border: solid 1px red;
+  cursor: pointer;
+  justify-content: space-between;
+  width: 100%;
+
+  &:hover {
+    background-color: #eee;
+  }
+  a {
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    left: 1.5rem;
+  }
+`;
+
+export const UserCardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  h3 {
+    font-size: 1.2rem;
+    margin: 0.5rem 0 0 0;
+  }
+  span {
+    color: #737373;
+    font-size: 1rem;
+  }
+  p {
+    font-size: 1rem;
+    margin: 0.7rem 0;
+  }
+`;
+
+export const SiguiendoBtn = styled.button`
+  position: relative;
+  top: 1.5rem;
+  right: 3rem;
+  cursor: pointer;
+  border: solid 1px #737373;
+  border-radius: 50px;
+  background: none;
+  width: 130px;
+  height: 30px;
+  font-weight: 600;
+  &:hover span {
+    display: none;
+  }
+  &:hover::before {
+    content: "Dejar de seguir";
+  }
+  &:hover {
+    border-color: red;
+  }
 `;

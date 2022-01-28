@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
+  FollowWrapper,
   SectionWrapper,
   Line,
   LinkText,
@@ -8,28 +9,41 @@ import {
   ArticleWrapper,
   NoContentWrpapper,
   UserCard,
+  SiguiendoBtn,
+  UserCardContent,
 } from "./Siguiendo.styles";
 import PerfilNav from "../../components/PerfilComponents/PerfilNav";
-import { useGlobalContext } from "../../context/Context";
 import { Link } from "react-router-dom";
 import { ButtonColored } from "../../components/Utils/ButtonColored";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { usePerfilContext } from "../../context/PerfilContext";
 
 const Siguiendo = () => {
-  const { currentPerfil, currentPerfilMail } = useGlobalContext();
+  const { datosUser } = useGlobalContext();
+  const {
+    currentPerfil,
+    currentPerfilMail,
+    handleLoad,
+    setPageItsLoad,
+    pageItsLoad,
+    getDatosPerfil,
+  } = usePerfilContext();
+
   const { id } = useParams();
   const [mailsToCheck, setMailsToCheck] = useState([]);
   const [usersFollowing, setUsersFollowing] = useState([]);
 
   const handleFollowers = () => {
-    let result = currentPerfil.siguiendo.map((item) => {
-      return item;
-    });
-    setMailsToCheck(result);
+    if (currentPerfil.siguiendo) {
+      let result = currentPerfil.siguiendo.map((item) => {
+        return item;
+      });
+      setMailsToCheck(result);
+    }
   };
 
-  //getFollowers
   const getFollowing = async () => {
     const usuariosRef = collection(db, "usuarios");
     const followingUsers = query(
@@ -58,13 +72,27 @@ const Siguiendo = () => {
     });
   };
 
+  const handleFollowBtn = () => {
+    datosUser.siguiendo.find();
+  };
+
   useEffect(() => {
-    handleFollowers();
-    getFollowing();
+    setPageItsLoad(false);
+    getDatosPerfil(id);
   }, []);
 
+  useEffect(() => {
+    handleLoad();
+    handleFollowers();
+    getFollowing();
+  }, [pageItsLoad]);
+
+  if (!pageItsLoad) {
+    return <div></div>;
+  }
+
   return (
-    <div>
+    <FollowWrapper>
       <PerfilNav />
       <SectionWrapper>
         <Link to={`/${id}/seguidores`}>
@@ -76,13 +104,25 @@ const Siguiendo = () => {
         </Link>
       </SectionWrapper>
       <ArticleWrapper>
-        {currentPerfil.siguiendo.length > 0 ? (
+        {currentPerfil.siguiendo && currentPerfil.siguiendo.length > 0 ? (
           usersFollowing.map((user, index) => {
+            let newRute = user.ruta;
             return (
               <UserCard key={index}>
-                <h3>{user.nombre}</h3>
-                <span>{user.id}</span>
-                <p>{user.biografia}</p>
+                <Link to={`/${newRute}`}>
+                  <UserCardContent>
+                    <h3>{user.nombre}</h3>
+                    <span>@{user.ruta}</span>
+                    <p>{user.biografia}</p>
+                  </UserCardContent>
+                  {datosUser.siguiendo.includes(user.id) ? (
+                    <SiguiendoBtn>
+                      <span>Siguiendo</span>
+                    </SiguiendoBtn>
+                  ) : (
+                    <button>Seguir</button>
+                  )}
+                </Link>
               </UserCard>
             );
           })
@@ -97,7 +137,7 @@ const Siguiendo = () => {
           </NoContentWrpapper>
         )}
       </ArticleWrapper>
-    </div>
+    </FollowWrapper>
   );
 };
 

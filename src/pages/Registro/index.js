@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormWrapper, FormContent } from "./Registro.style";
 import { auth, db } from "../../firebase/firebaseConfig";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 import { useNavigate } from "react-router";
 
