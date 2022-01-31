@@ -4,16 +4,17 @@ import {
   VscGitCompare,
   VscFoldUp,
 } from "react-icons/vsc";
+import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 
 import { Wrapper } from "./ButtonGroup.styles";
 
-const ButtonGroup = ({ comments }) => {
+const ButtonGroup = ({ replies, likes, likeTweet, liked }) => {
   return (
     <Wrapper>
       <div>
         <div className="comment">
           <VscComment className="commentBtn" />
-          <span>5</span>
+          <span>{replies ? replies : ""}</span>
         </div>
       </div>
       <div>
@@ -23,10 +24,17 @@ const ButtonGroup = ({ comments }) => {
         </div>
       </div>
       <div>
-        <div className="like">
-          <VscHeart className="likeBtn" />
-          <span>50</span>
-        </div>
+        {liked ? (
+          <div className="like liked" onClick={likeTweet}>
+            <IoHeartSharp className="likeBtn" />
+            <span>{likes ? likes : ""}</span>
+          </div>
+        ) : (
+          <div className="like " onClick={likeTweet}>
+            <IoHeartOutline className="likeBtn" />
+            <span>{likes ? likes : ""}</span>
+          </div>
+        )}
       </div>
       <div>
         <div className="comment">

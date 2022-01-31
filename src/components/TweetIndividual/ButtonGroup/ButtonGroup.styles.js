@@ -54,6 +54,9 @@ export const Wrapper = styled.div`
       }
     }
   }
+  .liked {
+    color: red;
+  }
 
   .retweet {
     &:hover {

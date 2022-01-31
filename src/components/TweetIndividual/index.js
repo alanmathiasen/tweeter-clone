@@ -18,6 +18,8 @@ import {
   deleteDoc,
   getDoc,
   arrayRemove,
+  arrayUnion,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
@@ -26,13 +28,13 @@ import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
 
 const TweetIndividual = ({ tweetId, correoUsuario }) => {
-  const [tweet, setTweet] = useState([{}]);
-
-  const getTweet = async () => {
+  const [tweet, setTweet] = useState({});
+  const [liked, setLiked] = useState(false);
+  /*const getTweet = async () => {
     const tweetRef = doc(db, "tweets", tweetId);
     const tweetSnap = await getDoc(tweetRef);
     setTweet({ ...tweetSnap.data(), tweetId });
-  };
+  };*/
 
   async function eliminarTweet(idTweetAEliminar) {
     //actualizar state con nuevo array
@@ -58,8 +60,36 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
     /*setArrayTweets(nuevoArrayTweets);*/
   }
 
+  async function likeTweet() {
+    const tweetRef = doc(db, "tweets", tweetId);
+    const tweetSnap = await getDoc(tweetRef);
+    if (
+      tweetSnap.data().likes &&
+      tweetSnap.data().likes.includes(correoUsuario)
+    ) {
+      await updateDoc(tweetRef, {
+        likes: arrayRemove(correoUsuario),
+      });
+    } else {
+      await updateDoc(tweetRef, {
+        likes: arrayUnion(correoUsuario),
+      });
+    }
+  }
+
   useEffect(() => {
-    getTweet();
+    //getTweet();
+    const tweetRef = doc(db, "tweets", tweetId);
+    const unsubscribe = onSnapshot(tweetRef, (snap) => {
+      if (snap.data()) setTweet(snap.data());
+      else setTweet({});
+      if (snap.data().likes && snap.data().likes.includes(correoUsuario)) {
+        setLiked(true);
+      } else {
+        setLiked(false);
+      }
+    });
+    return () => unsubscribe();
   }, [tweetId]);
 
   return (
@@ -80,8 +110,13 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
       <TweetContent>
         {tweet.descripcion && <p>{tweet.descripcion}</p>}
       </TweetContent>
-      <ButtonGroup />
-      {/* <TweetForm parentId={tweetId} correoUsuario={correoUsuario} /> */}
+      <ButtonGroup
+        replies={tweet.children ? tweet.children.length : null}
+        likes={tweet.likes ? tweet.likes.length : null}
+        likeTweet={likeTweet}
+        liked={liked}
+      />
+      <TweetForm parentId={tweetId} correoUsuario={correoUsuario} />
     </TweetContainer>
   );
 };
