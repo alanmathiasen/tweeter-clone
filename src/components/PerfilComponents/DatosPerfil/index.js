@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useParams, useLocation, Link } from "react-router-dom";
 import {
@@ -15,7 +15,7 @@ import {
   InfoIcon,
 } from "./DatosPerfil.styles";
 import { usePerfilContext } from "../../../context/PerfilContext";
-
+import { useGlobalContext } from "../../../context/GlobalContext";
 import ImgPortada from "../../../imgs/portada.jpg";
 import imgPerfil from "../../../imgs/perfil.jpg";
 //ICONS
@@ -23,8 +23,11 @@ import { GoLocation } from "react-icons/go";
 import { IoIosLink } from "react-icons/io";
 import { BsCalendarEvent } from "react-icons/bs";
 
-const DatosPerfil = ({ itsCurrentUserProfile, handlePerfilModal }) => {
+const DatosPerfil = ({ handlePerfilModal }) => {
   const { id } = useParams();
+  const location = useLocation();
+
+  const { datosUser } = useGlobalContext();
 
   const {
     currentPerfil,
@@ -32,8 +35,59 @@ const DatosPerfil = ({ itsCurrentUserProfile, handlePerfilModal }) => {
     siguiendo,
     seguidores,
     handleFollowButton,
+    setHandleFollowButton,
     handleFollow,
+    handleLoad,
+    setPageItsLoad,
+    pageItsLoad,
+    getDatosPerfil,
   } = usePerfilContext();
+
+  const [itsCurrentUserProfile, setItsCurrentUserProfile] = useState(false);
+  const [btnState, setBtnState] = useState(false);
+
+  const handleClick = () => {
+    handleFollow();
+    setBtnState(!btnState);
+  };
+
+  useEffect(() => {
+    setPageItsLoad(false);
+    getDatosPerfil(id);
+  }, [id]);
+
+  useEffect(() => {
+    const checkFollowAlready = () => {
+      let mail = String(currentPerfilMail);
+      let array = [];
+      if (id === datosUser.ruta) {
+        setItsCurrentUserProfile(true);
+      } else {
+        setItsCurrentUserProfile(false);
+        if (datosUser.siguiendo) {
+          array = datosUser.siguiendo;
+          let resp = array.includes(mail);
+          if (resp === true) {
+            setHandleFollowButton(true);
+            console.log("SI SIGUE A USER");
+            setBtnState(true);
+          } else {
+            setHandleFollowButton(false);
+            console.log("NO SIGUE A USER");
+            setBtnState(false);
+          }
+        } else {
+          return;
+        }
+      }
+    };
+
+    checkFollowAlready();
+  }, [datosUser.siguiendo, id, location]);
+
+  if (!pageItsLoad) {
+    return <div>cargando</div>;
+  }
 
   return (
     <PerfilContainer>
@@ -53,10 +107,10 @@ const DatosPerfil = ({ itsCurrentUserProfile, handlePerfilModal }) => {
       ) : (
         <EditarPerfil
           itsCurrentUserProfile={itsCurrentUserProfile}
-          handleFollowButton={handleFollowButton}
-          onClick={handleFollow}
+          handleFollowButton={btnState}
+          onClick={() => handleClick()}
         >
-          {handleFollowButton ? "Dejar de seguir" : "Seguir"}
+          {btnState ? "Dejar de seguir" : "Seguir"}
           {console.log("dejar de seguir o seguir")}
         </EditarPerfil>
       )}

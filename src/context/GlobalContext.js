@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react/cjs/react.development";
 
 const GlobalContext = React.createContext();
 
@@ -15,35 +16,39 @@ const AppProvider = ({ children }) => {
     setUsuarioLogueado(currentUser);
   });
 
-  const getDatosUsuario = async () => {
-    if (user !== null) {
-      const email = user.email;
-      setEmailLogueado(email);
+  useEffect(() => {
+    const getDatosUsuario = async () => {
+      if (user !== null) {
+        const email = user.email;
+        setEmailLogueado(email);
 
-      const docRef = doc(db, "usuarios", email);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        // console.log("Document data:", docSnap.data());
-        const detallesUser = {
-          biografia: docSnap.data().biografia,
-          nombre: docSnap.data().nombre,
-          sitioWeb: docSnap.data().sitioWeb,
-          ubicacion: docSnap.data().ubicacion,
-          ruta: docSnap.data().ruta,
-          siguiendo: docSnap.data().siguiendo,
-          seguidores: docSnap.data().seguidores,
-        };
-        setDatosUser(detallesUser);
-      } else {
-        console.log("No such document!");
+        const docRef = doc(db, "usuarios", email);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          // console.log("Document data:", docSnap.data());
+          const detallesUser = {
+            biografia: docSnap.data().biografia,
+            nombre: docSnap.data().nombre,
+            sitioWeb: docSnap.data().sitioWeb,
+            ubicacion: docSnap.data().ubicacion,
+            ruta: docSnap.data().ruta,
+            siguiendo: docSnap.data().siguiendo,
+            seguidores: docSnap.data().seguidores,
+          };
+          setDatosUser(detallesUser);
+        } else {
+          console.log("No such document!");
+        }
       }
-    }
-  };
+    };
+
+    getDatosUsuario();
+  }, [usuarioLogueado]);
 
   return (
     <GlobalContext.Provider
       value={{
-        getDatosUsuario,
+        // getDatosUsuario,
         usuarioLogueado,
         emailLogueado,
         datosUser,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, location, useLocation } from "react-router-dom";
 import {
   FollowWrapper,
   SectionWrapper,
@@ -31,45 +31,9 @@ const Seguidores = () => {
   } = usePerfilContext();
 
   const { id } = useParams();
+  const location = useLocation();
   const [mailsToCheck, setMailsToCheck] = useState([]);
   const [usersFollowers, setUsersFollowers] = useState([]);
-
-  const handleFollowers = () => {
-    if (currentPerfil.seguidores) {
-      let result = currentPerfil.siguiendo.map((item) => {
-        return item;
-      });
-      setMailsToCheck(result);
-    }
-  };
-
-  const getFollowers = async () => {
-    const usuariosRef = collection(db, "usuarios");
-    const followersUsers = query(
-      usuariosRef,
-      where("siguiendo", "array-contains", currentPerfilMail)
-    );
-
-    const querySnapshot = await getDocs(followersUsers);
-    querySnapshot.forEach((doc) => {
-      let newArray = [];
-      newArray = doc.data();
-      newArray.id = doc.id;
-
-      let checkExist = false;
-      usersFollowers.map((item) => {
-        item.id.includes(newArray.id)
-          ? (checkExist = true)
-          : (checkExist = false);
-      });
-      if (checkExist === false) {
-        setUsersFollowers((usersFollowers) => [...usersFollowers, newArray]);
-        console.log("cargando state");
-      } else {
-        return;
-      }
-    });
-  };
 
   useEffect(() => {
     setPageItsLoad(false);
@@ -77,10 +41,46 @@ const Seguidores = () => {
   }, []);
 
   useEffect(() => {
+    const handleFollowers = () => {
+      if (currentPerfil.seguidores) {
+        let result = currentPerfil.siguiendo.map((item) => {
+          return item;
+        });
+        setMailsToCheck(result);
+      }
+    };
+
+    const getFollowers = async () => {
+      const usuariosRef = collection(db, "usuarios");
+      const followersUsers = query(
+        usuariosRef,
+        where("siguiendo", "array-contains", currentPerfilMail)
+      );
+
+      const querySnapshot = await getDocs(followersUsers);
+      querySnapshot.forEach((doc) => {
+        let newArray = [];
+        newArray = doc.data();
+        newArray.id = doc.id;
+
+        let checkExist = false;
+        usersFollowers.map((item) => {
+          item.id.includes(newArray.id)
+            ? (checkExist = true)
+            : (checkExist = false);
+        });
+        if (checkExist === false) {
+          setUsersFollowers((usersFollowers) => [...usersFollowers, newArray]);
+          console.log("cargando state");
+        } else {
+          return;
+        }
+      });
+    };
     handleLoad();
     handleFollowers();
     getFollowers();
-  }, [pageItsLoad]);
+  }, [location, id]);
 
   if (!pageItsLoad) {
     return <div></div>;

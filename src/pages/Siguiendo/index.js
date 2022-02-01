@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   FollowWrapper,
   SectionWrapper,
@@ -29,63 +29,61 @@ const Siguiendo = () => {
     setPageItsLoad,
     pageItsLoad,
     getDatosPerfil,
+    handleFollowPage,
   } = usePerfilContext();
 
   const { id } = useParams();
+  const location = useLocation();
   const [mailsToCheck, setMailsToCheck] = useState([]);
   const [usersFollowing, setUsersFollowing] = useState([]);
 
-  const handleFollowers = () => {
-    if (currentPerfil.siguiendo) {
-      let result = currentPerfil.siguiendo.map((item) => {
-        return item;
-      });
-      setMailsToCheck(result);
-    }
-  };
-
-  const getFollowing = async () => {
-    const usuariosRef = collection(db, "usuarios");
-    const followingUsers = query(
-      usuariosRef,
-      where("seguidores", "array-contains", currentPerfilMail)
-    );
-
-    const querySnapshot = await getDocs(followingUsers);
-    querySnapshot.forEach((doc) => {
-      let newArray = [];
-      newArray = doc.data();
-      newArray.id = doc.id;
-
-      let checkExist = false;
-      usersFollowing.map((item) => {
-        item.id.includes(newArray.id)
-          ? (checkExist = true)
-          : (checkExist = false);
-      });
-      if (checkExist === false) {
-        setUsersFollowing((usersFollowing) => [...usersFollowing, newArray]);
-        console.log("cargando state");
-      } else {
-        return;
-      }
-    });
-  };
-
-  const handleFollowBtn = () => {
-    datosUser.siguiendo.find();
-  };
-
   useEffect(() => {
     setPageItsLoad(false);
-    getDatosPerfil(id);
   }, []);
 
   useEffect(() => {
+    getDatosPerfil(id);
+
+    const handleFollowers = () => {
+      if (currentPerfil.siguiendo) {
+        let result = currentPerfil.siguiendo.map((item) => {
+          return item;
+        });
+        setMailsToCheck(result);
+      }
+    };
+
+    const getFollowing = async () => {
+      const usuariosRef = collection(db, "usuarios");
+      const followingUsers = query(
+        usuariosRef,
+        where("seguidores", "array-contains", currentPerfilMail)
+      );
+
+      const querySnapshot = await getDocs(followingUsers);
+      querySnapshot.forEach((doc) => {
+        let newArray = [];
+        newArray = doc.data();
+        newArray.id = doc.id;
+
+        let checkExist = false;
+        usersFollowing.map((item) => {
+          item.id.includes(newArray.id)
+            ? (checkExist = true)
+            : (checkExist = false);
+        });
+        if (checkExist === false) {
+          setUsersFollowing((usersFollowing) => [...usersFollowing, newArray]);
+          console.log("cargando state");
+        } else {
+          return;
+        }
+      });
+    };
     handleLoad();
     handleFollowers();
     getFollowing();
-  }, [pageItsLoad]);
+  }, [location, id]);
 
   if (!pageItsLoad) {
     return <div></div>;
@@ -115,14 +113,14 @@ const Siguiendo = () => {
                     <span>@{user.ruta}</span>
                     <p>{user.biografia}</p>
                   </UserCardContent>
-                  {datosUser.siguiendo.includes(user.id) ? (
-                    <SiguiendoBtn>
-                      <span>Siguiendo</span>
-                    </SiguiendoBtn>
-                  ) : (
-                    <button>Seguir</button>
-                  )}
                 </Link>
+                {datosUser.siguiendo.includes(user.id) ? (
+                  <SiguiendoBtn onClick={() => handleFollowPage(user.id)}>
+                    <span>Siguiendo</span>
+                  </SiguiendoBtn>
+                ) : (
+                  <button>Seguir</button>
+                )}
               </UserCard>
             );
           })

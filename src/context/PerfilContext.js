@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import {
   collection,
   getDocs,
@@ -23,9 +23,9 @@ const PerfilProvider = ({ children }) => {
   const [siguiendo, setSiguiendo] = useState(0);
   const [seguidores, setSeguidores] = useState(0);
   const [pageItsLoad, setPageItsLoad] = useState(true);
-  const [handleFollowButton, setHandleFollowButton] = useState(false);
+  const [handleFollowButton, setHandleFollowButton] = useState(true);
 
-  const getDatosPerfil = async (id) => {
+  const getDatosPerfil = useCallback(async (id) => {
     const usuariosRef = collection(db, "usuarios");
     const currentPerfil = query(usuariosRef, where("ruta", "==", id));
 
@@ -33,7 +33,6 @@ const PerfilProvider = ({ children }) => {
     querySnapshot.forEach((doc) => {
       setCurrentPerfil(doc.data());
       setCurrentPerfilMail(doc.id);
-
       if (doc.data().siguiendo) {
         setSiguiendo(doc.data().siguiendo.length);
       } else {
@@ -46,13 +45,13 @@ const PerfilProvider = ({ children }) => {
       }
     });
     setPageItsLoad(true);
-  };
+  }, []);
 
-  const handleLoad = () => {
+  const handleLoad = useCallback(() => {
     if (currentPerfilMail) {
       setPageItsLoad(true);
     }
-  };
+  }, []);
 
   const handleFollow = async () => {
     setHandleFollowButton(!handleFollowButton);
@@ -84,6 +83,20 @@ const PerfilProvider = ({ children }) => {
     }
   };
 
+  const handleFollowPage = async (id) => {
+    if (id) {
+      const logguedUserRef = await updateDoc(
+        doc(db, "usuarios", emailLogueado),
+        {
+          siguiendo: arrayRemove(id),
+        }
+      );
+      const seguidoRef = await updateDoc(doc(db, "usuarios", id), {
+        seguidores: arrayRemove(emailLogueado),
+      });
+    }
+  };
+
   return (
     <PerfilContext.Provider
       value={{
@@ -97,6 +110,7 @@ const PerfilProvider = ({ children }) => {
         handleLoad,
         setHandleFollowButton,
         handleFollow,
+        handleFollowPage,
       }}
     >
       {children}

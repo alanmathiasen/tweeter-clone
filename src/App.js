@@ -14,11 +14,11 @@ import Seguidores from "./pages/Seguidores";
 import { useGlobalContext } from "./context/GlobalContext";
 
 const App = () => {
-  const { getDatosUsuario, usuarioLogueado } = useGlobalContext();
+  const { usuarioLogueado } = useGlobalContext();
 
-  useEffect(() => {
-    getDatosUsuario();
-  }, [usuarioLogueado]);
+  // useEffect(() => {
+  //   getDatosUsuario();
+  // }, [usuarioLogueado]);
 
   return (
     <Browser>

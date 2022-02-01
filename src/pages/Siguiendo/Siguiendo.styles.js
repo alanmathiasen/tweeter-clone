@@ -77,7 +77,7 @@ export const NoContentWrpapper = styled.div`
 
 export const UserCard = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   cursor: pointer;
   justify-content: space-between;
   width: 100%;
@@ -93,6 +93,7 @@ export const UserCard = styled.div`
     justify-content: space-between;
     position: relative;
     left: 1.5rem;
+    width: 100%;
   }
 `;
 
@@ -124,6 +125,7 @@ export const SiguiendoBtn = styled.button`
   width: 130px;
   height: 30px;
   font-weight: 600;
+  z-index: 10;
   &:hover span {
     display: none;
   }
