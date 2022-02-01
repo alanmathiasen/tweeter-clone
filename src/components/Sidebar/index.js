@@ -4,11 +4,16 @@ import { Link } from "react-router-dom";
 
 import { HiHome, HiOutlineUser } from "react-icons/hi";
 import { IoNotificationsOutline } from "react-icons/io5";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
+import { ButtonColored } from "../Utils/ButtonColored";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 const Sidebar = () => {
-  const handleModal = () => {};
+  const { emailLogueado } = useGlobalContext();
+
+  let usuario = String(emailLogueado);
+  const [name, email] = usuario.split("@");
 
   return (
     <Wrapper>
@@ -25,13 +30,13 @@ const Sidebar = () => {
           </Icon>
           Notificaciones
         </Link>
-        <Link to="/perfil">
+        <Link to={`/${name}`}>
           <Icon>
             <HiOutlineUser />
           </Icon>
           Perfil
         </Link>
-        <ButtonTweet onClick={handleModal}>Tweet</ButtonTweet>
+        <ButtonColored children="Tweet" />
 
         {auth.currentUser && (
           <button onClick={() => signOut(auth)}>Cerrar Sesión</button>

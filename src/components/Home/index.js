@@ -9,14 +9,17 @@ import {
   query,
   onSnapshot,
   updateDoc,
-  getDocs,
   deleteDoc,
   getDoc,
   arrayRemove,
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
-const Home = ({ correoUsuario }) => {
+import { useGlobalContext } from "../../context/GlobalContext";
+
+const Home = () => {
+  const { emailLogueado } = useGlobalContext();
+
   const [arrayTweets, setArrayTweets] = useState([]);
 
   const [tweetsConQuery, setTweetsConQuery] = useState([]);
@@ -45,11 +48,15 @@ const Home = ({ correoUsuario }) => {
     <HomeWrapper>
       <h2>Home</h2>
       <TweetForm
-        correoUsuario={correoUsuario}
+        correoUsuario={emailLogueado}
         arrayTweets={arrayTweets}
         setArrayTweets={setArrayTweets}
       />
-      <Tweet correoUsuario={correoUsuario} arrayTweets={arrayTweets} />
+      <Tweet
+        correoUsuario={emailLogueado}
+        arrayTweets={arrayTweets}
+        eliminarTweet={eliminarTweet}
+      />
     </HomeWrapper>
   );
 };

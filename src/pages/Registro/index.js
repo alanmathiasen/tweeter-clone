@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormWrapper, FormContent } from "./Registro.style";
 import { auth, db } from "../../firebase/firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 import { useNavigate } from "react-router";
 
@@ -45,7 +45,14 @@ const Registro = () => {
           email,
           password
         );
-        console.log(user);
+        let usuario = String(email);
+        const [name, mail] = usuario.split("@");
+        const ruta = name;
+        const docRef = await setDoc(doc(db, "usuarios", email), {
+          ruta: ruta,
+          seguidores: [],
+          siguiendo: [],
+        });
       }
       navigate("/");
     } catch (error) {

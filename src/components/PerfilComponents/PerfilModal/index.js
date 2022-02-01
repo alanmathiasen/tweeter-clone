@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   ModalWrapper,
   ModalNav,
@@ -7,21 +7,17 @@ import {
   FormWrapper,
   Campo,
 } from "./PerfilModal.styles";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../../firebase/firebaseConfig";
 import { VscClose } from "react-icons/vsc";
+import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
+import { useGlobalContext } from "../../../context/GlobalContext";
 
-const PerfilModal = ({
-  handlePerfilModal,
-  correoUsuario,
-  emailLogueado,
-  datosUser,
-  setDatosUser,
-}) => {
-  const [nombre, setNombre] = useState("");
-  const [biografia, setBiografia] = useState("");
-  const [ubicacion, setUbicacion] = useState("");
-  const [web, setWeb] = useState("");
+const PerfilModal = ({ handlePerfilModal }) => {
+  const { emailLogueado, datosUser, setDatosUser } = useGlobalContext();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleChange = (e) => {
     setDatosUser({
@@ -30,8 +26,6 @@ const PerfilModal = ({
     });
   };
 
-  useEffect(() => {}, []);
-
   const handleEditarPerfil = async (e) => {
     e.preventDefault();
     const nombre = e.target.nombre.value;
@@ -39,13 +33,19 @@ const PerfilModal = ({
     const ubicacion = e.target.ubicacion.value;
     const sitioWeb = e.target.sitioWeb.value;
 
-    const docRef = await setDoc(doc(db, "usuarios", emailLogueado), {
+    let usuario = String(emailLogueado);
+    const [name, email] = usuario.split("@");
+    const ruta = name;
+
+    const docRef = await updateDoc(doc(db, "usuarios", emailLogueado), {
       nombre: nombre,
       biografia: biografia,
       ubicacion: ubicacion,
       sitioWeb: sitioWeb,
+      ruta: ruta,
     });
     handlePerfilModal();
+    navigate(`/${id}`);
   };
 
   return (
