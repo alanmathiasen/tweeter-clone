@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Wrapper, ButtonTweet, Icon } from "./Sidebar.styles";
 import { Link } from "react-router-dom";
 
 import { HiHome, HiOutlineUser } from "react-icons/hi";
 import { IoNotificationsOutline } from "react-icons/io5";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../firebase/firebaseConfig";
 
 const Sidebar = () => {
+  const handleModal = () => {};
+
   return (
     <Wrapper>
       <ul>
@@ -27,7 +31,11 @@ const Sidebar = () => {
           </Icon>
           Perfil
         </Link>
-        <ButtonTweet>Tweet</ButtonTweet>
+        <ButtonTweet onClick={handleModal}>Tweet</ButtonTweet>
+
+        {auth.currentUser && (
+          <button onClick={() => signOut(auth)}>Cerrar Sesión</button>
+        )}
       </ul>
     </Wrapper>
   );

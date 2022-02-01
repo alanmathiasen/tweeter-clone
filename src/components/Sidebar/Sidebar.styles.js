@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   list-style: none;
+  padding-left: 1rem;
   ul {
     display: flex;
     flex-direction: column;
