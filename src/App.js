@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Browser, Route, Routes } from "react-router-dom";
 
 import { AppWrapper, RoutesWrapper } from "./App.styles";
-import { AppWrapper } from "./App.styles";
+
 import { PerfilProvider } from "./context/PerfilContext";
 import Home from "./components/Home";
 import Sidebar from "./components/Sidebar";
@@ -20,7 +20,7 @@ import Seguidores from "./pages/Seguidores";
 import { useGlobalContext } from "./context/GlobalContext";
 
 const App = () => {
-  const { usuarioLogueado } = useGlobalContext();
+  const { usuarioLogueado, emailLogueado } = useGlobalContext();
 
   // useEffect(() => {
   //   getDatosUsuario();
@@ -30,7 +30,7 @@ const App = () => {
     <Browser>
       <AppWrapper>
         <Sidebar />
-        <RoutesWrapper>
+         {/* <RoutesWrapper>
           <Routes>
             {usuarioLogueado ? (
               <Route
@@ -46,22 +46,13 @@ const App = () => {
               exact
               path="/perfil"
               element={
-                <Perfil
-                  correoUsuario={usuarioLogueado}
-                  emailLogueado={emailLogueado}
-                  datosUser={datosUser}
-                  setDatosUser={setDatosUser}
-                />
+                <Perfil/>
               }
             />
             <Route exact path="/registro" element={<Registro />} />
-            <Route
-              exact
-              path="/tweet/:id/:correoUsuario"
-              element={<TweetPage />}
-            />
+            
           </Routes>
-        </RoutesWrapper>
+        </RoutesWrapper>  */}
         <PerfilProvider>
           {/* PERFIL CONTEXT PROVIDER */}
           <Routes>
@@ -74,6 +65,11 @@ const App = () => {
             <Route exact path="/registro" element={<Registro />} />
             <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
             <Route exact path="/:id/seguidores" element={<Seguidores />} />
+            <Route
+              exact
+              path="/tweet/:id/:correoUsuario"
+              element={<TweetPage />}
+            />
           </Routes>
           {/* PERFIL CONTEXT PROVIDER */}
         </PerfilProvider>

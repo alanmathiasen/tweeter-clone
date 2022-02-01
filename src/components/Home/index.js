@@ -55,7 +55,7 @@ const Home = () => {
       <Tweet
         correoUsuario={emailLogueado}
         arrayTweets={arrayTweets}
-        eliminarTweet={eliminarTweet}
+       
       />
     </HomeWrapper>
   );
