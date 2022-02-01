@@ -8,7 +8,7 @@ import {
 } from "./TweetIndividual.styles";
 
 import { useEffect, useState } from "react/cjs/react.development";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { GiCancel } from "react-icons/gi";
 import { BiComment, BiHeart } from "react-icons/bi";
 
@@ -30,6 +30,7 @@ import imgPerfil from "../../imgs/perfil.jpg";
 const TweetIndividual = ({ tweetId, correoUsuario }) => {
   const [tweet, setTweet] = useState({});
   const [liked, setLiked] = useState(false);
+  const navigate = useNavigate();
   /*const getTweet = async () => {
     const tweetRef = doc(db, "tweets", tweetId);
     const tweetSnap = await getDoc(tweetRef);
@@ -57,10 +58,10 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
     }
     //actualizar base de datos
     await deleteDoc(doc(db, "tweets", idTweetAEliminar));
-    /*setArrayTweets(nuevoArrayTweets);*/
   }
 
-  async function likeTweet() {
+  async function likeTweet(e) {
+    e.preventDefault();
     const tweetRef = doc(db, "tweets", tweetId);
     const tweetSnap = await getDoc(tweetRef);
     if (
@@ -92,8 +93,15 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
     return () => unsubscribe();
   }, [tweetId]);
 
+  const goTo = (e) => {
+    console.log(e);
+    console.log(e.target, e.currentTarget);
+
+    navigate("/tweet/" + tweetId + "/" + correoUsuario);
+  };
+
   return (
-    <TweetContainer>
+    <TweetContainer onClick={goTo}>
       {/* <Link to={"/tweet/" + tweetId + "/" + correoUsuario}>GOTO</Link> */}
       <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
         <GiCancel />
@@ -116,7 +124,8 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
         likeTweet={likeTweet}
         liked={liked}
       />
-      <TweetForm parentId={tweetId} correoUsuario={correoUsuario} />
+
+      {/* <TweetForm parentId={tweetId} correoUsuario={correoUsuario} /> */}
     </TweetContainer>
   );
 };
