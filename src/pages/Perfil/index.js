@@ -1,22 +1,39 @@
-import React from "react";
-import { useNavigate } from "react-router";
-import { PerfilWrapper, ButtonBack, PerfilNav, NavInfo } from "./Perfil.styles";
-import { BiArrowBack } from "react-icons/bi";
+import React, { useState } from "react";
+import {
+  PerfilWrapper,
+  PerfilModalContainer,
+  OverlayModal,
+} from "./Perfil.styles";
+// COMPONENTES
+import TweetsNavbar from "../../components/TweetsNavbar";
+import Tweet from "../../components/Tweet";
+import PerfilModal from "../../components/PerfilComponents/PerfilModal";
+import PerfilNav from "../../components/PerfilComponents/PerfilNav";
+import DatosPerfil from "../../components/PerfilComponents/DatosPerfil";
 
 const Perfil = () => {
-  const navigate = useNavigate();
+  const [perfilModalOpen, setPerfilModalOpen] = useState(false);
+
+  const handlePerfilModal = () => {
+    setPerfilModalOpen(!perfilModalOpen);
+  };
 
   return (
     <PerfilWrapper>
-      <PerfilNav>
-        <ButtonBack onClick={() => navigate(-1)}>
-          <BiArrowBack />
-        </ButtonBack>
-        <NavInfo>
-          <h3>Mi Perfil</h3>
-          <p>250 Tweets</p>
-        </NavInfo>
-      </PerfilNav>
+      <PerfilNav />
+
+      <DatosPerfil handlePerfilModal={handlePerfilModal} />
+
+      <OverlayModal
+        perfilModalOpen={perfilModalOpen}
+        onClick={handlePerfilModal}
+      />
+
+      <PerfilModalContainer perfilModalOpen={perfilModalOpen}>
+        <PerfilModal handlePerfilModal={handlePerfilModal} />
+      </PerfilModalContainer>
+      <TweetsNavbar />
+      <Tweet />
     </PerfilWrapper>
   );
 };

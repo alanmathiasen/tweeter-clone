@@ -1,114 +1,90 @@
 import React, { useState } from "react";
-import { FormWrapper, InputWrapper } from "./Registro.style";
-import { auth } from "../../firebase/firebaseConfig";
+import { FormWrapper, FormContent } from "./Registro.style";
+import { auth, db } from "../../firebase/firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
+
+import { useNavigate } from "react-router";
 
 //Métodos de firebase auth.
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  signOut,
+  signInWithRedirect,
+  GoogleAuthProvider,
 } from "firebase/auth";
 
+const googleProvider = new GoogleAuthProvider();
+
 const Registro = () => {
-  const [emailRegistro, setEmailRegistro] = useState("");
-  const [contraseñaRegistro, setContraseñaRegistro] = useState("");
-  const [emailLogueo, setEmailLogueo] = useState("");
-  const [contraseñaLogueo, setContraseñaLogueo] = useState("");
+  const [estaRegistrado, setEstaRegistrado] = useState(false);
 
-  const [user, setUser] = useState({});
+  const navigate = useNavigate();
 
-  //Método de firebase, similar a useEffect. Se ejecuta cuando un estado del auth cambia.
-  //Toma el currentUser (usuario logueado actualmente) que se encuentra en auth y se lo pasa al state user.
-  //Esto se hace para que, cuando se hace un f5 en la página, no tire error, ya que demora un milisegundo
-  //en volver en traer desde firebase, al usuario que esta logueado actualmente en la pagina.
+  const [usuarioLogueado, setUsuarioLogueado] = useState({});
+
+  // //Método de firebase, similar a useEffect. Se ejecuta cuando un estado del auth cambia.
+  // //Toma el currentUser (usuario logueado actualmente) que se encuentra en auth y se lo pasa al state user.
+  // //Esto se hace para que, cuando se hace un f5 en la página, no tire error, ya que demora un milisegundo
+  // //en volver en traer desde firebase, al usuario que esta logueado actualmente en la pagina.
   onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
+    setUsuarioLogueado(currentUser);
   });
 
-  const handleRegistro = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
     try {
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        emailRegistro,
-        contraseñaRegistro
-      );
-      console.log(user);
+      if (estaRegistrado) {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        const user = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        let usuario = String(email);
+        const [name, mail] = usuario.split("@");
+        const ruta = name;
+        const docRef = await setDoc(doc(db, "usuarios", email), {
+          ruta: ruta,
+          seguidores: [],
+          siguiendo: [],
+        });
+      }
+      navigate("/");
     } catch (error) {
       console.log(error.message);
     }
-  };
-
-  const handleLogueo = async () => {
-    try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        emailLogueo,
-        contraseñaLogueo
-      );
-      console.log(user);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const handleDeslogueo = async () => {
-    await signOut(auth);
   };
 
   return (
     <div>
       <FormWrapper>
-        <h3>Registrar Usuario</h3>
-        <InputWrapper>
-          <input
-            type="text"
-            placeholder="Email"
-            onChange={(e) => {
-              setEmailRegistro(e.target.value);
-            }}
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            onChange={(e) => {
-              setContraseñaRegistro(e.target.value);
-            }}
-          />
-        </InputWrapper>
-        <button onClick={handleRegistro}>Registrarse</button>
+        <h3>{estaRegistrado ? "Inicia sesión" : "Registrate"}</h3>
+        <FormContent onSubmit={handleSubmit}>
+          <input type="text" placeholder="Email" name="email" />
+          <input type="password" placeholder="Contraseña" name="password" />
+          <button type="submit">
+            {estaRegistrado ? "Inicia sesión" : "Registrate"}
+          </button>
+        </FormContent>
+
+        <button
+          type="submit"
+          onClick={() => signInWithRedirect(auth, googleProvider)}
+        >
+          Acceder con Google
+        </button>
+
+        <button onClick={() => setEstaRegistrado(!estaRegistrado)}>
+          {estaRegistrado
+            ? "¿No tenes cuenta? Registrate"
+            : "¿Ya tenes cuenta? Inicia sesión"}
+        </button>
       </FormWrapper>
-
-      <FormWrapper>
-        <h3>Loguear Usuario</h3>
-        <InputWrapper>
-          <input
-            type="text"
-            placeholder="Email"
-            onChange={(e) => {
-              setEmailLogueo(e.target.value);
-            }}
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            onChange={(e) => {
-              setContraseñaLogueo(e.target.value);
-            }}
-          />
-        </InputWrapper>
-        <button onClick={handleLogueo}>Login</button>
-      </FormWrapper>
-
-      {user && (
-        <div>
-          <h4>Usuario Logueado</h4>
-          {/* user?.email | Si hay un usuario registrado muestra el email, sino no muestra nada. */}
-          <p>{user?.email}</p>
-
-          <button onClick={handleDeslogueo}>Cerrar sesión</button>
-        </div>
-      )}
     </div>
   );
 };

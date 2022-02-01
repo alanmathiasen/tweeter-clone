@@ -4,42 +4,42 @@ export const PerfilWrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-right: 1px solid #eee;
+  border-left: 1px solid #eee;
+  grid-column-start: 2;
+  grid-column-end: 2;
 `;
 
-export const PerfilNav = styled.div`
-  display: flex;
+export const PerfilContainer = styled.div``;
+
+export const PortadaContainer = styled.div`
+  width: 100%;
+  max-height: 200px;
+  overflow: hidden;
+  margin-top: 0.5rem;
 `;
 
-export const NavInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  h3 {
-    margin-bottom: 0.5rem;
-  }
-  p {
-    font-size: 1rem;
-    margin: 0;
-    color: #717a7a;
-  }
+export const Portada = styled.img`
+  max-width: 100%;
 `;
 
-export const ButtonBack = styled.button`
-  background: none;
-  border: none;
-  margin: 0;
-  padding: 0;
-  font-size: 1.5em;
-  cursor: pointer;
-  max-height: 50px;
-  display: flex;
-  border-radius: 50px;
-  width: 50px;
-  align-items: center;
-  margin-top: 14px;
-  margin-right: 3rem;
-  justify-content: center;
+export const ImgPerfil = styled.img`
+  height: 150px;
+  width: 150px;
+  margin-left: 1rem;
+  border-radius: 79px;
+  border: solid 4px #fff;
+  margin-top: -5rem;
+`;
 
-  &:hover {
-    background: #eee;
-  }
+export const PerfilModalContainer = styled.div`
+  display: ${(props) => (props.perfilModalOpen ? "flex" : "none")};
+`;
+
+export const OverlayModal = styled.div`
+  display: ${(props) => (props.perfilModalOpen ? "felx" : "none")};
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  width: 100%;
+  left: 0;
+  position: absolute;
 `;
