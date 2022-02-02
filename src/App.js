@@ -20,39 +20,12 @@ import Seguidores from "./pages/Seguidores";
 import { useGlobalContext } from "./context/GlobalContext";
 
 const App = () => {
-  const { usuarioLogueado, emailLogueado } = useGlobalContext();
-
-  // useEffect(() => {
-  //   getDatosUsuario();
-  // }, [usuarioLogueado]);
+  const { usuarioLogueado } = useGlobalContext();
 
   return (
     <Browser>
       <AppWrapper>
         <Sidebar />
-        {/* <RoutesWrapper>
-          <Routes>
-            {usuarioLogueado ? (
-              <Route
-                exact
-                path="/"
-                element={<Home correoUsuario={usuarioLogueado.email} />}
-              />
-            ) : (
-              <Route exact path="/" element={<Home />} />
-            )}
-
-            <Route
-              exact
-              path="/perfil"
-              element={
-                <Perfil/>
-              }
-            />
-            <Route exact path="/registro" element={<Registro />} />
-            
-          </Routes>
-        </RoutesWrapper>  */}
         <PerfilProvider>
           {/* PERFIL CONTEXT PROVIDER */}
           <Routes>
