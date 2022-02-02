@@ -30,7 +30,7 @@ const App = () => {
     <Browser>
       <AppWrapper>
         <Sidebar />
-         {/* <RoutesWrapper>
+        {/* <RoutesWrapper>
           <Routes>
             {usuarioLogueado ? (
               <Route
@@ -65,11 +65,7 @@ const App = () => {
             <Route exact path="/registro" element={<Registro />} />
             <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
             <Route exact path="/:id/seguidores" element={<Seguidores />} />
-            <Route
-              exact
-              path="/tweet/:id/:correoUsuario"
-              element={<TweetPage />}
-            />
+            <Route exact path="/tweet/:id" element={<TweetPage />} />
           </Routes>
           {/* PERFIL CONTEXT PROVIDER */}
         </PerfilProvider>

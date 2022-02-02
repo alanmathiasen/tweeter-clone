@@ -12,6 +12,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { GiCancel } from "react-icons/gi";
 import { BiComment, BiHeart } from "react-icons/bi";
 
+import { useGlobalContext } from "../../context/GlobalContext";
+
 import {
   doc,
   updateDoc,
@@ -27,15 +29,13 @@ import ButtonGroup from "./ButtonGroup";
 import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
 
-const TweetIndividual = ({ tweetId, correoUsuario }) => {
+const TweetIndividual = ({ tweetId }) => {
   const [tweet, setTweet] = useState({});
   const [liked, setLiked] = useState(false);
+
   const navigate = useNavigate();
-  /*const getTweet = async () => {
-    const tweetRef = doc(db, "tweets", tweetId);
-    const tweetSnap = await getDoc(tweetRef);
-    setTweet({ ...tweetSnap.data(), tweetId });
-  };*/
+
+  const { emailLogueado, datosUser } = useGlobalContext();
 
   async function eliminarTweet(idTweetAEliminar) {
     //actualizar state con nuevo array
@@ -61,30 +61,35 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
   }
 
   async function likeTweet(e) {
+    if (!emailLogueado) {
+      alert("please login");
+      return 0;
+    }
     e.preventDefault();
     const tweetRef = doc(db, "tweets", tweetId);
     const tweetSnap = await getDoc(tweetRef);
     if (
       tweetSnap.data().likes &&
-      tweetSnap.data().likes.includes(correoUsuario)
+      tweetSnap.data().likes.includes(emailLogueado)
     ) {
       await updateDoc(tweetRef, {
-        likes: arrayRemove(correoUsuario),
+        likes: arrayRemove(emailLogueado),
       });
     } else {
       await updateDoc(tweetRef, {
-        likes: arrayUnion(correoUsuario),
+        likes: arrayUnion(emailLogueado),
       });
     }
   }
 
   useEffect(() => {
+    console.log(datosUser, emailLogueado);
     //getTweet();
     const tweetRef = doc(db, "tweets", tweetId);
     const unsubscribe = onSnapshot(tweetRef, (snap) => {
       if (snap.data()) setTweet(snap.data());
       else setTweet({});
-      if (snap.data().likes && snap.data().likes.includes(correoUsuario)) {
+      if (snap.data().likes && snap.data().likes.includes(emailLogueado)) {
         setLiked(true);
       } else {
         setLiked(false);
@@ -94,10 +99,9 @@ const TweetIndividual = ({ tweetId, correoUsuario }) => {
   }, [tweetId]);
 
   const goTo = (e) => {
-    console.log(e);
     console.log(e.target, e.currentTarget);
 
-    navigate("/tweet/" + tweetId + "/" + correoUsuario);
+    navigate("/tweet/" + tweetId);
   };
 
   return (
