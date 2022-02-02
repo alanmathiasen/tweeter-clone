@@ -7,7 +7,7 @@ import { db } from "../../firebase/firebaseConfig";
 
 import TweetIndividual from "../TweetIndividual";
 
-const TweetGroup = ({ tweetId, correoUsuario }) => {
+const TweetGroup = ({ tweetId }) => {
   const [childrenIds, setChildrenIds] = useState([]);
   const [children, setChildren] = useState([]);
 
@@ -71,19 +71,11 @@ const TweetGroup = ({ tweetId, correoUsuario }) => {
     <Wrapper>
       {childrenIds &&
         childrenIds.map((cId) => {
-          <TweetIndividual
-            tweetId={cId}
-            correoUsuario={correoUsuario}
-            key={cId}
-          />;
+          <TweetIndividual tweetId={cId} key={cId} />;
         })}
       {children &&
         children.map((child) => (
-          <TweetIndividual
-            tweetId={child.id}
-            correoUsuario={correoUsuario}
-            key={child.id}
-          />
+          <TweetIndividual tweetId={child.id} key={child.id} />
         ))}
     </Wrapper>
   );

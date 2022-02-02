@@ -20,16 +20,8 @@ const TweetPage = () => {
 
   return (
     <Wrapper>
-      {idState && (
-        <TweetIndividual
-          tweetId={idState}
-          correoUsuario="@alan_mathiasen"
-          className="main"
-        />
-      )}
-      {idState && (
-        <TweetGroup tweetId={idState} correoUsuario="@alan_mathiasen" />
-      )}
+      {idState && <TweetIndividual tweetId={idState} className="main" />}
+      {idState && <TweetGroup tweetId={idState} />}
       <div>HOLA</div>
       <button onClick={() => console.log(idState, correo)}>ADAS</button>
     </Wrapper>

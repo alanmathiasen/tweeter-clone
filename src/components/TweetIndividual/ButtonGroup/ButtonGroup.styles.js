@@ -19,6 +19,11 @@ export const Wrapper = styled.div`
     }
   }
 
+  a {
+    color: black;
+    cursor: pointer;
+  }
+
   .commentBtn,
   .likeBtn,
   .retweetBtn,

@@ -5,7 +5,6 @@ export const TweetWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 2rem 0;
-  cursor: pointer;
 `;
 
 export const ImgPerfil = styled.img`

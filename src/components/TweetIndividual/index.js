@@ -32,6 +32,7 @@ import imgPerfil from "../../imgs/perfil.jpg";
 const TweetIndividual = ({ tweetId }) => {
   const [tweet, setTweet] = useState({});
   const [liked, setLiked] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   const navigate = useNavigate();
 
@@ -99,9 +100,21 @@ const TweetIndividual = ({ tweetId }) => {
   }, [tweetId]);
 
   const goTo = (e) => {
-    console.log(e.target, e.currentTarget);
+    if (e.currentTarget !== e.target) {
+      if (
+        !["A", "svg", "path", "FORM", "INPUT", "BUTTON"].includes(
+          e.target.nodeName
+        )
+      ) {
+        navigate("/tweet/" + tweetId);
+      }
+    } else {
+      navigate("/tweet/" + tweetId);
+    }
+  };
 
-    navigate("/tweet/" + tweetId);
+  const handleShowForm = () => {
+    setShowForm(!showForm);
   };
 
   return (
@@ -115,7 +128,7 @@ const TweetIndividual = ({ tweetId }) => {
       </ImgPerfil>
       <TweetNav>
         <Username>Nombre</Username>
-        <span>@alan_wtf</span>
+        <span>{`@${datosUser.ruta}`}</span>
         <span>·</span>
         <span>6h</span>
       </TweetNav>
@@ -127,9 +140,16 @@ const TweetIndividual = ({ tweetId }) => {
         likes={tweet.likes ? tweet.likes.length : null}
         likeTweet={likeTweet}
         liked={liked}
+        showForm={handleShowForm}
       />
 
-      {/* <TweetForm parentId={tweetId} correoUsuario={correoUsuario} /> */}
+      {showForm && (
+        <TweetForm
+          parentId={tweetId}
+          className="tweetForm"
+          correoUsuario={emailLogueado}
+        />
+      )}
     </TweetContainer>
   );
 };

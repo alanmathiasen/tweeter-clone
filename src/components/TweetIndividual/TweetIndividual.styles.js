@@ -5,6 +5,7 @@ export const TweetContainer = styled.div`
   grid-template-columns: 100px 5fr 100px;
   border-bottom: 1px solid lightgrey;
   padding: 8px 5px;
+  cursor: pointer;
   a {
     text-decoration: none;
   }
@@ -15,6 +16,10 @@ export const TweetContainer = styled.div`
   transition: 0.2s;
   &:hover {
     background-color: #f3f3f3;
+  }
+  form {
+    grid-column: 2/3;
+    margin-top: 10px;
   }
 `;
 

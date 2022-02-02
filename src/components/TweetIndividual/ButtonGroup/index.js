@@ -8,39 +8,39 @@ import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 
 import { Wrapper } from "./ButtonGroup.styles";
 
-const ButtonGroup = ({ replies, likes, likeTweet, liked }) => {
+const ButtonGroup = ({ replies, likes, likeTweet, liked, showForm }) => {
   return (
     <Wrapper>
       <div>
-        <div className="comment">
+        <a className="comment" href="#" onClick={showForm}>
           <VscComment className="commentBtn" />
           <span>{replies ? replies : ""}</span>
-        </div>
+        </a>
       </div>
       <div>
-        <div className="retweet">
+        <a className="retweet">
           <VscGitCompare className="retweetBtn" />
           <span>2</span>
-        </div>
+        </a>
       </div>
       <div>
         {liked ? (
-          <div className="like liked" onClick={likeTweet}>
+          <a className="like liked" onClick={likeTweet}>
             <IoHeartSharp className="likeBtn" />
             <span>{likes ? likes : ""}</span>
-          </div>
+          </a>
         ) : (
-          <div className="like " onClick={likeTweet}>
+          <a className="like " onClick={likeTweet}>
             <IoHeartOutline className="likeBtn" />
             <span>{likes ? likes : ""}</span>
-          </div>
+          </a>
         )}
       </div>
       <div>
-        <div className="comment">
+        <a className="comment">
           <VscFoldUp className="commentBtn" />
           <span>30</span>
-        </div>
+        </a>
       </div>
     </Wrapper>
   );
