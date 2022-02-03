@@ -149,6 +149,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
           likeTweet={likeTweet}
           liked={liked}
           main={mainTweet}
+          showForm={handleShowForm}
         />
         {showForm && (
           <TweetForm
