@@ -1,7 +1,11 @@
 import React, { useState, useContext } from "react";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
+import {
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  getRedirectResult,
+} from "firebase/auth";
 import { useEffect } from "react/cjs/react.development";
 
 const GlobalContext = React.createContext();
@@ -21,7 +25,8 @@ const AppProvider = ({ children }) => {
       if (user !== null) {
         const email = user.email;
         setEmailLogueado(email);
-
+        const [name, mail] = String(email).split("@");
+        const ruta = name;
         const docRef = doc(db, "usuarios", email);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -37,6 +42,16 @@ const AppProvider = ({ children }) => {
           };
           setDatosUser(detallesUser);
         } else {
+          //CREACION DE DATOS USER EN FIRESTORE, CON CUENTA DE GOOGLE U OTRAS
+          const createDocRef = await setDoc(doc(db, "usuarios", email), {
+            nombre: user.displayName,
+            mail: user.email,
+            emailVerified: user.emailVerified,
+            ruta: ruta,
+            photoURL: user.photoURL,
+            seguidores: [],
+            siguiendo: [],
+          });
           console.log("No such document!");
         }
       }
@@ -48,7 +63,6 @@ const AppProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
-        // getDatosUsuario,
         usuarioLogueado,
         emailLogueado,
         datosUser,
