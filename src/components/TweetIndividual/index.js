@@ -5,6 +5,10 @@ import {
   TweetContent,
   Username,
   BorrarTweet,
+  MainContainer,
+  TweetHeader,
+  MainUser,
+  TweetMainContent,
 } from "./TweetIndividual.styles";
 
 import { useEffect, useState } from "react/cjs/react.development";
@@ -29,7 +33,7 @@ import ButtonGroup from "./ButtonGroup";
 import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
 
-const TweetIndividual = ({ tweetId }) => {
+const TweetIndividual = ({ tweetId, mainTweet = false }) => {
   const [tweet, setTweet] = useState({});
   const [liked, setLiked] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -113,45 +117,85 @@ const TweetIndividual = ({ tweetId }) => {
     }
   };
 
-  const handleShowForm = () => {
+  const handleShowForm = (e) => {
+    e.preventDefault();
     setShowForm(!showForm);
+    console.log(showForm);
   };
 
-  return (
-    <TweetContainer onClick={goTo}>
-      {/* <Link to={"/tweet/" + tweetId + "/" + correoUsuario}>GOTO</Link> */}
-      <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
-        <GiCancel />
-      </BorrarTweet>
-      <ImgPerfil>
-        <img src={imgPerfil} alt="" />
-      </ImgPerfil>
-      <TweetNav>
-        <Username>Nombre</Username>
-        <span>{`@${datosUser.ruta}`}</span>
-        <span>·</span>
-        <span>6h</span>
-      </TweetNav>
-      <TweetContent>
-        {tweet.descripcion && <p>{tweet.descripcion}</p>}
-      </TweetContent>
-      <ButtonGroup
-        replies={tweet.children ? tweet.children.length : null}
-        likes={tweet.likes ? tweet.likes.length : null}
-        likeTweet={likeTweet}
-        liked={liked}
-        showForm={handleShowForm}
-      />
+  if (mainTweet) {
+    return (
+      <MainContainer>
+        <TweetHeader>
+          <ImgPerfil>
+            <img src={imgPerfil} alt="" />
+          </ImgPerfil>
+          <MainUser>
+            <Username>Nombre</Username>
+            <span>{`@${datosUser.ruta}`}</span>
+          </MainUser>
 
-      {showForm && (
-        <TweetForm
-          parentId={tweetId}
-          className="tweetForm"
-          correoUsuario={emailLogueado}
+          <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
+            <GiCancel />
+          </BorrarTweet>
+        </TweetHeader>
+        <TweetMainContent>
+          {tweet.descripcion && <p>{tweet.descripcion}</p>}
+          <span>5:57p.m. · 3 feb. 2022 </span>
+        </TweetMainContent>
+        <ButtonGroup
+          replies={tweet.children ? tweet.children.length : null}
+          likes={tweet.likes ? tweet.likes.length : null}
+          likeTweet={likeTweet}
+          liked={liked}
+          main={mainTweet}
         />
-      )}
-    </TweetContainer>
-  );
+        {showForm && (
+          <TweetForm
+            parentId={tweetId}
+            className="tweetForm"
+            correoUsuario={emailLogueado}
+          />
+        )}
+      </MainContainer>
+    );
+  } else {
+    return (
+      <TweetContainer onClick={goTo}>
+        {/* <Link to={"/tweet/" + tweetId + "/" + correoUsuario}>GOTO</Link> */}
+        <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
+          <GiCancel />
+        </BorrarTweet>
+        <ImgPerfil>
+          <img src={imgPerfil} alt="" />
+        </ImgPerfil>
+        <TweetNav>
+          <Username>Nombre</Username>
+          <span>{`@${datosUser.ruta}`}</span>
+          <span>·</span>
+          <span>6h</span>
+        </TweetNav>
+        <TweetContent>
+          {tweet.descripcion && <p>{tweet.descripcion}</p>}
+        </TweetContent>
+        <ButtonGroup
+          replies={tweet.children ? tweet.children.length : null}
+          likes={tweet.likes ? tweet.likes.length : null}
+          likeTweet={likeTweet}
+          liked={liked}
+          showForm={handleShowForm}
+        />
+
+        {showForm && (
+          <TweetForm
+            parentId={tweetId}
+            className="tweetForm"
+            correoUsuario={emailLogueado}
+          />
+        )}
+      </TweetContainer>
+    );
+  }
 };
 
 export default TweetIndividual;

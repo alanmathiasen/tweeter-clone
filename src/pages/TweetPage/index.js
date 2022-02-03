@@ -20,10 +20,8 @@ const TweetPage = () => {
 
   return (
     <Wrapper>
-      {idState && <TweetIndividual tweetId={idState} className="main" />}
+      {idState && <TweetIndividual tweetId={idState} mainTweet />}
       {idState && <TweetGroup tweetId={idState} />}
-      <div>HOLA</div>
-      <button onClick={() => console.log(idState, correo)}>ADAS</button>
     </Wrapper>
   );
 };
