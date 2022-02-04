@@ -85,7 +85,7 @@ const TweetPage = () => {
       );
     }
 
-    return parents;
+    return parents.reverse();
   };
 
   const hasParent = async (id, pIds) => {
