@@ -9,12 +9,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
-const TweetForm = ({
-  correoUsuario,
-  arrayTweets,
-  setArrayTweets,
-  parentId,
-}) => {
+const TweetForm = ({ correoUsuario, parentId }) => {
   const tweetsCollectionRef = collection(db, "tweets");
 
   async function agregarTweet(e) {

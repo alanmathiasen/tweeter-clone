@@ -6,41 +6,77 @@ import {
 } from "react-icons/vsc";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 
-import { Wrapper } from "./ButtonGroup.styles";
+import { Wrapper, MainWrapper, Stats, Buttons } from "./ButtonGroup.styles";
 
-const ButtonGroup = ({ replies, likes, likeTweet, liked }) => {
-  return (
+const ButtonGroup = ({ replies, likes, likeTweet, liked, showForm, main }) => {
+  return main ? (
+    <MainWrapper>
+      {likes > 0 && (
+        <Stats>
+          <span>{`${likes} Me gusta`}</span>
+        </Stats>
+      )}
+      <Buttons>
+        <div>
+          <a className="comment" href="#" onClick={showForm}>
+            <VscComment className="commentBtn" />
+          </a>
+        </div>
+        <div>
+          <a className="retweet">
+            <VscGitCompare className="retweetBtn" />
+          </a>
+        </div>
+        <div>
+          {liked ? (
+            <a className="like liked" onClick={likeTweet}>
+              <IoHeartSharp className="likeBtn" />
+            </a>
+          ) : (
+            <a className="like " onClick={likeTweet}>
+              <IoHeartOutline className="likeBtn" />
+            </a>
+          )}
+        </div>
+        <div>
+          <a className="comment">
+            <VscFoldUp className="commentBtn" />
+          </a>
+        </div>
+      </Buttons>
+    </MainWrapper>
+  ) : (
     <Wrapper>
       <div>
-        <div className="comment">
+        <a className="comment" href="#" onClick={showForm}>
           <VscComment className="commentBtn" />
           <span>{replies ? replies : ""}</span>
-        </div>
+        </a>
       </div>
       <div>
-        <div className="retweet">
+        <a className="retweet">
           <VscGitCompare className="retweetBtn" />
           <span>2</span>
-        </div>
+        </a>
       </div>
       <div>
         {liked ? (
-          <div className="like liked" onClick={likeTweet}>
+          <a className="like liked" onClick={likeTweet}>
             <IoHeartSharp className="likeBtn" />
             <span>{likes ? likes : ""}</span>
-          </div>
+          </a>
         ) : (
-          <div className="like " onClick={likeTweet}>
+          <a className="like " onClick={likeTweet}>
             <IoHeartOutline className="likeBtn" />
             <span>{likes ? likes : ""}</span>
-          </div>
+          </a>
         )}
       </div>
       <div>
-        <div className="comment">
+        <a className="comment">
           <VscFoldUp className="commentBtn" />
           <span>30</span>
-        </div>
+        </a>
       </div>
     </Wrapper>
   );
