@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { getDoc, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
 import {
@@ -6,7 +6,6 @@ import {
   GoogleAuthProvider,
   getRedirectResult,
 } from "firebase/auth";
-import { useEffect } from "react/cjs/react.development";
 
 const GlobalContext = React.createContext();
 
@@ -39,6 +38,7 @@ const AppProvider = ({ children }) => {
             ruta: docSnap.data().ruta,
             siguiendo: docSnap.data().siguiendo,
             seguidores: docSnap.data().seguidores,
+            photoURL: docSnap.data().photoURL,
           };
           setDatosUser(detallesUser);
         } else {

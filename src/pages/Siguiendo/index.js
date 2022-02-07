@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import {
   FollowWrapper,
   SectionWrapper,
@@ -33,6 +33,7 @@ const Siguiendo = () => {
   } = usePerfilContext();
 
   const { id } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const [mailsToCheck, setMailsToCheck] = useState([]);
   const [usersFollowing, setUsersFollowing] = useState([]);
@@ -43,6 +44,9 @@ const Siguiendo = () => {
 
   useEffect(() => {
     getDatosPerfil(id);
+    console.log(currentPerfil);
+
+    console.log(currentPerfilMail);
 
     const handleFollowers = () => {
       if (currentPerfil.siguiendo) {
@@ -52,14 +56,12 @@ const Siguiendo = () => {
         setMailsToCheck(result);
       }
     };
-
     const getFollowing = async () => {
       const usuariosRef = collection(db, "usuarios");
       const followingUsers = query(
         usuariosRef,
         where("seguidores", "array-contains", currentPerfilMail)
       );
-
       const querySnapshot = await getDocs(followingUsers);
       querySnapshot.forEach((doc) => {
         let newArray = [];
@@ -81,9 +83,16 @@ const Siguiendo = () => {
       });
     };
     handleLoad();
-    handleFollowers();
-    getFollowing();
-  }, [location, id]);
+    //VALIDA QUE BUSQUE SOLO LOS SEGUIDORES EL PERFIL ACTUAL
+    if (currentPerfil.ruta === id) {
+      handleFollowers();
+      getFollowing();
+    }
+  }, [currentPerfilMail, datosUser]);
+
+  const goTo = (newRute) => {
+    navigate("/" + newRute);
+  };
 
   if (!pageItsLoad) {
     return <div></div>;
@@ -107,13 +116,15 @@ const Siguiendo = () => {
             let newRute = user.ruta;
             return (
               <UserCard key={index}>
-                <Link to={`/${newRute}`}>
+                {/* <Link to={`/${newRute}`}> */}
+                <div onClick={() => goTo(newRute)}>
                   <UserCardContent>
                     <h3>{user.nombre}</h3>
                     <span>@{user.ruta}</span>
                     <p>{user.biografia}</p>
                   </UserCardContent>
-                </Link>
+                  {/* </Link> */}
+                </div>
                 {datosUser.siguiendo.includes(user.id) ? (
                   <SiguiendoBtn onClick={() => handleFollowPage(user.id)}>
                     <span>Siguiendo</span>

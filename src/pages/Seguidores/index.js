@@ -78,9 +78,12 @@ const Seguidores = () => {
       });
     };
     handleLoad();
-    handleFollowers();
-    getFollowers();
-  }, [location, id]);
+    //VALIDA QUE BUSQUE SOLO LOS SEGUIDORES EL PERFIL ACTUAL
+    if (currentPerfil.ruta === id) {
+      handleFollowers();
+      getFollowers();
+    }
+  }, [currentPerfilMail]);
 
   if (!pageItsLoad) {
     return <div></div>;

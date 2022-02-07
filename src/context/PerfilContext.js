@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import {
   collection,
   getDocs,
@@ -16,7 +16,7 @@ import { useGlobalContext } from "./GlobalContext";
 const PerfilContext = React.createContext();
 
 const PerfilProvider = ({ children }) => {
-  const { emailLogueado } = useGlobalContext();
+  const { emailLogueado, datosUser, setDatosUser } = useGlobalContext();
 
   const [currentPerfil, setCurrentPerfil] = useState({}); //Ruta de usuario actual, no el logueado
   const [currentPerfilMail, setCurrentPerfilMail] = useState("");
@@ -64,10 +64,14 @@ const PerfilProvider = ({ children }) => {
             siguiendo: arrayRemove(mailASeguir),
           }
         );
-
         const seguidoRef = await updateDoc(doc(db, "usuarios", mailASeguir), {
           seguidores: arrayRemove(emailLogueado),
         });
+        //UPDATE LOCAL USER STATE
+        const newArray = datosUser.siguiendo.filter(
+          (item) => item !== mailASeguir
+        );
+        setDatosUser({ ...datosUser, siguiendo: newArray });
       } else {
         const logguedUserRef = await updateDoc(
           doc(db, "usuarios", emailLogueado),
@@ -78,6 +82,11 @@ const PerfilProvider = ({ children }) => {
 
         const seguidoRef = await updateDoc(doc(db, "usuarios", mailASeguir), {
           seguidores: arrayUnion(emailLogueado),
+        });
+        //UPDATE LOCAL USER STATE
+        setDatosUser({
+          ...datosUser,
+          siguiendo: [...datosUser.siguiendo, mailASeguir],
         });
       }
     }
@@ -96,6 +105,29 @@ const PerfilProvider = ({ children }) => {
       });
     }
   };
+
+  // useEffect(() => {
+  //   const handleDatosUser = async () => {
+  //     if (emailLogueado !== null) {
+  //       const docRef = doc(db, "usuarios", "agusfitty@hotmail.com");
+  //       const docSnap = await getDocs(docRef);
+  //       if (docSnap.exists()) {
+  //         const detallesUser = {
+  //           biografia: docSnap.data().biografia,
+  //           nombre: docSnap.data().nombre,
+  //           sitioWeb: docSnap.data().sitioWeb,
+  //           ubicacion: docSnap.data().ubicacion,
+  //           ruta: docSnap.data().ruta,
+  //           siguiendo: docSnap.data().siguiendo,
+  //           seguidores: docSnap.data().seguidores,
+  //           photoURL: docSnap.data().photoURL,
+  //         };
+  //         setDatosUser(detallesUser);
+  //       }
+  //     }
+  //   };
+  //   handleDatosUser();
+  // }, [currentPerfil]);
 
   return (
     <PerfilContext.Provider
