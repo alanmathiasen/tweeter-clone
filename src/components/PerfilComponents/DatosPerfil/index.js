@@ -110,10 +110,14 @@ const DatosPerfil = ({ handlePerfilModal }) => {
       ) : (
         <ButtonSeguir
           itsCurrentUserProfile={itsCurrentUserProfile}
-          handleFollowButton={btnState}
+          btnState={btnState}
+          maxWidth={"200px"}
+          color={btnState ? "#000" : "#fff"}
+          bg={btnState ? "#fff" : "#000"}
+          contentTxt={btnState ? "Dejar de seguir" : "Seguir"}
           onClick={() => handleClick()}
         >
-          {btnState ? "Dejar de seguir" : "Seguir"}
+          <span>{btnState ? "Siguiendo" : "Seguir"}</span>
         </ButtonSeguir>
       )}
 

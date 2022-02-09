@@ -53,81 +53,93 @@ const PerfilProvider = ({ children }) => {
     }
   }, []);
 
-  const handleFollow = async () => {
+  const handleFollow = async (id) => {
     setHandleFollowButton(!handleFollowButton);
     let mailASeguir = currentPerfilMail;
     if (mailASeguir) {
-      if (handleFollowButton) {
-        const logguedUserRef = await updateDoc(
-          doc(db, "usuarios", emailLogueado),
-          {
-            siguiendo: arrayRemove(mailASeguir),
-          }
-        );
-        const seguidoRef = await updateDoc(doc(db, "usuarios", mailASeguir), {
-          seguidores: arrayRemove(emailLogueado),
-        });
-        //UPDATE LOCAL USER STATE
-        const newArray = datosUser.siguiendo.filter(
-          (item) => item !== mailASeguir
-        );
-        setDatosUser({ ...datosUser, siguiendo: newArray });
-      } else {
-        const logguedUserRef = await updateDoc(
-          doc(db, "usuarios", emailLogueado),
-          {
-            siguiendo: arrayUnion(mailASeguir),
-          }
-        );
+      if (id) {
+        let boolean = datosUser.siguiendo.includes(id);
 
-        const seguidoRef = await updateDoc(doc(db, "usuarios", mailASeguir), {
-          seguidores: arrayUnion(emailLogueado),
-        });
-        //UPDATE LOCAL USER STATE
-        setDatosUser({
-          ...datosUser,
-          siguiendo: [...datosUser.siguiendo, mailASeguir],
-        });
+        if (boolean === true) {
+          const logguedUserRef = await updateDoc(
+            doc(db, "usuarios", emailLogueado),
+            {
+              siguiendo: arrayRemove(id),
+            }
+          );
+          const seguidoRef = await updateDoc(doc(db, "usuarios", id), {
+            seguidores: arrayRemove(emailLogueado),
+          });
+          //UPDATE LOCAL USER STATE
+          const newArray = datosUser.siguiendo.filter((item) => item !== id);
+          setDatosUser({ ...datosUser, siguiendo: newArray });
+        } else {
+          const logguedUserRef = await updateDoc(
+            doc(db, "usuarios", emailLogueado),
+            {
+              siguiendo: arrayUnion(id),
+            }
+          );
+
+          const seguidoRef = await updateDoc(doc(db, "usuarios", id), {
+            seguidores: arrayUnion(emailLogueado),
+          });
+          //UPDATE LOCAL USER STATE
+          setDatosUser({
+            ...datosUser,
+            siguiendo: [...datosUser.siguiendo, id],
+          });
+        }
+      } else {
+        if (handleFollowButton) {
+          const logguedUserRef = await updateDoc(
+            doc(db, "usuarios", emailLogueado),
+            {
+              siguiendo: arrayRemove(mailASeguir),
+            }
+          );
+          const seguidoRef = await updateDoc(doc(db, "usuarios", mailASeguir), {
+            seguidores: arrayRemove(emailLogueado),
+          });
+          //UPDATE LOCAL USER STATE
+          const newArray = datosUser.siguiendo.filter(
+            (item) => item !== mailASeguir
+          );
+          setDatosUser({ ...datosUser, siguiendo: newArray });
+        } else {
+          const logguedUserRef = await updateDoc(
+            doc(db, "usuarios", emailLogueado),
+            {
+              siguiendo: arrayUnion(mailASeguir),
+            }
+          );
+
+          const seguidoRef = await updateDoc(doc(db, "usuarios", mailASeguir), {
+            seguidores: arrayUnion(emailLogueado),
+          });
+          //UPDATE LOCAL USER STATE
+          setDatosUser({
+            ...datosUser,
+            siguiendo: [...datosUser.siguiendo, mailASeguir],
+          });
+        }
       }
     }
   };
 
-  const handleFollowPage = async (id) => {
-    if (id) {
-      const logguedUserRef = await updateDoc(
-        doc(db, "usuarios", emailLogueado),
-        {
-          siguiendo: arrayRemove(id),
-        }
-      );
-      const seguidoRef = await updateDoc(doc(db, "usuarios", id), {
-        seguidores: arrayRemove(emailLogueado),
-      });
-    }
-  };
-
-  // useEffect(() => {
-  //   const handleDatosUser = async () => {
-  //     if (emailLogueado !== null) {
-  //       const docRef = doc(db, "usuarios", "agusfitty@hotmail.com");
-  //       const docSnap = await getDocs(docRef);
-  //       if (docSnap.exists()) {
-  //         const detallesUser = {
-  //           biografia: docSnap.data().biografia,
-  //           nombre: docSnap.data().nombre,
-  //           sitioWeb: docSnap.data().sitioWeb,
-  //           ubicacion: docSnap.data().ubicacion,
-  //           ruta: docSnap.data().ruta,
-  //           siguiendo: docSnap.data().siguiendo,
-  //           seguidores: docSnap.data().seguidores,
-  //           photoURL: docSnap.data().photoURL,
-  //         };
-  //         setDatosUser(detallesUser);
+  // const handleFollowPage = async (id) => {
+  //   if (id) {
+  //     const logguedUserRef = await updateDoc(
+  //       doc(db, "usuarios", emailLogueado),
+  //       {
+  //         siguiendo: arrayRemove(id),
   //       }
-  //     }
-  //   };
-  //   handleDatosUser();
-  // }, [currentPerfil]);
+  //     );
+  //     const seguidoRef = await updateDoc(doc(db, "usuarios", id), {
+  //       seguidores: arrayRemove(emailLogueado),
+  //     });
+  //   }
+  // };
 
   return (
     <PerfilContext.Provider
@@ -142,7 +154,7 @@ const PerfilProvider = ({ children }) => {
         handleLoad,
         setHandleFollowButton,
         handleFollow,
-        handleFollowPage,
+        // handleFollowPage,
       }}
     >
       {children}

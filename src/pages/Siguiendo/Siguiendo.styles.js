@@ -42,7 +42,7 @@ export const SecondaryText = styled.p`
 
 export const Line = styled.div`
   display: flex;
-  border-bottom: 4px solid #00acee;
+  border-bottom: 4px solid #ee6262;
   border-radius: 10px;
   width: 28%;
 `;
@@ -83,7 +83,7 @@ export const UserCard = styled.div`
   width: 100%;
 
   &:hover {
-    background-color: #eee;
+    background-color: #ededed;
   }
   a {
     text-decoration: none;
@@ -95,11 +95,23 @@ export const UserCard = styled.div`
     left: 1.5rem;
     width: 100%;
   }
+  .datos-container {
+    display: flex;
+    margin-left: 1rem;
+  }
+`;
+
+export const ImagePerfil = styled.img`
+  height: 48px;
+  weight: 48px;
+  border-radius: 9999px;
+  margin-top: 1rem;
 `;
 
 export const UserCardContent = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 0.7rem;
   h3 {
     font-size: 1.2rem;
     margin: 0.5rem 0 0 0;

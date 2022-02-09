@@ -35,6 +35,6 @@ export const ButtonBack = styled.button`
   justify-content: center;
 
   &:hover {
-    background: #eee;
+    background: #dedede;
   }
 `;
