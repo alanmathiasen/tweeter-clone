@@ -7,10 +7,7 @@ import { db } from "../../firebase/firebaseConfig";
 
 import TweetIndividual from "../TweetIndividual";
 
-const TweetGroup = ({ tweetId, tweetArray }) => {
-  const [childrenIds, setChildrenIds] = useState([]);
-  const [children, setChildren] = useState([]);
-
+const TweetGroup = ({ tweetArray }) => {
   return (
     <Wrapper>
       {tweetArray &&

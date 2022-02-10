@@ -36,6 +36,7 @@ import imgPerfil from "../../imgs/perfil.jpg";
 const TweetIndividual = ({ tweetId, mainTweet = false }) => {
   const [tweet, setTweet] = useState({});
   const [liked, setLiked] = useState(false);
+  const [author, setAuthor] = useState({});
   const [showForm, setShowForm] = useState(false);
 
   const navigate = useNavigate();
@@ -87,9 +88,17 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
     }
   }
 
+  const getAuthor = async () => {
+    if (Object.keys(tweet).length !== 0) {
+      const userRef = doc(db, "usuarios", tweet.usuario);
+      const userSnap = await getDoc(userRef);
+      userSnap.data() ? setAuthor(userSnap.data()) : setAuthor({});
+    } else {
+      return 0;
+    }
+  };
+
   useEffect(() => {
-    console.log(datosUser, emailLogueado);
-    //getTweet();
     const tweetRef = doc(db, "tweets", tweetId);
     const unsubscribe = onSnapshot(tweetRef, (snap) => {
       if (snap.data()) setTweet(snap.data());
@@ -102,6 +111,10 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
     });
     return () => unsubscribe();
   }, [tweetId]);
+
+  useEffect(async () => {
+    await getAuthor();
+  }, [tweet]);
 
   const goTo = (e) => {
     if (e.currentTarget !== e.target) {
@@ -132,7 +145,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
           </ImgPerfil>
           <MainUser>
             <Username>Nombre</Username>
-            <span>{`@${datosUser.ruta}`}</span>
+            <span>{author && `@${author.ruta}`}</span>
           </MainUser>
 
           <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
@@ -172,7 +185,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
         </ImgPerfil>
         <TweetNav>
           <Username>Nombre</Username>
-          <span>{`@${datosUser.ruta}`}</span>
+          <span>{author && `@${author.ruta}`}</span>
           <span>·</span>
           <span>6h</span>
         </TweetNav>
