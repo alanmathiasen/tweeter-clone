@@ -10,9 +10,12 @@ import Tweet from "../../components/Tweet";
 import PerfilModal from "../../components/PerfilComponents/PerfilModal";
 import PerfilNav from "../../components/PerfilComponents/PerfilNav";
 import DatosPerfil from "../../components/PerfilComponents/DatosPerfil";
+import TweetsPerfil from "../../components/PerfilComponents/TweetsPerfil";
+import { usePerfilContext } from "../../context/PerfilContext";
 
 const Perfil = () => {
   const [perfilModalOpen, setPerfilModalOpen] = useState(false);
+  const { currentPerfilMail } = usePerfilContext();
 
   const handlePerfilModal = () => {
     setPerfilModalOpen(!perfilModalOpen);
@@ -33,7 +36,7 @@ const Perfil = () => {
         <PerfilModal handlePerfilModal={handlePerfilModal} />
       </PerfilModalContainer>
       <TweetsNavbar />
-      <Tweet />
+      <TweetsPerfil />
     </PerfilWrapper>
   );
 };

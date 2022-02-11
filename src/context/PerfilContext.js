@@ -24,11 +24,11 @@ const PerfilProvider = ({ children }) => {
   const [seguidores, setSeguidores] = useState(0);
   const [pageItsLoad, setPageItsLoad] = useState(true);
   const [handleFollowButton, setHandleFollowButton] = useState(true);
+  const [tweetsByUser, setTweetsByUser] = useState([]);
 
   const getDatosPerfil = useCallback(async (id) => {
     const usuariosRef = collection(db, "usuarios");
     const currentPerfil = query(usuariosRef, where("ruta", "==", id));
-
     const querySnapshot = await getDocs(currentPerfil);
     querySnapshot.forEach((doc) => {
       setCurrentPerfil(doc.data());
@@ -52,6 +52,17 @@ const PerfilProvider = ({ children }) => {
       setPageItsLoad(true);
     }
   }, []);
+
+  const getTweetsPerfil = async (mailUser) => {
+    const tweetsRef = collection(db, "tweets");
+    const tweetsPerfil = query(tweetsRef, where("usuario", "==", mailUser));
+    const querySnapshot = await getDocs(tweetsPerfil);
+    const userTweets = [];
+    querySnapshot.forEach((doc) => {
+      userTweets.push({ ...doc.data(), id: doc.id });
+      setTweetsByUser([...userTweets]);
+    });
+  };
 
   const handleFollow = async (id) => {
     setHandleFollowButton(!handleFollowButton);
@@ -127,20 +138,6 @@ const PerfilProvider = ({ children }) => {
     }
   };
 
-  // const handleFollowPage = async (id) => {
-  //   if (id) {
-  //     const logguedUserRef = await updateDoc(
-  //       doc(db, "usuarios", emailLogueado),
-  //       {
-  //         siguiendo: arrayRemove(id),
-  //       }
-  //     );
-  //     const seguidoRef = await updateDoc(doc(db, "usuarios", id), {
-  //       seguidores: arrayRemove(emailLogueado),
-  //     });
-  //   }
-  // };
-
   return (
     <PerfilContext.Provider
       value={{
@@ -154,7 +151,9 @@ const PerfilProvider = ({ children }) => {
         handleLoad,
         setHandleFollowButton,
         handleFollow,
-        // handleFollowPage,
+        getTweetsPerfil,
+        tweetsByUser,
+        setTweetsByUser,
       }}
     >
       {children}
