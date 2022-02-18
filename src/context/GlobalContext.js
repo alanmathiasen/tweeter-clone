@@ -13,6 +13,7 @@ const AppProvider = ({ children }) => {
   const [usuarioLogueado, setUsuarioLogueado] = useState({});
   const [emailLogueado, setEmailLogueado] = useState("");
   const [datosUser, setDatosUser] = useState({}); //Usuario Logueado
+  const [tweettModal, setTweettModal] = useState(false);
 
   const user = auth.currentUser;
   onAuthStateChanged(auth, (currentUser) => {
@@ -60,6 +61,10 @@ const AppProvider = ({ children }) => {
     getDatosUsuario();
   }, [usuarioLogueado]);
 
+  const handleTweettModal = () => {
+    setTweettModal(!tweettModal);
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -67,6 +72,9 @@ const AppProvider = ({ children }) => {
         emailLogueado,
         datosUser,
         setDatosUser,
+        tweettModal,
+        setTweettModal,
+        handleTweettModal,
       }}
     >
       {children}

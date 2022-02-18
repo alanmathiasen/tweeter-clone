@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Browser, Route, Routes } from "react-router-dom";
 
-import { AppWrapper, RoutesWrapper } from "./App.styles";
+import { AppWrapper, RoutesWrapper, OverlayModal } from "./App.styles";
 
 import { PerfilProvider } from "./context/PerfilContext";
 import Home from "./components/Home";
@@ -16,14 +16,22 @@ import { auth, db } from "./firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import Siguiendo from "./pages/Siguiendo";
 import Seguidores from "./pages/Seguidores";
+import RightMenu from "./components/RightMenu";
+import TweetModal from "./components/TweetModal";
 
 import { useGlobalContext } from "./context/GlobalContext";
 
 const App = () => {
-  const { usuarioLogueado } = useGlobalContext();
+  const { usuarioLogueado, handleTweettModal, tweettModal } =
+    useGlobalContext();
 
   return (
     <Browser>
+      <TweetModal />
+      <OverlayModal
+        tweettModal={tweettModal}
+        onClick={() => handleTweettModal()}
+      />
       <AppWrapper>
         <Sidebar />
         <PerfilProvider>
@@ -42,6 +50,7 @@ const App = () => {
           </Routes>
           {/* PERFIL CONTEXT PROVIDER */}
         </PerfilProvider>
+        <RightMenu />
       </AppWrapper>
     </Browser>
   );
