@@ -14,10 +14,23 @@ export const ListContainer = styled.ul`
   color: #717a7a;
   font-weight: 600;
   cursor: pointer;
+  margin: 0.5rem auto;
 `;
 
 export const List = styled.li`
+  width: 100%;
+  text-align: center;
+  color: ${(props) => (props.color ? props.color : "#717a7a")};
   &:hover {
-    color: #00acee;
+    background-color: #dedede;
+    /* color: #00acee; */
   }
+`;
+
+export const Line = styled.div`
+  display: flex;
+  margin: auto;
+  border-bottom: 4px solid #ee6262;
+  border-radius: 10px;
+  width: 40%;
 `;

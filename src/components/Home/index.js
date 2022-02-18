@@ -52,11 +52,7 @@ const Home = () => {
         arrayTweets={arrayTweets}
         setArrayTweets={setArrayTweets}
       />
-      <Tweet
-        correoUsuario={emailLogueado}
-        arrayTweets={arrayTweets}
-       
-      />
+      <Tweet correoUsuario={emailLogueado} arrayTweets={arrayTweets} />
     </HomeWrapper>
   );
 };

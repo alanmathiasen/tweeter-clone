@@ -1,5 +1,11 @@
 import React from "react";
-import { TweetFormWrapper, ButtonTwittear } from "./TweetForm.styles";
+import {
+  TweetFormWrapper,
+  ButtonTwittear,
+  ImagenPerfil,
+  InputWrapper,
+  TweetInput,
+} from "./TweetForm.styles";
 import {
   collection,
   doc,
@@ -8,8 +14,12 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
+import FotoPerfil from "../../imgs/perfil.jpg";
+import { ButtonColored } from "../Utils/ButtonColored";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 const TweetForm = ({ correoUsuario, parentId }) => {
+  const { emailLogueado, datosUser } = useGlobalContext();
   const tweetsCollectionRef = collection(db, "tweets");
 
   async function agregarTweet(e) {
@@ -30,7 +40,7 @@ const TweetForm = ({ correoUsuario, parentId }) => {
     // }
 
     const docRef = await addDoc(tweetsCollectionRef, {
-      usuario: correoUsuario,
+      usuario: emailLogueado,
       descripcion: descripcion,
       timestamp: +new Date(),
       parentId: parentId ? parentId : null,
@@ -50,12 +60,23 @@ const TweetForm = ({ correoUsuario, parentId }) => {
 
   return (
     <TweetFormWrapper onSubmit={agregarTweet}>
-      <input type="text" placeholder="Qué está pasando?" id="detalles" />
-      {/*
+      <ImagenPerfil
+        src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
+        alt="foto de perfil"
+      ></ImagenPerfil>
+      <InputWrapper>
+        <TweetInput
+          type="text"
+          placeholder="¿Qué está pasando?"
+          id="detalles"
+        />
+        {/*
        TODO
        no dejar twittear si no se esta loggeado 
        */}
-      <ButtonTwittear type="submit">Tweet</ButtonTwittear>
+        <ButtonColored type="submit">Tweet</ButtonColored>
+        {/* <ButtonTwittear type="submit">Tweet</ButtonTwittear> */}
+      </InputWrapper>
     </TweetFormWrapper>
   );
 };
