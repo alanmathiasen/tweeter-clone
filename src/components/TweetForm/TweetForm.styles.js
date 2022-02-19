@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const TweetFormWrapper = styled.form`
   display: flex;
-  margin: auto 10px;
+  margin: 20px 10px;
 `;
 
 export const ButtonTwittear = styled.button`
@@ -18,6 +18,11 @@ export const ImagenPerfil = styled.img`
 export const InputWrapper = styled.div`
   width: 100%;
   margin: 0 0.5rem;
+  button {
+    display: flex;
+    float: right;
+    padding: 0.5rem 1.5rem;
+  }
 `;
 
 export const TweetInput = styled.input`
