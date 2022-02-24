@@ -46,7 +46,7 @@ const Home = () => {
 
   return (
     <HomeWrapper>
-      <h2>Home</h2>
+      <h2>Inicio</h2>
       <TweetForm
         correoUsuario={emailLogueado}
         arrayTweets={arrayTweets}

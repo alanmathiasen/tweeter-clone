@@ -18,7 +18,7 @@ import Siguiendo from "./pages/Siguiendo";
 import Seguidores from "./pages/Seguidores";
 import RightMenu from "./components/RightMenu";
 import TweetModal from "./components/TweetModal";
-
+import LoginBar from "./components/LoginBar";
 import { useGlobalContext } from "./context/GlobalContext";
 
 const App = () => {
@@ -52,6 +52,7 @@ const App = () => {
         </PerfilProvider>
         <RightMenu />
       </AppWrapper>
+      {!usuarioLogueado && <LoginBar />}
     </Browser>
   );
 };
