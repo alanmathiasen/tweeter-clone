@@ -94,7 +94,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
       const userSnap = await getDoc(userRef);
       userSnap.data() ? setAuthor(userSnap.data()) : setAuthor({});
     } else {
-      return 0;
+      return null;
     }
   };
 

@@ -4,7 +4,7 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import TweetForm from "../TweetForm";
 import { VscClose } from "react-icons/vsc";
 
-const TweetModal = () => {
+const TweetModal = ({ isReply }) => {
   const { tweettModal, handleTweettModal } = useGlobalContext();
 
   return (
@@ -14,6 +14,7 @@ const TweetModal = () => {
           <VscClose />
         </CloseBtn>
       </div>
+
       <TweetFormWrapper>
         <TweetForm />
       </TweetFormWrapper>
