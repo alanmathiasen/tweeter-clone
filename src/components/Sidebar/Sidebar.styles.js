@@ -84,6 +84,10 @@ export const UserCard = styled.div`
   }
 `;
 
+export const CardContent = styled.div`
+  display: flex;
+`;
+
 export const ImagenPerfil = styled.img`
   height: 40px;
   width: 40px;
@@ -93,6 +97,7 @@ export const ImagenPerfil = styled.img`
 export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 0.6rem;
   h3 {
     font-size: 1rem;
     font-weight: 500;

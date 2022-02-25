@@ -52,6 +52,7 @@ const Registro = () => {
         const ruta = name;
         const docRef = await setDoc(doc(db, "usuarios", email), {
           ruta: ruta,
+          email: email,
           seguidores: [],
           siguiendo: [],
         });

@@ -40,13 +40,14 @@ const AppProvider = ({ children }) => {
             siguiendo: docSnap.data().siguiendo,
             seguidores: docSnap.data().seguidores,
             photoURL: docSnap.data().photoURL,
+            email: docSnap.data().email,
           };
           setDatosUser(detallesUser);
         } else {
           //CREACION DE DATOS USER EN FIRESTORE, CON CUENTA DE GOOGLE U OTRAS
           const createDocRef = await setDoc(doc(db, "usuarios", email), {
             nombre: user.displayName,
-            mail: user.email,
+            email: user.email,
             emailVerified: user.emailVerified,
             ruta: ruta,
             photoURL: user.photoURL,
