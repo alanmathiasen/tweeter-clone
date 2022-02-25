@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import {
   PerfilContainer,
   PortadaContainer,
@@ -18,6 +17,7 @@ import { usePerfilContext } from "../../../context/PerfilContext";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import ImgPortada from "../../../imgs/portada.jpg";
 import imgPerfil from "../../../imgs/perfil.jpg";
+import { ButtonSeguir } from "../../Utils/ButtonSeguir";
 //ICONS
 import { GoLocation } from "react-icons/go";
 import { IoIosLink } from "react-icons/io";
@@ -26,7 +26,7 @@ import { BsCalendarEvent } from "react-icons/bs";
 const DatosPerfil = ({ handlePerfilModal }) => {
   const { id } = useParams();
   const location = useLocation();
-
+  const navigate = useNavigate();
   const { datosUser } = useGlobalContext();
 
   const {
@@ -34,13 +34,12 @@ const DatosPerfil = ({ handlePerfilModal }) => {
     currentPerfilMail,
     siguiendo,
     seguidores,
-    handleFollowButton,
     setHandleFollowButton,
     handleFollow,
-    handleLoad,
     setPageItsLoad,
     pageItsLoad,
     getDatosPerfil,
+    setTweetsByUser,
   } = usePerfilContext();
 
   const [itsCurrentUserProfile, setItsCurrentUserProfile] = useState(false);
@@ -66,6 +65,8 @@ const DatosPerfil = ({ handlePerfilModal }) => {
         setItsCurrentUserProfile(false);
         if (datosUser.siguiendo) {
           array = datosUser.siguiendo;
+          console.log(array);
+          console.log(id);
           let resp = array.includes(mail);
           if (resp === true) {
             setHandleFollowButton(true);
@@ -81,9 +82,8 @@ const DatosPerfil = ({ handlePerfilModal }) => {
         }
       }
     };
-
     checkFollowAlready();
-  }, [datosUser.siguiendo, id, location]);
+  }, [datosUser.siguiendo, id, location, currentPerfilMail]);
 
   if (!pageItsLoad) {
     return <div>cargando</div>;
@@ -94,7 +94,11 @@ const DatosPerfil = ({ handlePerfilModal }) => {
       <PortadaContainer>
         <Portada src={ImgPortada} alt="portada" />
       </PortadaContainer>
-      <ImgPerfil src={imgPerfil} />
+      {itsCurrentUserProfile ? (
+        <ImgPerfil src={datosUser.photoURL} />
+      ) : (
+        <ImgPerfil src={imgPerfil} />
+      )}
 
       {itsCurrentUserProfile ? (
         <EditarPerfil
@@ -105,14 +109,17 @@ const DatosPerfil = ({ handlePerfilModal }) => {
           {console.log("editar perfil")}
         </EditarPerfil>
       ) : (
-        <EditarPerfil
+        <ButtonSeguir
           itsCurrentUserProfile={itsCurrentUserProfile}
-          handleFollowButton={btnState}
+          btnState={btnState}
+          maxWidth={"200px"}
+          color={btnState ? "#000" : "#fff"}
+          bg={btnState ? "#fff" : "#000"}
+          contentTxt={btnState ? "Dejar de seguir" : "Seguir"}
           onClick={() => handleClick()}
         >
-          {btnState ? "Dejar de seguir" : "Seguir"}
-          {console.log("dejar de seguir o seguir")}
-        </EditarPerfil>
+          <span>{btnState ? "Siguiendo" : "Seguir"}</span>
+        </ButtonSeguir>
       )}
 
       <InfoPerfil>
@@ -144,10 +151,12 @@ const DatosPerfil = ({ handlePerfilModal }) => {
 
         <SeguidoresYSeguidosWrapper>
           <SeguidoresYSeguidos>
-            <Link to={`/${id}/siguiendo`}>
+            <div onClick={() => navigate("/" + id + "/siguiendo")}>
+              {/* <Link to={`/${id}/siguiendo`}> */}
               <span>{siguiendo}</span>
               Siguiendo
-            </Link>
+              {/* </Link> */}
+            </div>
           </SeguidoresYSeguidos>
           <SeguidoresYSeguidos>
             <Link to={`/${id}/seguidores`}>

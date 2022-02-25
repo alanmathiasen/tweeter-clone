@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import {
   FollowWrapper,
   SectionWrapper,
@@ -11,14 +11,17 @@ import {
   UserCard,
   SiguiendoBtn,
   UserCardContent,
+  ImagePerfil,
 } from "./Siguiendo.styles";
 import PerfilNav from "../../components/PerfilComponents/PerfilNav";
 import { Link } from "react-router-dom";
 import { ButtonColored } from "../../components/Utils/ButtonColored";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { ButtonSeguir } from "../../components/Utils/ButtonSeguir";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { usePerfilContext } from "../../context/PerfilContext";
+import ImgPerfil from "../../imgs/perfil.jpg";
 
 const Siguiendo = () => {
   const { datosUser } = useGlobalContext();
@@ -29,13 +32,15 @@ const Siguiendo = () => {
     setPageItsLoad,
     pageItsLoad,
     getDatosPerfil,
-    handleFollowPage,
+    handleFollow,
   } = usePerfilContext();
 
   const { id } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const [mailsToCheck, setMailsToCheck] = useState([]);
   const [usersFollowing, setUsersFollowing] = useState([]);
+  const [btnState, setBtnState] = useState(false);
 
   useEffect(() => {
     setPageItsLoad(false);
@@ -52,14 +57,12 @@ const Siguiendo = () => {
         setMailsToCheck(result);
       }
     };
-
     const getFollowing = async () => {
       const usuariosRef = collection(db, "usuarios");
       const followingUsers = query(
         usuariosRef,
         where("seguidores", "array-contains", currentPerfilMail)
       );
-
       const querySnapshot = await getDocs(followingUsers);
       querySnapshot.forEach((doc) => {
         let newArray = [];
@@ -81,9 +84,20 @@ const Siguiendo = () => {
       });
     };
     handleLoad();
-    handleFollowers();
-    getFollowing();
-  }, [location, id]);
+    //VALIDA QUE BUSQUE SOLO LOS SEGUIDORES EL PERFIL ACTUAL
+    if (currentPerfil.ruta === id) {
+      handleFollowers();
+      getFollowing();
+    }
+  }, [currentPerfilMail, datosUser]);
+
+  const handleClick = (uId) => {
+    handleFollow(uId);
+    setBtnState(!btnState);
+  };
+  const goTo = (newRute) => {
+    navigate("/" + newRute);
+  };
 
   if (!pageItsLoad) {
     return <div></div>;
@@ -107,19 +121,46 @@ const Siguiendo = () => {
             let newRute = user.ruta;
             return (
               <UserCard key={index}>
-                <Link to={`/${newRute}`}>
-                  <UserCardContent>
-                    <h3>{user.nombre}</h3>
-                    <span>@{user.ruta}</span>
-                    <p>{user.biografia}</p>
-                  </UserCardContent>
-                </Link>
+                <div className="datos-container">
+                  {user.photoURL ? (
+                    <ImagePerfil
+                      src={user.photoURL}
+                      alt={`'Img perfil '${user.nombre}`}
+                    />
+                  ) : (
+                    <ImagePerfil
+                      src={ImgPerfil}
+                      alt={`'Img perfil '${user.nombre}`}
+                    />
+                  )}
+                  <div onClick={() => goTo(newRute)}>
+                    <UserCardContent>
+                      <h3>{user.nombre}</h3>
+                      <span>@{user.ruta}</span>
+                      <p>{user.biografia}</p>
+                    </UserCardContent>
+                  </div>
+                </div>
                 {datosUser.siguiendo.includes(user.id) ? (
-                  <SiguiendoBtn onClick={() => handleFollowPage(user.id)}>
+                  <ButtonSeguir
+                    onClick={() => handleClick(user.id)}
+                    btnState={btnState}
+                    color={"#000"}
+                    bg={"#fff"}
+                    maxWidth={"200px"}
+                    hoverColor={"red"}
+                    hoverBgColor={"#ff9f9f"}
+                    contentTxt={"Dejar de seguir"}
+                  >
                     <span>Siguiendo</span>
-                  </SiguiendoBtn>
+                  </ButtonSeguir>
                 ) : (
-                  <button>Seguir</button>
+                  <ButtonSeguir
+                    onClick={() => handleClick(user.id)}
+                    contentTxt={"Seguir"}
+                  >
+                    <span>Seguir</span>
+                  </ButtonSeguir>
                 )}
               </UserCard>
             );

@@ -46,17 +46,13 @@ const Home = () => {
 
   return (
     <HomeWrapper>
-      <h2>Home</h2>
+      <h2>Inicio</h2>
       <TweetForm
         correoUsuario={emailLogueado}
         arrayTweets={arrayTweets}
         setArrayTweets={setArrayTweets}
       />
-      <Tweet
-        correoUsuario={emailLogueado}
-        arrayTweets={arrayTweets}
-       
-      />
+      <Tweet correoUsuario={emailLogueado} arrayTweets={arrayTweets} />
     </HomeWrapper>
   );
 };

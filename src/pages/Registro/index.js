@@ -4,7 +4,6 @@ import { auth, db } from "../../firebase/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 
 import { useNavigate } from "react-router";
-
 //Métodos de firebase auth.
 import {
   createUserWithEmailAndPassword,
@@ -12,6 +11,7 @@ import {
   onAuthStateChanged,
   signInWithRedirect,
   GoogleAuthProvider,
+  getRedirectResult,
 } from "firebase/auth";
 
 const googleProvider = new GoogleAuthProvider();
@@ -20,13 +20,13 @@ const Registro = () => {
   const [estaRegistrado, setEstaRegistrado] = useState(false);
 
   const navigate = useNavigate();
-
   const [usuarioLogueado, setUsuarioLogueado] = useState({});
 
   // //Método de firebase, similar a useEffect. Se ejecuta cuando un estado del auth cambia.
   // //Toma el currentUser (usuario logueado actualmente) que se encuentra en auth y se lo pasa al state user.
   // //Esto se hace para que, cuando se hace un f5 en la página, no tire error, ya que demora un milisegundo
   // //en volver en traer desde firebase, al usuario que esta logueado actualmente en la pagina.
+  const user = auth.currentUser;
   onAuthStateChanged(auth, (currentUser) => {
     setUsuarioLogueado(currentUser);
   });
@@ -36,10 +36,12 @@ const Registro = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
+    // if (user !== null) {
     try {
       if (estaRegistrado) {
         await signInWithEmailAndPassword(auth, email, password);
       } else {
+        //CREACION DE DATOS USER EN FIRESTORE, REGISTRO CON MAIL Y PASS NUEVOS
         const user = await createUserWithEmailAndPassword(
           auth,
           email,
@@ -50,6 +52,7 @@ const Registro = () => {
         const ruta = name;
         const docRef = await setDoc(doc(db, "usuarios", email), {
           ruta: ruta,
+          email: email,
           seguidores: [],
           siguiendo: [],
         });
@@ -58,6 +61,12 @@ const Registro = () => {
     } catch (error) {
       console.log(error.message);
     }
+    // }
+  };
+
+  const signInWithGoogle = () => {
+    signInWithRedirect(auth, googleProvider);
+    navigate("/");
   };
 
   return (
@@ -72,10 +81,7 @@ const Registro = () => {
           </button>
         </FormContent>
 
-        <button
-          type="submit"
-          onClick={() => signInWithRedirect(auth, googleProvider)}
-        >
+        <button type="submit" onClick={() => signInWithGoogle()}>
           Acceder con Google
         </button>
 

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const TweetContainer = styled.div`
   display: grid;
   grid-template-columns: 60px 5fr 100px;
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid #ededed;
   padding: 8px 16px;
   cursor: pointer;
   a {
