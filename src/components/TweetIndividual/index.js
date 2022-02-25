@@ -15,7 +15,7 @@ import { useEffect, useState } from "react/cjs/react.development";
 import { useNavigate, Link } from "react-router-dom";
 import { GiCancel } from "react-icons/gi";
 import { BiComment, BiHeart } from "react-icons/bi";
-
+import ModalBase from "../ModalBase";
 import { useGlobalContext } from "../../context/GlobalContext";
 
 import {
@@ -37,7 +37,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
   const [tweet, setTweet] = useState({});
   const [liked, setLiked] = useState(false);
   const [author, setAuthor] = useState({});
-  const [showForm, setShowForm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -130,10 +130,9 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
     }
   };
 
-  const handleShowForm = (e) => {
+  const handleShowModal = (e) => {
     e.preventDefault();
-    setShowForm(!showForm);
-    console.log(showForm);
+    setShowModal(!showModal);
   };
 
   if (mainTweet) {
@@ -162,15 +161,30 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
           likeTweet={likeTweet}
           liked={liked}
           main={mainTweet}
-          showForm={handleShowForm}
+          showForm={handleShowModal}
         />
-        {showForm && (
+
+        <ModalBase showModal={showModal} setShowModal={setShowModal}>
+          <div className="tweet-info">
+            <ImgPerfil>
+              <img src={imgPerfil} alt="" />
+            </ImgPerfil>
+            <TweetNav>
+              <Username>Nombre</Username>
+              <span>{author && `@${author.ruta}`}</span>
+              <span>·</span>
+              <span>6h</span>
+            </TweetNav>
+            <TweetContent>
+              {tweet.descripcion && <p>{tweet.descripcion}</p>}
+            </TweetContent>
+          </div>
           <TweetForm
             parentId={tweetId}
             className="tweetForm"
             correoUsuario={emailLogueado}
           />
-        )}
+        </ModalBase>
       </MainContainer>
     );
   } else {
@@ -197,16 +211,16 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
           likes={tweet.likes ? tweet.likes.length : null}
           likeTweet={likeTweet}
           liked={liked}
-          showForm={handleShowForm}
+          showForm={handleShowModal}
         />
 
-        {showForm && (
+        <ModalBase showModal={showModal} setShowModal={setShowModal}>
           <TweetForm
             parentId={tweetId}
             className="tweetForm"
             correoUsuario={emailLogueado}
           />
-        )}
+        </ModalBase>
       </TweetContainer>
     );
   }

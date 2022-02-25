@@ -6,7 +6,7 @@ import {
   InputWrapper,
   TweetInput,
 } from "./TweetForm.styles";
-import ModalBase from '../ModalBase'
+import ModalBase from "../ModalBase";
 import {
   collection,
   doc,
@@ -61,7 +61,6 @@ const TweetForm = ({ correoUsuario, parentId }) => {
 
   return (
     <TweetFormWrapper onSubmit={agregarTweet}>
-      <ModalBase />
       <ImagenPerfil
         src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
         alt="foto de perfil"

@@ -1,16 +1,29 @@
-import React from 'react'
+import React from "react";
 
-import {Overlay, Modal} from './ModalBase.styles'
-import TweetForm from '../TweetForm'
-const ModalBase = () => {
+import { Overlay, Modal, CloseBtn } from "./ModalBase.styles";
+import { VscClose } from "react-icons/vsc";
+import TweetForm from "../TweetForm";
+const ModalBase = ({ children, showModal, setShowModal }) => {
+  const handleOverlayClick = (e) => {
+    e.preventDefault();
+    if (e.target === e.currentTarget) setShowModal(false);
+  };
   return (
-      <Overlay>
+    <>
+      {showModal && (
+        <Overlay onClick={handleOverlayClick}>
           <Modal>
-              
-             {/* <TweetForm/> */}
+            <CloseBtn onClick={() => setShowModal(false)}>
+              <VscClose />
+            </CloseBtn>
+
+            {children}
+            {/* <TweetForm/> */}
           </Modal>
-      </Overlay>
-  )
-}
+        </Overlay>
+      )}
+    </>
+  );
+};
 
 export default ModalBase;
