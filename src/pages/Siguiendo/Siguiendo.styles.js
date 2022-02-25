@@ -103,7 +103,7 @@ export const UserCard = styled.div`
 
 export const ImagePerfil = styled.img`
   height: 48px;
-  weight: 48px;
+  width: 48px;
   border-radius: 9999px;
   margin-top: 1rem;
 `;

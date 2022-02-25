@@ -25,6 +25,7 @@ const PerfilProvider = ({ children }) => {
   const [pageItsLoad, setPageItsLoad] = useState(true);
   const [handleFollowButton, setHandleFollowButton] = useState(true);
   const [tweetsByUser, setTweetsByUser] = useState([]);
+  const [noti, setNoti] = useState(false);
 
   const getDatosPerfil = useCallback(async (id) => {
     const usuariosRef = collection(db, "usuarios");
@@ -100,6 +101,8 @@ const PerfilProvider = ({ children }) => {
             ...datosUser,
             siguiendo: [...datosUser.siguiendo, id],
           });
+
+          setNoti(true);
         }
       } else {
         if (handleFollowButton) {

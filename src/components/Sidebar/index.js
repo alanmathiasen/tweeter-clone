@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import {
   LogoImg,
-  LogoBg,
   ImageLogo,
   Wrapper,
-  ButtonTweet,
+  CardContent,
   Icon,
   UserCard,
   UserInfo,
@@ -105,14 +104,16 @@ const Sidebar = () => {
       )}
       {auth.currentUser && (
         <UserCard onClick={() => handleModal()}>
-          <ImagenPerfil
-            src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
-            alt="foto de perfil"
-          ></ImagenPerfil>
-          <UserInfo>
-            <h3>{datosUser.nombre}</h3>
-            <p>@{datosUser.ruta}</p>
-          </UserInfo>
+          <CardContent>
+            <ImagenPerfil
+              src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
+              alt="foto de perfil"
+            ></ImagenPerfil>
+            <UserInfo>
+              <h3>{datosUser.nombre}</h3>
+              <p>@{datosUser.ruta}</p>
+            </UserInfo>
+          </CardContent>
           <span>
             <HiOutlineDotsHorizontal />
           </span>
