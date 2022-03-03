@@ -35,7 +35,7 @@ const TweetPage = () => {
             childs = await Promise.all(
                 tweetSnap.data().children.map(async (idChild) => {
                     const newChild = await getTweet(idChild);
-                    if (newChild != "ERROR") newChild.id = idChild;
+                    if (newChild !== "ERROR") newChild.id = idChild;
                     return newChild;
                 })
             );
@@ -44,13 +44,13 @@ const TweetPage = () => {
         }
 
         const lastChilds = childs.filter((child) => {
-            console.log(childs);
+            console.log(childs, "CHILDS");
             if (child === "ERROR") {
                 return false;
             }
             return true;
         });
-
+        lastChilds.sort((a, b) => (a.timestamp > b.timestamp ? 1 : 1));
         return lastChilds;
     };
 

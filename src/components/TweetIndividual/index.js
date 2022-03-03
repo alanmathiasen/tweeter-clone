@@ -164,6 +164,8 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
                 )
             ) {
                 navigate("/tweet/" + tweetId);
+            } else {
+                e.stopPropagation();
             }
         } else {
             navigate("/tweet/" + tweetId);
@@ -171,7 +173,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
     };
 
     const handleShowModal = (e) => {
-        e.preventDefault();
+        e.nativeEvent.stopImmediatePropagation();
         setShowModal(!showModal);
     };
 
@@ -211,7 +213,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
                     <TweetForm
                         parentId={tweetId}
                         className="tweetForm"
-                        correoUsuario={emailLogueado}
+                        setShowModal={setShowModal}
                     />
                 </ModalBase>
             </MainContainer>
@@ -220,7 +222,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
         return (
             <TweetContainer onClick={goTo}>
                 {console.log(tweet)}
-                {/* <Link to={"/tweet/" + tweetId + "/" + correoUsuario}>GOTO</Link> */}
+
                 <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
                     <GiCancel />
                 </BorrarTweet>
@@ -253,7 +255,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
                     <TweetForm
                         parentId={tweetId}
                         className="tweetForm"
-                        correoUsuario={emailLogueado}
+                        setShowModal={setShowModal}
                     />
                 </ModalBase>
             </TweetContainer>
