@@ -94,14 +94,20 @@ const Seguidores = () => {
       handleFollowers();
       getFollowers();
     }
-  }, [currentPerfilMail]);
+  }, [currentPerfilMail, id]);
 
   const handleClick = (uId) => {
     handleFollow(uId);
     setBtnState(!btnState);
   };
-  const goTo = (newRute) => {
-    navigate("/" + newRute);
+  const goTo = (e, rutaId) => {
+    if (e.currentTarget !== e.target) {
+      if (!["BUTTON"].includes(e.target.nodeName)) {
+        navigate("/" + rutaId);
+      }
+    } else {
+      navigate("/" + rutaId);
+    }
   };
 
   if (!pageItsLoad) {
@@ -123,9 +129,14 @@ const Seguidores = () => {
       <ArticleWrapper>
         {currentPerfil.seguidores && currentPerfil.seguidores.length > 0 ? (
           usersFollowers.map((user, index) => {
-            let newRute = user.ruta;
+            let rutaId = user.ruta;
             return (
-              <UserCard key={index}>
+              <UserCard
+                key={index}
+                onClick={(e) => {
+                  goTo(e, rutaId);
+                }}
+              >
                 <div className="datos-container">
                   {user.photoURL ? (
                     <ImagePerfil
@@ -138,13 +149,13 @@ const Seguidores = () => {
                       alt={`'Img perfil '${user.nombre}`}
                     />
                   )}
-                  <div onClick={() => goTo(newRute)}>
+                  <di>
                     <UserCardContent>
                       <h3>{user.nombre}</h3>
                       <span>@{user.ruta}</span>
                       <p>{user.biografia}</p>
                     </UserCardContent>
-                  </div>
+                  </di>
                 </div>
 
                 {datosUser.siguiendo.includes(user.id) ? (

@@ -40,6 +40,8 @@ const DatosPerfil = ({ handlePerfilModal }) => {
     pageItsLoad,
     getDatosPerfil,
     setTweetsByUser,
+    tweetCount,
+    setTweetCount,
   } = usePerfilContext();
 
   const [itsCurrentUserProfile, setItsCurrentUserProfile] = useState(false);

@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-
-import { useGlobalContext } from "./GlobalContext";
+import React, { useContext, useState } from "react";
 
 const SugeridosContext = React.createContext();
 

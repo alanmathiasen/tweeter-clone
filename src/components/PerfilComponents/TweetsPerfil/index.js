@@ -21,7 +21,7 @@ const TweetsPerfil = () => {
   useEffect(() => {
     let mailUser = currentPerfilMail;
     getTweetsPerfil(mailUser);
-  }, [currentPerfilMail, id]);
+  }, [currentPerfilMail]);
 
   if (!pageItsLoad) {
     return <div>cargando</div>;

@@ -34,10 +34,10 @@ const Siguiendo = () => {
     getDatosPerfil,
     handleFollow,
   } = usePerfilContext();
-
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+
   const [mailsToCheck, setMailsToCheck] = useState([]);
   const [usersFollowing, setUsersFollowing] = useState([]);
   const [btnState, setBtnState] = useState(false);
@@ -89,14 +89,21 @@ const Siguiendo = () => {
       handleFollowers();
       getFollowing();
     }
-  }, [currentPerfilMail, datosUser]);
+  }, [currentPerfilMail, id]);
 
   const handleClick = (uId) => {
     handleFollow(uId);
     setBtnState(!btnState);
   };
-  const goTo = (newRute) => {
-    navigate("/" + newRute);
+
+  const goTo = (e, rutaId) => {
+    if (e.currentTarget !== e.target) {
+      if (!["BUTTON"].includes(e.target.nodeName)) {
+        navigate("/" + rutaId);
+      }
+    } else {
+      navigate("/" + rutaId);
+    }
   };
 
   if (!pageItsLoad) {
@@ -118,9 +125,14 @@ const Siguiendo = () => {
       <ArticleWrapper>
         {currentPerfil.siguiendo && currentPerfil.siguiendo.length > 0 ? (
           usersFollowing.map((user, index) => {
-            let newRute = user.ruta;
+            let rutaId = user.ruta;
             return (
-              <UserCard key={index}>
+              <UserCard
+                key={index}
+                onClick={(e) => {
+                  goTo(e, rutaId);
+                }}
+              >
                 <div className="datos-container">
                   {user.photoURL ? (
                     <ImagePerfil
@@ -133,7 +145,7 @@ const Siguiendo = () => {
                       alt={`'Img perfil '${user.nombre}`}
                     />
                   )}
-                  <div onClick={() => goTo(newRute)}>
+                  <div>
                     <UserCardContent>
                       <h3>{user.nombre}</h3>
                       <span>@{user.ruta}</span>

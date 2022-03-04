@@ -6,7 +6,7 @@ import { usePerfilContext } from "../../../context/PerfilContext";
 
 const PerfilNav = () => {
   const navigate = useNavigate();
-  const { currentPerfil } = usePerfilContext();
+  const { currentPerfil, tweetCount } = usePerfilContext();
 
   return (
     <PerfilNavbar>
@@ -15,7 +15,7 @@ const PerfilNav = () => {
       </ButtonBack>
       <NavInfo>
         <h3>{currentPerfil.nombre}</h3>
-        <p>250 Tweets</p>
+        <p>{tweetCount} Tweets</p>
       </NavInfo>
     </PerfilNavbar>
   );

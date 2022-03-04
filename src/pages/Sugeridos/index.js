@@ -8,6 +8,7 @@ import {
   InfoUser,
   CardContent,
 } from "../../components/AQuienSeguir/AQuienSeguir.styles";
+import { useNavigate } from "react-router-dom";
 import ImgPerfil from "../../imgs/perfil.jpg";
 import { ButtonSeguir } from "../../components/Utils/ButtonSeguir";
 import { useGlobalContext } from "../../context/GlobalContext";
@@ -15,6 +16,7 @@ import { usePerfilContext } from "../../context/PerfilContext";
 import { useSugeridosContext } from "../../context/SugeridosContext";
 
 const Sugeridos = () => {
+  const navigate = useNavigate();
   const { datosUser } = useGlobalContext();
   const { handleFollow } = usePerfilContext();
   const { filteredArray } = useSugeridosContext();
@@ -23,6 +25,16 @@ const Sugeridos = () => {
   const handleClick = (uId) => {
     handleFollow(uId);
     setBtnState(!btnState);
+  };
+
+  const goTo = (e, rutaId) => {
+    if (e.currentTarget !== e.target) {
+      if (!["BUTTON"].includes(e.target.nodeName)) {
+        navigate("/" + rutaId);
+      }
+    } else {
+      navigate("/" + rutaId);
+    }
   };
 
   return (
@@ -38,8 +50,14 @@ const Sugeridos = () => {
         <CardWrapper>
           {filteredArray &&
             filteredArray.map((item, index) => {
+              let rutaId = item.ruta;
               return (
-                <Card key={index}>
+                <Card
+                  key={index}
+                  onClick={(e) => {
+                    goTo(e, rutaId);
+                  }}
+                >
                   <CardContent>
                     {item.photoURL ? (
                       <ImagePerfil

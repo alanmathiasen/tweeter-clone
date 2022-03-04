@@ -10,14 +10,15 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-
+import { useLocation, useParams } from "react-router-dom";
 import { useGlobalContext } from "./GlobalContext";
 
 const PerfilContext = React.createContext();
 
 const PerfilProvider = ({ children }) => {
   const { emailLogueado, datosUser, setDatosUser } = useGlobalContext();
-
+  const { id } = useParams();
+  const location = useLocation;
   const [currentPerfil, setCurrentPerfil] = useState({}); //Ruta de usuario actual, no el logueado
   const [currentPerfilMail, setCurrentPerfilMail] = useState("");
   const [siguiendo, setSiguiendo] = useState(0);
@@ -25,6 +26,7 @@ const PerfilProvider = ({ children }) => {
   const [pageItsLoad, setPageItsLoad] = useState(true);
   const [handleFollowButton, setHandleFollowButton] = useState(true);
   const [tweetsByUser, setTweetsByUser] = useState([]);
+  const [tweetCount, setTweetCount] = useState(0);
   const [noti, setNoti] = useState(false);
 
   const getDatosPerfil = useCallback(async (id) => {
@@ -141,6 +143,24 @@ const PerfilProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    const countTweets = () => {
+      let newArray = [];
+      if (tweetsByUser) {
+        newArray = tweetsByUser.filter(
+          (tweet) =>
+            tweet.usuario === currentPerfilMail && tweet.parentId === null
+        );
+        setTweetCount(newArray.length);
+      } else {
+        newArray(0);
+        setTweetCount(0);
+      }
+      console.log(newArray);
+    };
+    countTweets();
+  }, [currentPerfilMail, tweetsByUser]);
+
   return (
     <PerfilContext.Provider
       value={{
@@ -157,6 +177,7 @@ const PerfilProvider = ({ children }) => {
         getTweetsPerfil,
         tweetsByUser,
         setTweetsByUser,
+        tweetCount,
       }}
     >
       {children}

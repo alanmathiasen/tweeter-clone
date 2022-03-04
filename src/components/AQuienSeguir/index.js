@@ -10,6 +10,7 @@ import {
   MostrarMas,
   ButtonMargin,
 } from "./AQuienSeguir.styles";
+import { useParams } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +22,7 @@ import { useSugeridosContext } from "../../context/SugeridosContext";
 
 const AQuienSeguir = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { datosUser, emailLogueado, usuarioLogueado } = useGlobalContext();
   const { handleFollow } = usePerfilContext();
   const {
@@ -36,11 +38,6 @@ const AQuienSeguir = () => {
     setMoreInCommun,
   } = useSugeridosContext();
 
-  // const [arrayDatos, setArrayDatos] = useState([]);
-  // const [filteredArray, setFilteredArray] = useState([]);
-  // const [siguiendo, setSiguiendo] = useState([]);
-  // const [arrayUsersEnComun, setArrayUsersEnComun] = useState([]);
-  // const [moreInCommun, setMoreInCommun] = useState([]);
   const [btnState, setBtnState] = useState(false);
 
   useEffect(() => {
@@ -60,7 +57,7 @@ const AQuienSeguir = () => {
     if (emailLogueado) {
       getDatosUsers();
     }
-  }, [emailLogueado]);
+  }, [id, emailLogueado]);
 
   useEffect(() => {
     setSiguiendo(datosUser.siguiendo);
@@ -128,6 +125,16 @@ const AQuienSeguir = () => {
     setBtnState(!btnState);
   };
 
+  const goTo = (e, rutaId) => {
+    if (e.currentTarget !== e.target) {
+      if (!["BUTTON"].includes(e.target.nodeName)) {
+        navigate("/" + rutaId);
+      }
+    } else {
+      navigate("/" + rutaId);
+    }
+  };
+
   return (
     <ArticleWrapper>
       <Tittle>A quién Seguir</Tittle>
@@ -136,7 +143,12 @@ const AQuienSeguir = () => {
           moreInCommun.slice(0, 3).map((item, index) => {
             let rutaId = item.ruta;
             return (
-              <Card key={index} onClick={() => navigate("/" + rutaId)}>
+              <Card
+                key={index}
+                onClick={(e) => {
+                  goTo(e, rutaId);
+                }}
+              >
                 <CardContent>
                   {item.photoURL ? (
                     <ImagePerfil
@@ -182,10 +194,15 @@ const AQuienSeguir = () => {
             );
           })}
         {moreInCommun.length < 3 &&
-          arrayUsersEnComun.slice(0, 3).map((item, index) => {
+          filteredArray.slice(0, 3).map((item, index) => {
             let rutaId = item.ruta;
             return (
-              <Card key={index} onClick={() => navigate("/" + rutaId)}>
+              <Card
+                key={index}
+                onClick={(e) => {
+                  goTo(e, rutaId);
+                }}
+              >
                 <CardContent>
                   {item.photoURL ? (
                     <ImagePerfil
