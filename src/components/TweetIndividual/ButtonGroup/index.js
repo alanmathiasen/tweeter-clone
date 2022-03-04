@@ -31,7 +31,7 @@ const ButtonGroup = ({ replies, likes, likeTweet, liked, showForm, main }) => {
                 </div>
                 <div>
                     {liked ? (
-                        <a className="like liked" onClick={likeTweet}>
+                        <a className="like liked" onClick={likeTweet} href="#">
                             <IoHeartSharp className="likeBtn" />
                         </a>
                     ) : (

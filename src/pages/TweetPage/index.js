@@ -50,7 +50,7 @@ const TweetPage = () => {
             }
             return true;
         });
-        lastChilds.sort((a, b) => (a.timestamp > b.timestamp ? 1 : 1));
+        lastChilds.sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
         return lastChilds;
     };
 
@@ -112,9 +112,15 @@ const TweetPage = () => {
 
     return (
         <Wrapper>
-            {parents && <TweetGroup tweetArray={parents} />}
+            {parents && <TweetGroup tweetArray={parents} parent />}
+            {console.log(parents.length, "PARENTS")}
             {idState && (
-                <TweetIndividual tweetId={idState} mainTweet key={idState} />
+                <TweetIndividual
+                    tweetId={idState}
+                    mainTweet
+                    key={idState}
+                    hasUp={parents.length > 0 ? true : false}
+                />
             )}
             {idState && <TweetGroup tweetArray={children} />}
         </Wrapper>

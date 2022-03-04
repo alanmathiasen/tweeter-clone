@@ -3,9 +3,12 @@ import styled from "styled-components";
 export const TweetContainer = styled.div`
     display: grid;
     grid-template-columns: 60px 5fr 100px;
-    border-bottom: 1px solid #ededed;
+
+    border-bottom: ${(props) =>
+        props.lines.hasDown ? "" : "1px solid #ededed"};
     padding: 8px 16px;
     cursor: pointer;
+    position: relative;
     a {
         text-decoration: none;
     }
@@ -19,12 +22,34 @@ export const TweetContainer = styled.div`
     }
     form {
         grid-column: 2/3;
-        margin-top: 10px;
+    }
+
+    .modal {
+        z-index: 1000;
+    }
+    .up {
+        position: absolute;
+        top: 0;
+        left: 39px;
+        width: 2px;
+        background-color: #afafaf;
+        height: 20%;
+        z-index: 1000;
+    }
+    .down {
+        position: absolute;
+        bottom: 0;
+        left: 39px;
+        width: 2px;
+        background-color: #afafaf;
+        height: 80%;
+        z-index: 1000;
     }
 `;
 
 export const ImgPerfil = styled.div`
     margin: 0;
+    z-index: 1001;
     grid-row: 1 / span 5;
     img {
         height: 48px;
@@ -41,6 +66,34 @@ export const BorrarTweet = styled.div`
     grid-row: 1 / 1;
     justify-self: end;
     align-self: center;
+
+    a {
+        color: black;
+        cursor: pointer;
+    }
+
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+
+    .commentBtn {
+        overflow: visible;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        padding: 5px;
+        transition: 0.3s;
+        &:hover {
+        }
+    }
+    &:hover {
+        color: blue;
+        cursor: pointer;
+        .commentBtn,
+        .shareBtn {
+            background-color: #9f9fff;
+        }
+    }
 `;
 
 export const TweetNav = styled.div`
@@ -82,8 +135,27 @@ export const TweetImg = styled.img`
 export const MainContainer = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 0 16px;
+    padding: 8px 16px 0px 16px;
     font-size: 15px;
+    position: relative;
+    .up {
+        position: absolute;
+        top: 0;
+        left: 39px;
+        width: 2px;
+        background-color: #afafaf;
+        height: 20%;
+        z-index: 1000;
+    }
+    .down {
+        position: absolute;
+        bottom: 0;
+        left: 39px;
+        width: 2px;
+        background-color: #afafaf;
+        height: 80%;
+        z-index: 1000;
+    }
 `;
 
 export const TweetHeader = styled.div`

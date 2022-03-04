@@ -2,6 +2,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
     display: grid;
     width: 100%;
+    position: relative;
     grid-template-columns: 1fr 6fr;
 `;
 export const TweetContent = styled.div`
@@ -14,6 +15,8 @@ export const TweetContent = styled.div`
 export const ImgPerfil = styled.div`
     margin: 0;
     grid-row: 1 / span 5;
+    position: relative;
+    z-index: 1500;
     img {
         height: 48px;
         width: 48px;

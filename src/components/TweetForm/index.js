@@ -19,7 +19,7 @@ import FotoPerfil from "../../imgs/perfil.jpg";
 import { ButtonColored } from "../Utils/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
 
-const TweetForm = ({ parentId, setShowModal }) => {
+const TweetForm = ({ parentId, setShowModal = null, children }) => {
     const { emailLogueado, datosUser } = useGlobalContext();
     const tweetsCollectionRef = collection(db, "tweets");
 
@@ -53,8 +53,11 @@ const TweetForm = ({ parentId, setShowModal }) => {
             children: [],
         });
         if (parentId) await addChildren(parentId, docRef.id);
-        //e.target.detalles.value = "";
-        setShowModal(false);
+        e.target.value = "";
+        if (typeof setShowModal === "function") {
+            setShowModal(false);
+        }
+        setDetalles("");
     }
 
     async function addChildren(parentId, childId) {
@@ -72,7 +75,12 @@ const TweetForm = ({ parentId, setShowModal }) => {
                 alt="foto de perfil"
             ></ImagenPerfil>
             <InputWrapper>
-                <TweetInput type="text" id="detalles" onChange={handleChange} />
+                <TweetInput
+                    type="text"
+                    id="detalles"
+                    onChange={handleChange}
+                    value={detalles}
+                />
                 {/*
        TODO
        no dejar twittear si no se esta loggeado 
@@ -82,6 +90,7 @@ const TweetForm = ({ parentId, setShowModal }) => {
                 </ButtonColored>
                 {/* <ButtonTwittear type="submit">Tweet</ButtonTwittear> */}
             </InputWrapper>
+            {children}
         </TweetFormWrapper>
     );
 };

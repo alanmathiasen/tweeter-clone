@@ -15,9 +15,10 @@ import {
 import { useEffect, useState } from "react/cjs/react.development";
 import { useNavigate, Link } from "react-router-dom";
 import { GiCancel } from "react-icons/gi";
-import { BiComment, BiHeart } from "react-icons/bi";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import ModalBase from "../ModalBase";
 import { useGlobalContext } from "../../context/GlobalContext";
+import "./ButtonGroup/ButtonGroup.styles";
 
 import {
     doc,
@@ -37,7 +38,7 @@ import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
 import BaseTweet from "../BaseTweet";
 
-const TweetIndividual = ({ tweetId, mainTweet = false }) => {
+const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp }) => {
     const [tweet, setTweet] = useState({});
     const [liked, setLiked] = useState(false);
     const [author, setAuthor] = useState({});
@@ -180,6 +181,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
     if (mainTweet) {
         return (
             <MainContainer>
+                {hasUp && <div className="up"></div>}
                 <TweetHeader>
                     <ImgPerfil>
                         <img src={imgPerfil} alt="" />
@@ -191,7 +193,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
                     </MainUser>
 
                     <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
-                        <GiCancel />
+                        <BsThreeDotsVertical className="commentBtn" />
                     </BorrarTweet>
                 </TweetHeader>
                 <TweetMainContent>
@@ -209,22 +211,36 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
                 />
 
                 <ModalBase showModal={showModal} setShowModal={setShowModal}>
-                    <BaseTweet author={author} tweet={tweet} />
+                    <BaseTweet author={author} tweet={tweet}>
+                        <RespondingTo>
+                            Respondiendo a <span>{`@${author.ruta}`}</span>
+                        </RespondingTo>
+                        <div
+                            className="down modal"
+                            style={{ left: "22px", z_index: 2200 }}
+                        ></div>
+                    </BaseTweet>
                     <TweetForm
                         parentId={tweetId}
                         className="tweetForm"
                         setShowModal={setShowModal}
-                    />
+                    >
+                        <div
+                            className="up modal"
+                            style={{ left: "22px", z_index: 800 }}
+                        ></div>
+                    </TweetForm>
                 </ModalBase>
             </MainContainer>
         );
     } else {
         return (
-            <TweetContainer onClick={goTo}>
-                {console.log(tweet)}
-
+            <TweetContainer onClick={goTo} lines={lines}>
+                {console.log(lines)}
+                {lines.hasUp && <div className="up"></div>}
+                {lines.hasDown && <div className="down"></div>}
                 <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
-                    <GiCancel />
+                    <BsThreeDotsVertical className="commentBtn" />
                 </BorrarTweet>
                 <ImgPerfil>
                     <img src={imgPerfil} alt="" />
@@ -251,12 +267,21 @@ const TweetIndividual = ({ tweetId, mainTweet = false }) => {
                         <RespondingTo>
                             Respondiendo a <span>{`@${author.ruta}`}</span>
                         </RespondingTo>
+                        <div
+                            className="down modal"
+                            style={{ left: "22px", z_index: 800 }}
+                        ></div>
                     </BaseTweet>
                     <TweetForm
                         parentId={tweetId}
                         className="tweetForm"
                         setShowModal={setShowModal}
-                    />
+                    >
+                        <div
+                            className="up modal"
+                            style={{ left: "22px" }}
+                        ></div>
+                    </TweetForm>
                 </ModalBase>
             </TweetContainer>
         );
