@@ -10,7 +10,7 @@ export const Overlay = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1002;
+    z-index: 1450;
 `;
 
 export const Modal = styled.div`
@@ -28,6 +28,9 @@ export const Modal = styled.div`
 
     .tweet-info {
         width: 100%;
+    }
+    img {
+        z-index: 1500;
     }
 `;
 

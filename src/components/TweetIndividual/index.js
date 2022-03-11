@@ -19,6 +19,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import ModalBase from "../ModalBase";
 import { useGlobalContext } from "../../context/GlobalContext";
 import "./ButtonGroup/ButtonGroup.styles";
+import RelatedTweetLine from "../RelatedTweetLine";
 
 import {
     doc,
@@ -181,7 +182,9 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp }) => {
     if (mainTweet) {
         return (
             <MainContainer>
-                {hasUp && <div className="up"></div>}
+                <RelatedTweetLine hasUp={hasUp} />
+                {console.log(hasUp, "HASUP")}
+                {/* {hasUp && <div className="up"></div>} */}
                 <TweetHeader>
                     <ImgPerfil>
                         <img src={imgPerfil} alt="" />
@@ -215,30 +218,30 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp }) => {
                         <RespondingTo>
                             Respondiendo a <span>{`@${author.ruta}`}</span>
                         </RespondingTo>
-                        <div
-                            className="down modal"
-                            style={{ left: "22px", z_index: 2200 }}
-                        ></div>
+                        <RelatedTweetLine hasDown left={"23px"} />
                     </BaseTweet>
                     <TweetForm
                         parentId={tweetId}
                         className="tweetForm"
                         setShowModal={setShowModal}
                     >
-                        <div
-                            className="up modal"
-                            style={{ left: "22px", z_index: 800 }}
-                        ></div>
+                        <RelatedTweetLine hasUp left={"23px"} />
                     </TweetForm>
                 </ModalBase>
             </MainContainer>
         );
     } else {
         return (
-            <TweetContainer onClick={goTo} lines={lines}>
-                {console.log(lines)}
-                {lines.hasUp && <div className="up"></div>}
-                {lines.hasDown && <div className="down"></div>}
+            <TweetContainer onClick={goTo} lines={lines ? lines : false}>
+                {lines && (
+                    <RelatedTweetLine
+                        hasUp={lines.hasUp}
+                        hasDown={lines.hasDown}
+                    />
+                )}
+
+                {/* {lines.hasUp && <div className="up"></div>}
+                {lines.hasDown && <div className="down"></div>} */}
                 <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
                     <BsThreeDotsVertical className="commentBtn" />
                 </BorrarTweet>
@@ -267,20 +270,22 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp }) => {
                         <RespondingTo>
                             Respondiendo a <span>{`@${author.ruta}`}</span>
                         </RespondingTo>
-                        <div
+                        <RelatedTweetLine hasDown left={"22px"} />
+                        {/* <div
                             className="down modal"
                             style={{ left: "22px", z_index: 800 }}
-                        ></div>
+                        ></div> */}
                     </BaseTweet>
                     <TweetForm
                         parentId={tweetId}
                         className="tweetForm"
                         setShowModal={setShowModal}
                     >
-                        <div
+                        <RelatedTweetLine hasUp left="22px" />
+                        {/* <div
                             className="up modal"
                             style={{ left: "22px" }}
-                        ></div>
+                        ></div> */}
                     </TweetForm>
                 </ModalBase>
             </TweetContainer>

@@ -27,29 +27,11 @@ export const TweetContainer = styled.div`
     .modal {
         z-index: 1000;
     }
-    .up {
-        position: absolute;
-        top: 0;
-        left: 39px;
-        width: 2px;
-        background-color: #afafaf;
-        height: 20%;
-        z-index: 1000;
-    }
-    .down {
-        position: absolute;
-        bottom: 0;
-        left: 39px;
-        width: 2px;
-        background-color: #afafaf;
-        height: 80%;
-        z-index: 1000;
-    }
 `;
 
 export const ImgPerfil = styled.div`
     margin: 0;
-    z-index: 1001;
+    z-index: 1401;
     grid-row: 1 / span 5;
     img {
         height: 48px;
@@ -138,24 +120,6 @@ export const MainContainer = styled.div`
     padding: 8px 16px 0px 16px;
     font-size: 15px;
     position: relative;
-    .up {
-        position: absolute;
-        top: 0;
-        left: 39px;
-        width: 2px;
-        background-color: #afafaf;
-        height: 20%;
-        z-index: 1000;
-    }
-    .down {
-        position: absolute;
-        bottom: 0;
-        left: 39px;
-        width: 2px;
-        background-color: #afafaf;
-        height: 80%;
-        z-index: 1000;
-    }
 `;
 
 export const TweetHeader = styled.div`
