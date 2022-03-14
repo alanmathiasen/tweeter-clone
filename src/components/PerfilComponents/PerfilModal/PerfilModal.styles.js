@@ -54,6 +54,8 @@ export const ButtonGuardar = styled.button`
   margin-right: 1rem;
 `;
 
+export const FileForm = styled.form``;
+
 export const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;

@@ -74,7 +74,9 @@ const TweetForm = ({ correoUsuario, parentId }) => {
        TODO
        no dejar twittear si no se esta loggeado 
        */}
-        <ButtonColored type="submit">Tweet</ButtonColored>
+        <ButtonColored maxWidth="100px" type="submit">
+          Tweet
+        </ButtonColored>
         {/* <ButtonTwittear type="submit">Tweet</ButtonTwittear> */}
       </InputWrapper>
     </TweetFormWrapper>

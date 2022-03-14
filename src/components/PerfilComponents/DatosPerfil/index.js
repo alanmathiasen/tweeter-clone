@@ -15,13 +15,15 @@ import {
 } from "./DatosPerfil.styles";
 import { usePerfilContext } from "../../../context/PerfilContext";
 import { useGlobalContext } from "../../../context/GlobalContext";
-import ImgPortada from "../../../imgs/portada.jpg";
-import imgPerfil from "../../../imgs/perfil.jpg";
+import ImgPortadaDefault from "../../../imgs/portada.jpg";
+import ImgPerfilDefaul from "../../../imgs/perfil.jpg";
 import { ButtonSeguir } from "../../Utils/ButtonSeguir";
 //ICONS
 import { GoLocation } from "react-icons/go";
 import { IoIosLink } from "react-icons/io";
 import { BsCalendarEvent } from "react-icons/bs";
+import PerfilByDefault from "../../../imgs/userPerfil.jpg";
+import PortadaByDefault from "../../../imgs/userPortada.jpg";
 
 const DatosPerfil = ({ handlePerfilModal }) => {
   const { id } = useParams();
@@ -39,9 +41,6 @@ const DatosPerfil = ({ handlePerfilModal }) => {
     setPageItsLoad,
     pageItsLoad,
     getDatosPerfil,
-    setTweetsByUser,
-    tweetCount,
-    setTweetCount,
   } = usePerfilContext();
 
   const [itsCurrentUserProfile, setItsCurrentUserProfile] = useState(false);
@@ -94,12 +93,17 @@ const DatosPerfil = ({ handlePerfilModal }) => {
   return (
     <PerfilContainer>
       <PortadaContainer>
-        <Portada src={ImgPortada} alt="portada" />
+        {!currentPerfil.portadaURL ? (
+          <Portada src={PortadaByDefault} alt="portada" />
+        ) : (
+          <Portada src={currentPerfil.portadaURL} alt="portada" />
+        )}
       </PortadaContainer>
-      {itsCurrentUserProfile ? (
-        <ImgPerfil src={datosUser.photoURL} />
+
+      {!currentPerfil.photoURL ? (
+        <ImgPerfil src={PerfilByDefault} />
       ) : (
-        <ImgPerfil src={imgPerfil} />
+        <ImgPerfil src={currentPerfil.photoURL} />
       )}
 
       {itsCurrentUserProfile ? (

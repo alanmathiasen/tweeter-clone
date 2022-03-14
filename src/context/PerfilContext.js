@@ -28,6 +28,7 @@ const PerfilProvider = ({ children }) => {
   const [tweetsByUser, setTweetsByUser] = useState([]);
   const [tweetCount, setTweetCount] = useState(0);
   const [noti, setNoti] = useState(false);
+  const [imagePerfil, setImagePerfil] = useState(null);
 
   const getDatosPerfil = useCallback(async (id) => {
     const usuariosRef = collection(db, "usuarios");
@@ -47,6 +48,7 @@ const PerfilProvider = ({ children }) => {
         setSeguidores(0);
       }
     });
+
     setPageItsLoad(true);
   }, []);
 
@@ -178,6 +180,8 @@ const PerfilProvider = ({ children }) => {
         tweetsByUser,
         setTweetsByUser,
         tweetCount,
+        // fetchImages,
+        imagePerfil,
       }}
     >
       {children}

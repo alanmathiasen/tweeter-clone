@@ -222,7 +222,8 @@ const AQuienSeguir = () => {
                 </CardContent>
 
                 <ButtonMargin>
-                  {datosUser.siguiendo.includes(item.id) ? (
+                  {datosUser.siguiendo &&
+                  datosUser.siguiendo.includes(item.id) ? (
                     <ButtonSeguir
                       onClick={() => handleClick(item.id)}
                       btnState={btnState}
