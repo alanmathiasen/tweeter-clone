@@ -1,10 +1,7 @@
 import styled from "styled-components";
 
 export const TweetWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  padding: 2rem 0;
 `;
 
 export const ImgPerfil = styled.img`
