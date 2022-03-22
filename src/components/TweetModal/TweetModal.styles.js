@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const ModalWrapper = styled.div`
   display: ${(props) => (props.tweettModal ? "flex" : "none")};
   flex-direction: column;
-  height: 300px;
+  max-height: 1500px;
+  /* height: 300px; */
   width: 600px;
   background-color: #fff;
   z-index: 100;

@@ -63,6 +63,7 @@ export const FormWrapper = styled.div`
 `;
 
 export const Campo = styled.input`
+  display: ${(props) => (props.display ? props.display : "flex")};
   margin-bottom: 1rem;
   border-radius: 5px;
   border: solid 1px #dedede;
@@ -73,3 +74,5 @@ export const Campo = styled.input`
     border: solid 2px #ee6262;
   }
 `;
+
+export const LabelIcon = styled.label``;

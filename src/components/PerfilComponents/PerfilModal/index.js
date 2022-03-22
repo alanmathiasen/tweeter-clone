@@ -6,7 +6,7 @@ import {
   ButtonGuardar,
   FormWrapper,
   Campo,
-  FileForm,
+  LabelIcon,
 } from "./PerfilModal.styles";
 import { doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "../../../firebase/firebaseConfig";
@@ -22,6 +22,7 @@ import {
   Portada,
   ImgPerfil,
 } from "../DatosPerfil/DatosPerfil.styles";
+import { MdPhotoCameraBack } from "react-icons/md";
 
 const PerfilModal = ({ handlePerfilModal }) => {
   const { emailLogueado, datosUser, setDatosUser, imagePerfil } =
@@ -117,7 +118,17 @@ const PerfilModal = ({ handlePerfilModal }) => {
           height="100px"
         />
       )}
-      <Campo type="file" id="fotoPerfil" onChange={onPerfilFileChange} />
+      <LabelIcon for="fotoPerfil">
+        <span>
+          <MdPhotoCameraBack />
+        </span>
+      </LabelIcon>
+      <Campo
+        type="file"
+        id="fotoPerfil"
+        onChange={onPerfilFileChange}
+        display="none"
+      />
 
       <FormWrapper>
         <Campo
