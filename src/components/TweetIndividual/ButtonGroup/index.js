@@ -3,12 +3,23 @@ import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 
 import { Wrapper, MainWrapper, Stats, Buttons } from "./ButtonGroup.styles";
 
-const ButtonGroup = ({ replies, likes, likeTweet, liked, showForm, main }) => {
+const ButtonGroup = ({
+    replies,
+    likes,
+    likeTweet,
+    liked,
+    showForm,
+    main,
+    retweet,
+    retweeted,
+    retweets,
+}) => {
     return main ? (
         <MainWrapper>
-            {likes > 0 && (
+            {(likes > 0 || retweets > 0) && (
                 <Stats>
-                    <span>{`${likes} Me gusta`}</span>
+                    <span>{retweets ? `${retweets} Retweets` : ""}</span>
+                    <span>{likes ? `${likes} Me gusta` : ""}</span>
                 </Stats>
             )}
             <Buttons>
@@ -25,8 +36,14 @@ const ButtonGroup = ({ replies, likes, likeTweet, liked, showForm, main }) => {
                     </a>
                 </div>
                 <div>
-                    <a className="retweet">
-                        <VscGitCompare className="retweetBtn" />
+                    <a className="retweet" onClick={(e) => retweet(e)}>
+                        <VscGitCompare
+                            className={
+                                retweeted
+                                    ? "retweetBtn retweeted"
+                                    : "retweetBtn"
+                            }
+                        />
                     </a>
                 </div>
                 <div>
@@ -56,9 +73,13 @@ const ButtonGroup = ({ replies, likes, likeTweet, liked, showForm, main }) => {
                 </a>
             </div>
             <div>
-                <a className="retweet">
+                <a
+                    className={retweeted ? "retweet retweeted" : "retweet"}
+                    href="#"
+                    onClick={retweet}
+                >
                     <VscGitCompare className="retweetBtn" />
-                    <span>2</span>
+                    <span>{retweets > 0 ? retweets : ""}</span>
                 </a>
             </div>
             <div>

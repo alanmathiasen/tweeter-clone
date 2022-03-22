@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    grid-column: 2 / span 2;
-    grid-row: 3;
+    grid-column: 2 / -1;
+
+    grid-row-start: 100;
     display: flex;
     justify-content: space-between;
     font-size: 20px;
@@ -62,6 +63,9 @@ export const Wrapper = styled.div`
     .liked {
         color: red;
     }
+    .retweeted {
+        color: #33b833;
+    }
 
     .retweet {
         &:hover {
@@ -81,6 +85,9 @@ export const Stats = styled.div`
     border-top: 1px solid lightgray;
     font-size: 18px;
     padding: 11px 0;
+    span {
+        margin-right: 10px;
+    }
 `;
 
 export const Buttons = styled.div`
@@ -131,6 +138,9 @@ export const Buttons = styled.div`
     }
     .liked {
         color: red;
+    }
+    .retweeted {
+        color: green;
     }
 
     .retweet {

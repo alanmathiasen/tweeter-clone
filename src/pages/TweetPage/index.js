@@ -69,7 +69,6 @@ const TweetPage = () => {
         const pIds = [];
         const tweetSnap = await getDoc(tweetRef);
         if (tweetSnap.data().parentId) {
-            console.log();
             await hasParent(idState, pIds);
         }
 
@@ -79,7 +78,7 @@ const TweetPage = () => {
                 pIds.map(async (idP) => {
                     console.log(pIds, "dentro del promise");
                     const newChild = await getTweet(idP);
-                    if (newChild != "ERROR") newChild.id = idP;
+                    if (newChild !== "ERROR") newChild.id = idP;
                     return newChild;
                 })
             );
@@ -113,7 +112,7 @@ const TweetPage = () => {
     return (
         <Wrapper>
             {parents && <TweetGroup tweetArray={parents} parent />}
-            {console.log(parents.length, "PARENTS")}
+
             {idState && (
                 <TweetIndividual
                     tweetId={idState}

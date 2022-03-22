@@ -24,6 +24,7 @@ const Home = () => {
         const misDatos = onSnapshot(docQuery, (querySnapshot) => {
             const misTweets = [];
             querySnapshot.forEach((doc) => {
+                console.log(doc.data(), "ACA HAY ALGUN RETWEET");
                 misTweets.push({ ...doc.data(), id: doc.id });
             });
 
@@ -36,7 +37,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        //console.log(arrayTweets);
+        console.log(arrayTweets);
     }, [arrayTweets]);
 
     return (

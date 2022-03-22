@@ -1,8 +1,7 @@
 import styled from "styled-components";
-
+import { tweetGrid } from "../../styles/mixins";
 export const TweetContainer = styled.div`
-    display: grid;
-    grid-template-columns: 60px 5fr 100px;
+    ${tweetGrid}
 
     border-bottom: ${(props) =>
         props.lines.hasDown ? "" : "1px solid #ededed"};
@@ -32,7 +31,9 @@ export const TweetContainer = styled.div`
 export const ImgPerfil = styled.div`
     margin: 0;
     z-index: 1401;
-    grid-row: 1 / span 5;
+    grid-column: 1;
+    grid-row: span 5;
+    justify-self: end;
     img {
         height: 48px;
         width: 48px;
@@ -124,6 +125,7 @@ export const MainContainer = styled.div`
 
 export const TweetHeader = styled.div`
     display: grid;
+    grid-gap: 0 10px;
     grid-template-columns: 60px 5fr 100px;
 `;
 
