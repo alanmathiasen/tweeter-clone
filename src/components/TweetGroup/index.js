@@ -15,6 +15,8 @@ const TweetGroup = ({ tweetArray, parent }) => {
                 tweetArray.map((child, index) => {
                     if (child.retweet) {
                         return <Retweet tweet={child} key={child.id} />;
+                        // } else if (child.quote) {
+                        //     return <Quote />;
                     } else {
                         return (
                             <TweetIndividual

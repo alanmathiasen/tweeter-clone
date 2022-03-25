@@ -10,6 +10,7 @@ import {
     MainUser,
     TweetMainContent,
     RespondingTo,
+    TweetMedia,
 } from "./TweetIndividual.styles";
 
 import { useEffect, useState } from "react/cjs/react.development";
@@ -20,6 +21,7 @@ import ModalBase from "../ModalBase";
 import { useGlobalContext } from "../../context/GlobalContext";
 import "./ButtonGroup/ButtonGroup.styles";
 import RelatedTweetLine from "../RelatedTweetLine";
+import Quote from "../Quote/index";
 
 import {
     doc,
@@ -37,8 +39,9 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
+import { getAuthor } from "../../firebase/getAuthor";
 import { format } from "fecha";
-
+import { shortDate } from "../../helpers/dateHelper";
 import ButtonGroup from "./ButtonGroup";
 import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
@@ -51,6 +54,7 @@ const TweetIndividual = ({
     lines,
     hasUp,
     children,
+    quote = { id: "GryH9ejNNjyKAFwJz86E" },
 }) => {
     const [tweet, setTweet] = useState({});
     const [liked, setLiked] = useState(false);
@@ -160,10 +164,6 @@ const TweetIndividual = ({
         }
     }
 
-    // const getAuthor =
-    //     }
-    // };
-
     useEffect(() => {
         const tweetRef = doc(db, "tweets", tweetId);
         const unsubscribe = onSnapshot(tweetRef, (snap) => {
@@ -191,46 +191,26 @@ const TweetIndividual = ({
         return () => unsubscribe();
     }, [tweetId, emailLogueado]);
 
-    const shortDate = () => {
-        let tweetDate = new Date(tweet.timestamp);
-        let currentDate = new Date();
-        let diffInTime = currentDate - tweetDate;
-        let mm = diffInTime / 1000 / 60;
-        //si son menos de 60 minutos
-        if (mm < 60) {
-            return ` ${Math.floor(mm).toString()}m`;
-        }
-        //si son menos de 24 horas
-        else if (mm / 60 < 24) {
-            return `${Math.floor(mm / 60).toString()}h`;
-        }
-        //si son menos de 7 dias
-        else if (mm / 60 / 24 < 7) {
-            return `${Math.floor(mm / 60 / 24).toString()}d`;
-        }
-        //si no mostrar fecha
-        else {
-            return format(new Date(tweet.timestamp), "DD/MM");
-        }
-    };
-
     useEffect(() => {
-        async function getAuthor() {
-            if (Object.keys(tweet).length !== 0) {
-                const userRef = doc(db, "usuarios", tweet.usuario);
-                const userSnap = await getDoc(userRef);
-                userSnap.data() ? setAuthor(userSnap.data()) : setAuthor({});
-            } else {
-                return null;
-            }
-        }
+        // async function getAuthor() {
+        //     if (Object.keys(tweet).length !== 0) {
+        //         const userRef = doc(db, "usuarios", tweet.usuario);
+        //         const userSnap = await getDoc(userRef);
+        //         userSnap.data() ? setAuthor(userSnap.data()) : setAuthor({});
+        //     } else {
+        //         return null;
+        //     }
+        // }
+        (async () => {
+            setAuthor(await getAuthor(tweet));
+        })();
         if (tweet.timestamp)
             setDate(
                 mainTweet
                     ? format(new Date(tweet.timestamp), "h:m a · D MMM YYYY")
-                    : shortDate()
+                    : shortDate(tweet.timestamp)
             );
-        getAuthor();
+        //getAuthor();
     }, [tweet, mainTweet]);
 
     const goTo = (e) => {
@@ -264,6 +244,7 @@ const TweetIndividual = ({
                 <TweetMainContent>
                     {tweet.descripcion && <p>{tweet.descripcion}</p>}
                     <span></span>
+                    {quote.id ? <Quote tweet={quote} /> : ""}
                 </TweetMainContent>
                 <div>{date}</div>
 
