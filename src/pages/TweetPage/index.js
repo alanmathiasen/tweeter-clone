@@ -99,9 +99,11 @@ const TweetPage = () => {
         }
     };
 
-    useEffect(async () => {
-        setChildren(await getChildren());
-        setParents(await getParents());
+    useEffect(() => {
+        (async () => {
+            setChildren(await getChildren());
+            setParents(await getParents());
+        })();
     }, [childrenIds]);
 
     //const location = useLocation();

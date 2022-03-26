@@ -39,7 +39,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
-import { getAuthor } from "../../firebase/getAuthor";
+import { getAuthor } from "../../firebase/getters";
 import { format } from "fecha";
 import { shortDate } from "../../helpers/dateHelper";
 import ButtonGroup from "./ButtonGroup";
@@ -244,7 +244,7 @@ const TweetIndividual = ({
                 <TweetMainContent>
                     {tweet.descripcion && <p>{tweet.descripcion}</p>}
                     <span></span>
-                    {quote.id ? <Quote tweet={quote} /> : ""}
+                    {quote.id ? <Quote tweetId={quote.id} /> : ""}
                 </TweetMainContent>
                 <div>{date}</div>
 
@@ -263,7 +263,8 @@ const TweetIndividual = ({
                 <ModalBase showModal={showModal} setShowModal={setShowModal}>
                     <BaseTweet author={author} tweet={tweet}>
                         <RespondingTo>
-                            Respondiendo a <span>{`@${author.ruta}`}</span>
+                            Respondiendo a{" "}
+                            <span>{author && `@${author.ruta}`}</span>
                         </RespondingTo>
                         <RelatedTweetLine hasDown left={"23px"} />
                     </BaseTweet>
@@ -316,11 +317,13 @@ const TweetIndividual = ({
                         retweet={reTweet}
                         retweets={tweet.retweets ? tweet.retweets.length : null}
                     />
+                    <Quote tweetId={quote.id} />
                 </TweetContainer>
                 <ModalBase showModal={showModal} setShowModal={setShowModal}>
                     <BaseTweet author={author} tweet={tweet}>
                         <RespondingTo>
-                            Respondiendo a <span>{`@${author.ruta}`}</span>
+                            Respondiendo a{" "}
+                            <span>{author && `@${author.ruta}`}</span>
                         </RespondingTo>
                         <RelatedTweetLine hasDown left={"22px"} />
                         {/* <div
