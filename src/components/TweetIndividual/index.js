@@ -21,7 +21,8 @@ import ModalBase from "../ModalBase";
 import { useGlobalContext } from "../../context/GlobalContext";
 import "./ButtonGroup/ButtonGroup.styles";
 import RelatedTweetLine from "../RelatedTweetLine";
-import Quote from "../Quote/index";
+import Quote from "../Quote";
+import QuoteModal from "../Quote/QuoteModal/index";
 
 import {
     doc,
@@ -54,13 +55,14 @@ const TweetIndividual = ({
     lines,
     hasUp,
     children,
-    quote = { id: "GryH9ejNNjyKAFwJz86E" },
+    quote = {},
 }) => {
     const [tweet, setTweet] = useState({});
     const [liked, setLiked] = useState(false);
     const [retweeted, setRetweeted] = useState(false);
     const [author, setAuthor] = useState({});
     const [showModal, setShowModal] = useState(false);
+    const [quoteModal, setQuoteModal] = useState(false);
 
     const navigate = useNavigate();
 
@@ -168,7 +170,7 @@ const TweetIndividual = ({
         const tweetRef = doc(db, "tweets", tweetId);
         const unsubscribe = onSnapshot(tweetRef, (snap) => {
             if (snap.data()) {
-                setTweet(snap.data());
+                setTweet({ id: tweetId, ...snap.data() });
                 if (
                     snap.data().likes &&
                     snap.data().likes.includes(emailLogueado)
@@ -244,7 +246,7 @@ const TweetIndividual = ({
                 <TweetMainContent>
                     {tweet.descripcion && <p>{tweet.descripcion}</p>}
                     <span></span>
-                    {quote.id ? <Quote tweetId={quote.id} /> : ""}
+                    {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : ""}
                 </TweetMainContent>
                 <div>{date}</div>
 
@@ -258,6 +260,7 @@ const TweetIndividual = ({
                     retweeted={retweeted}
                     retweet={reTweet}
                     retweets={tweet.retweets ? tweet.retweets.length : null}
+                    setQuoteModal={setQuoteModal}
                 />
 
                 <ModalBase showModal={showModal} setShowModal={setShowModal}>
@@ -276,6 +279,12 @@ const TweetIndividual = ({
                         <RelatedTweetLine hasUp left={"23px"} />
                     </TweetForm>
                 </ModalBase>
+                <QuoteModal
+                    showModal={quoteModal}
+                    setShowModal={setQuoteModal}
+                    author={author}
+                    tweet={tweet}
+                ></QuoteModal>
             </MainContainer>
         );
     } else {
@@ -316,33 +325,43 @@ const TweetIndividual = ({
                         retweeted={retweeted}
                         retweet={reTweet}
                         retweets={tweet.retweets ? tweet.retweets.length : null}
+                        setQuoteModal={setQuoteModal}
                     />
-                    <Quote tweetId={quote.id} />
-                </TweetContainer>
-                <ModalBase showModal={showModal} setShowModal={setShowModal}>
-                    <BaseTweet author={author} tweet={tweet}>
-                        <RespondingTo>
-                            Respondiendo a{" "}
-                            <span>{author && `@${author.ruta}`}</span>
-                        </RespondingTo>
-                        <RelatedTweetLine hasDown left={"22px"} />
-                        {/* <div
+                    {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : <></>}
+                    <QuoteModal
+                        showModal={quoteModal}
+                        setShowModal={setQuoteModal}
+                        author={author}
+                        tweet={tweet}
+                    ></QuoteModal>
+                    <ModalBase
+                        showModal={showModal}
+                        setShowModal={setShowModal}
+                    >
+                        <BaseTweet author={author} tweet={tweet}>
+                            <RespondingTo>
+                                Respondiendo a{" "}
+                                <span>{author && `@${author.ruta}`}</span>
+                            </RespondingTo>
+                            <RelatedTweetLine hasDown left={"22px"} />
+                            {/* <div
                     className="down modal"
                     style={{ left: "22px", z_index: 800 }}
                 ></div> */}
-                    </BaseTweet>
-                    <TweetForm
-                        parentId={tweetId}
-                        className="tweetForm"
-                        setShowModal={setShowModal}
-                    >
-                        <RelatedTweetLine hasUp left="22px" />
-                        {/* <div
+                        </BaseTweet>
+                        <TweetForm
+                            parentId={tweetId}
+                            className="tweetForm"
+                            setShowModal={setShowModal}
+                        >
+                            <RelatedTweetLine hasUp left="22px" />
+                            {/* <div
                     className="up modal"
                     style={{ left: "22px" }}
                 ></div> */}
-                    </TweetForm>
-                </ModalBase>
+                        </TweetForm>
+                    </ModalBase>
+                </TweetContainer>
             </>
         );
     }

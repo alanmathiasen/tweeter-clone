@@ -26,6 +26,7 @@ const TweetGroup = ({ tweetArray, parent }) => {
                                     hasUp: parent && index !== 0 ? true : false,
                                     hasDown: parent && true,
                                 }}
+                                quote={child.quote}
                             />
                         );
                     }

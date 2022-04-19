@@ -9,22 +9,23 @@ import {
 import { getAuthor, getTweet } from "../../firebase/getters";
 import imgPerfil from "../../imgs/perfil.jpg";
 import { shortDate } from "../../helpers/dateHelper";
-const Quote = ({ tweetId }) => {
+const Quote = ({ tweetId = null }) => {
     const [tweet, setTweet] = useState({});
     const [author, setAuthor] = useState({});
-    console.log(tweetId);
+
     useEffect(() => {
-        (async () => {
+        async function fetchTweet() {
             setTweet(await getTweet(tweetId));
-        })();
+        }
+        fetchTweet();
     }, [tweetId]);
 
     useEffect(() => {
-        (async () => {
+        async function fetchAuthor() {
             setAuthor(await getAuthor(tweet));
-        })();
+        }
+        fetchAuthor();
     }, [tweet]);
-
     return (
         <Wrapper>
             <Header>

@@ -19,7 +19,7 @@ import FotoPerfil from "../../imgs/perfil.jpg";
 import { ButtonColored } from "../Utils/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
 
-const TweetForm = ({ parentId, setShowModal = null, children }) => {
+const TweetForm = ({ parentId, quoteId, setShowModal = null, children }) => {
     const { emailLogueado, datosUser } = useGlobalContext();
     const tweetsCollectionRef = collection(db, "tweets");
 
@@ -50,6 +50,7 @@ const TweetForm = ({ parentId, setShowModal = null, children }) => {
             descripcion: detalles,
             timestamp: +new Date(),
             parentId: parentId ? parentId : null,
+            quoteId: quoteId ? quoteId : null,
             children: [],
         });
         if (parentId) await addChildren(parentId, docRef.id);
@@ -85,12 +86,12 @@ const TweetForm = ({ parentId, setShowModal = null, children }) => {
        TODO
        no dejar twittear si no se esta loggeado 
        */}
+                {children}
                 <ButtonColored type="submit" onClick={(e) => agregarTweet(e)}>
                     Tweet
                 </ButtonColored>
                 {/* <ButtonTwittear type="submit">Tweet</ButtonTwittear> */}
             </InputWrapper>
-            {children}
         </TweetFormWrapper>
     );
 };

@@ -5,10 +5,10 @@ import TweetForm from "../TweetForm";
 import { VscClose } from "react-icons/vsc";
 
 const TweetModal = ({ isReply }) => {
-  const { tweettModal, handleTweettModal } = useGlobalContext();
+  const { tweetModal, handleTweettModal } = useGlobalContext();
 
   return (
-    <ModalWrapper tweettModal={tweettModal}>
+    <ModalWrapper tweetModal={tweetModal}>
       <div>
         <CloseBtn onClick={() => handleTweettModal()}>
           <VscClose />

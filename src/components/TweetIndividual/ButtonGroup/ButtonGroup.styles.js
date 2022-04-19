@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
         align-items: center;
         width: 25%;
 
-        span {
+        span:not(:first-child) {
             font-size: 15px;
             margin-left: 12px;
         }
