@@ -10,11 +10,10 @@ import {
     MainUser,
     TweetMainContent,
     RespondingTo,
-    TweetMedia,
 } from "./TweetIndividual.styles";
 
 import { useEffect, useState } from "react/cjs/react.development";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GiCancel } from "react-icons/gi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import ModalBase from "../ModalBase";
@@ -47,7 +46,6 @@ import ButtonGroup from "./ButtonGroup";
 import TweetForm from "../TweetForm";
 import imgPerfil from "../../imgs/perfil.jpg";
 import BaseTweet from "../BaseTweet";
-import TweetsNavbar from "../TweetsNavbar";
 
 const TweetIndividual = ({
     tweetId,
@@ -55,7 +53,6 @@ const TweetIndividual = ({
     lines,
     hasUp,
     children,
-    quote = {},
 }) => {
     const [tweet, setTweet] = useState({});
     const [liked, setLiked] = useState(false);
@@ -66,14 +63,11 @@ const TweetIndividual = ({
 
     const navigate = useNavigate();
 
-    const { emailLogueado, datosUser } = useGlobalContext();
+    const { emailLogueado } = useGlobalContext();
     const [date, setDate] = useState(null);
     async function eliminarTweet(e, idTweetAEliminar) {
         e.stopPropagation();
-        //actualizar state con nuevo array
-        /*const nuevoArrayTweets = arrayTweets.filter(
-      (tweet) => tweet.id !== idTweetAEliminar
-    );*/
+
         const tweetRef = doc(db, "tweets", idTweetAEliminar);
         const tweetSnap = await getDoc(tweetRef);
         if (tweetSnap.data().parentId) {
@@ -194,15 +188,6 @@ const TweetIndividual = ({
     }, [tweetId, emailLogueado]);
 
     useEffect(() => {
-        // async function getAuthor() {
-        //     if (Object.keys(tweet).length !== 0) {
-        //         const userRef = doc(db, "usuarios", tweet.usuario);
-        //         const userSnap = await getDoc(userRef);
-        //         userSnap.data() ? setAuthor(userSnap.data()) : setAuthor({});
-        //     } else {
-        //         return null;
-        //     }
-        // }
         (async () => {
             setAuthor(await getAuthor(tweet));
         })();
@@ -212,7 +197,6 @@ const TweetIndividual = ({
                     ? format(new Date(tweet.timestamp), "h:m a · D MMM YYYY")
                     : shortDate(tweet.timestamp)
             );
-        //getAuthor();
     }, [tweet, mainTweet]);
 
     const goTo = (e) => {
@@ -220,9 +204,10 @@ const TweetIndividual = ({
     };
 
     const handleShowModal = (e) => {
-        e.stopPropagation();
         e.preventDefault();
-        setShowModal(!showModal);
+        e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+        setShowModal(true);
     };
 
     if (mainTweet) {

@@ -121,6 +121,9 @@ export const MainContainer = styled.div`
     padding: 8px 16px 0px 16px;
     font-size: 15px;
     position: relative;
+    span {
+        cursor: pointer;
+    }
 `;
 
 export const TweetHeader = styled.div`

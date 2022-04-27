@@ -25,7 +25,7 @@ const ButtonGroup = ({
             )}
             <Buttons>
                 <div>
-                    <a
+                    <span
                         className="comment"
                         href="#"
                         onClick={(e) => {
@@ -34,10 +34,10 @@ const ButtonGroup = ({
                         }}
                     >
                         <VscComment className="commentBtn" />
-                    </a>
+                    </span>
                 </div>
                 <div>
-                    <a className="retweet" onClick={(e) => retweet(e)}>
+                    <span className="retweet" onClick={(e) => retweet(e)}>
                         <VscGitCompare
                             className={
                                 retweeted
@@ -45,21 +45,25 @@ const ButtonGroup = ({
                                     : "retweetBtn"
                             }
                         />
-                    </a>
+                    </span>
                 </div>
                 <div>
                     {liked ? (
-                        <a className="like liked" onClick={likeTweet} href="#">
+                        <span
+                            className="like liked"
+                            onClick={likeTweet}
+                            href="#"
+                        >
                             <IoHeartSharp className="likeBtn" />
-                        </a>
+                        </span>
                     ) : (
-                        <a className="like " onClick={likeTweet}>
+                        <span className="like " onClick={likeTweet}>
                             <IoHeartOutline className="likeBtn" />
-                        </a>
+                        </span>
                     )}
                 </div>
                 <div>
-                    <a
+                    <span
                         className="comment"
                         onClick={(e) => {
                             e.stopPropagation();
@@ -68,7 +72,7 @@ const ButtonGroup = ({
                         }}
                     >
                         <VscFoldUp className="commentBtn" />
-                    </a>
+                    </span>
                 </div>
             </Buttons>
         </MainWrapper>
@@ -108,8 +112,6 @@ const ButtonGroup = ({
                     className="comment"
                     onClick={(e) => {
                         e.stopPropagation();
-                        e.preventDefault();
-
                         setQuoteModal(true);
                     }}
                 >
