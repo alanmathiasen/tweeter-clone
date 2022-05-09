@@ -9,9 +9,12 @@ import {
 import { getAuthor, getTweet } from "../../firebase/getters";
 import imgPerfil from "../../imgs/perfil.jpg";
 import { shortDate } from "../../helpers/dateHelper";
+import { useNavigate } from "react-router-dom";
 const Quote = ({ tweetId = null }) => {
     const [tweet, setTweet] = useState({});
     const [author, setAuthor] = useState({});
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchTweet() {
@@ -26,8 +29,14 @@ const Quote = ({ tweetId = null }) => {
         }
         fetchAuthor();
     }, [tweet]);
+
+    const goTo = (e) => {
+        e.stopPropagation();
+        navigate("/tweet/" + tweetId);
+    };
+
     return (
-        <Wrapper>
+        <Wrapper onClick={goTo}>
             <Header>
                 <ImgPerfil>
                     <img alt="" src={imgPerfil} />

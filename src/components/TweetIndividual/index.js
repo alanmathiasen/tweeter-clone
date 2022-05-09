@@ -65,16 +65,16 @@ const TweetIndividual = ({
 
     const { emailLogueado } = useGlobalContext();
     const [date, setDate] = useState(null);
-    async function eliminarTweet(e, idTweetAEliminar) {
+    async function eliminarTweet(e) {
         e.stopPropagation();
 
-        const tweetRef = doc(db, "tweets", idTweetAEliminar);
+        const tweetRef = doc(db, "tweets", tweet.id);
         const tweetSnap = await getDoc(tweetRef);
         if (tweetSnap.data().parentId) {
             const parentRef = doc(db, "tweets", tweetSnap.data().parentId);
 
             await updateDoc(parentRef, {
-                children: arrayRemove(idTweetAEliminar),
+                children: arrayRemove(tweet.id),
             });
         }
         if (tweetSnap.data().children) {
@@ -83,11 +83,11 @@ const TweetIndividual = ({
             });
         }
         //actualizar base de datos
-        await deleteDoc(doc(db, "tweets", idTweetAEliminar));
+        await deleteDoc(doc(db, "tweets", tweet.id));
 
         const q = query(
             collection(db, "tweets"),
-            where("retweet", "==", idTweetAEliminar)
+            where("retweet", "==", tweet.id)
         );
         const querySnapshot = await getDocs(q);
         console.log(querySnapshot, "query");
@@ -95,6 +95,28 @@ const TweetIndividual = ({
             console.log(doc, "eliminando");
             deleteDoc(doc.ref);
         });
+        if (tweet.quoteId) {
+            const tweetRef = doc(db, "tweets", tweet.quoteId);
+            const tweetSnap = await getDoc(tweetRef);
+            if (
+                tweetSnap.data().quotes &&
+                tweetSnap.data().quotes.includes(emailLogueado)
+            ) {
+                await updateDoc(tweetRef, {
+                    quotes: arrayRemove(emailLogueado),
+                });
+            }
+        }
+        if (tweet.quotes) {
+            const q = query(
+                collection(db, "tweets"),
+                where("quoteId", "==", tweet.id)
+            );
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                deleteDoc(doc.ref);
+            });
+        }
     }
 
     async function likeTweet(e) {
@@ -200,6 +222,7 @@ const TweetIndividual = ({
     }, [tweet, mainTweet]);
 
     const goTo = (e) => {
+        e.stopPropagation();
         navigate("/tweet/" + tweetId);
     };
 
@@ -246,6 +269,7 @@ const TweetIndividual = ({
                     retweet={reTweet}
                     retweets={tweet.retweets ? tweet.retweets.length : null}
                     setQuoteModal={setQuoteModal}
+                    quotes={tweet.quotes ? tweet.quotes.length : null}
                 />
 
                 <ModalBase showModal={showModal} setShowModal={setShowModal}>
@@ -311,6 +335,7 @@ const TweetIndividual = ({
                         retweet={reTweet}
                         retweets={tweet.retweets ? tweet.retweets.length : null}
                         setQuoteModal={setQuoteModal}
+                        quotes={tweet.quotes ? tweet.quotes.length : null}
                     />
                     {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : <></>}
                     <QuoteModal

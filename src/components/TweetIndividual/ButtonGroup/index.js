@@ -14,13 +14,15 @@ const ButtonGroup = ({
     retweeted,
     retweets,
     setQuoteModal,
+    quotes,
 }) => {
     return main ? (
         <MainWrapper>
-            {(likes > 0 || retweets > 0) && (
+            {(likes > 0 || retweets > 0 || quotes > 0) && (
                 <Stats>
                     <span>{retweets ? `${retweets} Retweets` : ""}</span>
                     <span>{likes ? `${likes} Me gusta` : ""}</span>
+                    <span>{quotes ? `${quotes} Veces citado` : ""}</span>
                 </Stats>
             )}
             <Buttons>
@@ -116,7 +118,7 @@ const ButtonGroup = ({
                     }}
                 >
                     <VscFoldUp className="commentBtn" />
-                    <span>30</span>
+                    <span>{quotes ? quotes : ""}</span>
                 </span>
             </div>
         </Wrapper>
