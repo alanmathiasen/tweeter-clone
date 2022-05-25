@@ -11,11 +11,17 @@ import {
 } from "./TweetForm.styles";
 import ModalBase from "../ModalBase";
 import {
-  collection,
-  doc,
-  addDoc,
-  updateDoc,
-  arrayUnion,
+    collection,
+    doc,
+    addDoc,
+    updateDoc,
+    arrayUnion,
+    arrayRemove,
+    query,
+    where,
+    deleteDoc,
+    getDocs,
+    getDoc,
 } from "firebase/firestore";
 import { IoImageOutline } from "react-icons/io5";
 import { db, storage } from "../../firebase/firebaseConfig";
@@ -24,9 +30,14 @@ import FotoPerfil from "../../imgs/perfil.jpg";
 import { ButtonColored } from "../Utils/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
 
-const TweetForm = ({ parentId, setShowModal = null, children }) => {
-  const { emailLogueado, datosUser } = useGlobalContext();
-  const tweetsCollectionRef = collection(db, "tweets");
+const TweetForm = ({
+    parentId,
+    quoteId = null,
+    setShowModal = null,
+    children,
+}) => {
+    const { emailLogueado, datosUser } = useGlobalContext();
+    const tweetsCollectionRef = collection(db, "tweets");
 
   const [detalles, setDetalles] = useState("");
   const [imgFile, setImgFile] = useState(null);
@@ -38,31 +49,27 @@ const TweetForm = ({ parentId, setShowModal = null, children }) => {
   async function agregarTweet(e) {
     e.preventDefault();
 
-    // if (arrayTweets) {
-    //   const nuevoArrayTweets = [
-    //     ...arrayTweets,
-    //     { timestamp: +new Date(), detalles: descripcion },
-    //   ];
-    //   setArrayTweets(nuevoArrayTweets);
-    // } else {
-    //   const nuevoArrayTweets = [
-    //     { timestamp: +new Date(), detalles: descripcion },
-    //   ];
-    //   setArrayTweets(nuevoArrayTweets);
-    // }
+        if (typeof setShowModal === "function") {
+            setShowModal(false);
+        }
+        if (quoteId) {
+            const tweetRef = doc(db, "tweets", quoteId);
+            const docRef = await addDoc(tweetsCollectionRef, {
+                usuario: emailLogueado,
+                descripcion: detalles,
+                timestamp: +new Date(),
+                parentId: parentId ? parentId : null,
+                quoteId: quoteId ? quoteId : null,
+                children: [],
+            });
+            if (parentId) await addChildren(parentId, docRef.id);
+            //e.target.value = "";
+            await updateDoc(tweetRef, {
+                quotes: arrayUnion(emailLogueado),
+            });
+        }
 
-    const docRef = await addDoc(tweetsCollectionRef, {
-      usuario: emailLogueado,
-      descripcion: detalles,
-      timestamp: +new Date(),
-      parentId: parentId ? parentId : null,
-      fileUrl: imgFile ? imgFile : null,
-      children: [],
-    });
-    if (parentId) await addChildren(parentId, docRef.id);
-    e.target.value = "";
-    if (typeof setShowModal === "function") {
-      setShowModal(false);
+        //setDetalles("");
     }
     setDetalles("");
   }
@@ -104,31 +111,14 @@ const TweetForm = ({ parentId, setShowModal = null, children }) => {
        TODO
        no dejar twittear si no se esta loggeado 
        */}
-        {imgFile && (
-          <div>
-            <ImagenFile src={imgFile} alt="" />
-          </div>
-        )}
-        <div>
-          <LabelFile for="imageFile">
-            <span>
-              <IoImageOutline />
-            </span>
-          </LabelFile>
-          <InputFile type="file" id="imageFile" onChange={onFileChange} />
-          <ButtonColored
-            type="submit"
-            maxWidth="100px"
-            onClick={(e) => agregarTweet(e)}
-          >
-            Tweet
-          </ButtonColored>
-        </div>
-        {/* <ButtonTwittear type="submit">Tweet</ButtonTwittear> */}
-      </InputWrapper>
-      {children}
-    </TweetFormWrapper>
-  );
+                {children}
+                <ButtonColored type="submit" onClick={(e) => agregarTweet(e)}>
+                    Tweet
+                </ButtonColored>
+                {/* <ButtonTwittear type="submit">Tweet</ButtonTwittear> */}
+            </InputWrapper>
+        </TweetFormWrapper>
+    );
 };
 
 export default TweetForm;

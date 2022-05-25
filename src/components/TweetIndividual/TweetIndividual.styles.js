@@ -1,8 +1,7 @@
 import styled from "styled-components";
-
+import { tweetGrid } from "../../styles/mixins";
 export const TweetContainer = styled.div`
-  display: grid;
-  grid-template-columns: 60px 5fr 100px;
+    ${tweetGrid}
 
   border-bottom: ${(props) => (props.lines.hasDown ? "" : "1px solid #ededed")};
   padding: 8px 16px;
@@ -29,17 +28,19 @@ export const TweetContainer = styled.div`
 `;
 
 export const ImgPerfil = styled.div`
-  margin: 0;
-  z-index: 10;
-  grid-row: 1 / span 5;
-  img {
-    height: 48px;
-    width: 48px;
-    border-radius: 9999px;
-  }
-  &:hover {
-    opacity: 0.8;
-  }
+    margin: 0;
+    z-index: 1401;
+    grid-column: 1;
+    grid-row: span 5;
+    justify-self: end;
+    img {
+        height: 48px;
+        width: 48px;
+        border-radius: 9999px;
+    }
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
 export const BorrarTweet = styled.div`
@@ -119,16 +120,20 @@ export const TweetImg = styled.img`
 `;
 
 export const MainContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 8px 16px 0px 16px;
-  font-size: 15px;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px 0px 16px;
+    font-size: 15px;
+    position: relative;
+    span {
+        cursor: pointer;
+    }
 `;
 
 export const TweetHeader = styled.div`
-  display: grid;
-  grid-template-columns: 60px 5fr 100px;
+    display: grid;
+    grid-gap: 0 10px;
+    grid-template-columns: 60px 5fr 100px;
 `;
 
 export const MainUser = styled.div`

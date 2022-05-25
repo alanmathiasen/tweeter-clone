@@ -1,11 +1,11 @@
 import React from "react";
 import { Up, Down } from "./RelatedTweetLine.styles";
 
-const RelatedTweetLine = ({ hasUp, hasDown, left }) => {
+const RelatedTweetLine = ({ hasUp, hasDown, paddingLeft }) => {
     return (
         <>
-            {hasUp && <Up left={left} />}
-            {hasDown && <Down hasDown left={left} />}
+            {hasUp && <Up left={paddingLeft} />}
+            {hasDown && <Down hasDown left={paddingLeft} />}
         </>
     );
 };

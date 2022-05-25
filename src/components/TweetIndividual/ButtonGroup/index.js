@@ -3,17 +3,31 @@ import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 
 import { Wrapper, MainWrapper, Stats, Buttons } from "./ButtonGroup.styles";
 
-const ButtonGroup = ({ replies, likes, likeTweet, liked, showForm, main }) => {
+const ButtonGroup = ({
+    replies,
+    likes,
+    likeTweet,
+    liked,
+    showForm,
+    main,
+    retweet,
+    retweeted,
+    retweets,
+    setQuoteModal,
+    quotes,
+}) => {
     return main ? (
         <MainWrapper>
-            {likes > 0 && (
+            {(likes > 0 || retweets > 0 || quotes > 0) && (
                 <Stats>
-                    <span>{`${likes} Me gusta`}</span>
+                    <span>{retweets ? `${retweets} Retweets` : ""}</span>
+                    <span>{likes ? `${likes} Me gusta` : ""}</span>
+                    <span>{quotes ? `${quotes} Veces citado` : ""}</span>
                 </Stats>
             )}
             <Buttons>
                 <div>
-                    <a
+                    <span
                         className="comment"
                         href="#"
                         onClick={(e) => {
@@ -22,63 +36,90 @@ const ButtonGroup = ({ replies, likes, likeTweet, liked, showForm, main }) => {
                         }}
                     >
                         <VscComment className="commentBtn" />
-                    </a>
+                    </span>
                 </div>
                 <div>
-                    <a className="retweet">
-                        <VscGitCompare className="retweetBtn" />
-                    </a>
+                    <span className="retweet" onClick={(e) => retweet(e)}>
+                        <VscGitCompare
+                            className={
+                                retweeted
+                                    ? "retweetBtn retweeted"
+                                    : "retweetBtn"
+                            }
+                        />
+                    </span>
                 </div>
                 <div>
                     {liked ? (
-                        <a className="like liked" onClick={likeTweet} href="#">
+                        <span
+                            className="like liked"
+                            onClick={likeTweet}
+                            href="#"
+                        >
                             <IoHeartSharp className="likeBtn" />
-                        </a>
+                        </span>
                     ) : (
-                        <a className="like " onClick={likeTweet}>
+                        <span className="like " onClick={likeTweet}>
                             <IoHeartOutline className="likeBtn" />
-                        </a>
+                        </span>
                     )}
                 </div>
                 <div>
-                    <a className="comment">
+                    <span
+                        className="comment"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            setQuoteModal(true);
+                        }}
+                    >
                         <VscFoldUp className="commentBtn" />
-                    </a>
+                    </span>
                 </div>
             </Buttons>
         </MainWrapper>
     ) : (
         <Wrapper>
             <div>
-                <a className="comment" href="#" onClick={showForm}>
+                <span className="comment" href="#" onClick={showForm}>
                     <VscComment className="commentBtn" />
                     <span>{replies ? replies : ""}</span>
-                </a>
+                </span>
             </div>
             <div>
-                <a className="retweet">
+                <span
+                    className={retweeted ? "retweet retweeted" : "retweet"}
+                    href="#"
+                    onClick={retweet}
+                >
                     <VscGitCompare className="retweetBtn" />
-                    <span>2</span>
-                </a>
+                    <span>{retweets > 0 ? retweets : ""}</span>
+                </span>
             </div>
             <div>
                 {liked ? (
-                    <a className="like liked" onClick={likeTweet}>
+                    <span className="like liked" onClick={likeTweet}>
                         <IoHeartSharp className="likeBtn" />
                         <span>{likes ? likes : ""}</span>
-                    </a>
+                    </span>
                 ) : (
-                    <a className="like " onClick={likeTweet}>
+                    <span className="like " onClick={likeTweet}>
                         <IoHeartOutline className="likeBtn" />
                         <span>{likes ? likes : ""}</span>
-                    </a>
+                    </span>
                 )}
             </div>
             <div>
-                <a className="comment">
+                <span
+                    className="comment"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setQuoteModal(true);
+                    }}
+                >
                     <VscFoldUp className="commentBtn" />
-                    <span>30</span>
-                </a>
+                    <span>{quotes ? quotes : ""}</span>
+                </span>
             </div>
         </Wrapper>
     );
