@@ -1,0 +1,6 @@
+fix pfp google
+fix name doesnt change on twit
+clean input after tweet
+fix can retwit own twits
+add popup menu on ellipsis instead of delete 
+fix can delete anyones twit

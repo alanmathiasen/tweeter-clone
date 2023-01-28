@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { TweetWrapper } from "./TweetList.styled";
 
-import imgPerfil from "../../imgs/perfil.jpg";
 import TweetGroup from "../TweetGroup";
 
 const TweetHome = ({ arrayTweets }) => {
