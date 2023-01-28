@@ -31,7 +31,6 @@ const TweetGroup = ({ tweetArray, parent }) => {
                         );
                     }
                 })}
-            {console.log(parent, "PARNETGROUP")}
         </Wrapper>
     );
 };

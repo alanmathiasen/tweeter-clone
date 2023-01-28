@@ -10,7 +10,7 @@ export const Overlay = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1450;
+    z-index: 9990;
 `;
 
 export const Modal = styled.div`
@@ -22,7 +22,7 @@ export const Modal = styled.div`
     min-height: 200px;
     width: 600px;
     background-color: #fff;
-    z-index: 100;
+    z-index: 2500;
     border-radius: 18px;
     padding: 70px 16px 40px 16px;
 

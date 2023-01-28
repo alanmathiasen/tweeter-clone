@@ -116,12 +116,7 @@ const TweetPage = () => {
             {parents && <TweetGroup tweetArray={parents} parent />}
 
             {idState && (
-                <TweetIndividual
-                    tweetId={idState}
-                    mainTweet
-                    key={idState}
-                    hasUp={parents.length > 0 ? true : false}
-                />
+                <TweetIndividual tweetId={idState} mainTweet key={idState} hasUp={parents.length > 0 ? true : false} />
             )}
             {idState && <TweetGroup tweetArray={children} />}
         </Wrapper>
