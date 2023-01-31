@@ -144,12 +144,3 @@ export const TweetMainContent = styled.div`
         margin: 12px 0;
     }
 `;
-
-export const RespondingTo = styled.div`
-    color: grey;
-
-    span {
-        font-weight: 500;
-        color: #bf5252;
-    }
-`;

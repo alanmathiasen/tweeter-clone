@@ -1,32 +1,27 @@
-import { useState, useEffect } from "react";
-
-import { Wrapper } from "./TweetGroup.styles";
-
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
-
 import TweetIndividual from "../TweetIndividual";
 import Retweet from "../Retweet";
+
+import { Wrapper } from "./TweetGroup.styles";
 
 const TweetGroup = ({ tweetArray, parent }) => {
     return (
         <Wrapper>
             {tweetArray &&
-                tweetArray.map((child, index) => {
-                    if (child.retweet) {
-                        return <Retweet tweet={child} key={child.id} />;
-                        // } else if (child.quote) {
+                tweetArray.map((tweet, index) => {
+                    if (tweet.retweet) return <Retweet tweet={tweet} key={tweet.id} />;
+                    else {
+                        // } else if (tweet.quote) {
                         //     return <Quote />;
-                    } else {
                         return (
                             <TweetIndividual
-                                tweetId={child.id}
-                                key={child.id}
+                                //tweetId={tweet.id}
+                                tweet={tweet}
+                                key={tweet.id}
                                 lines={{
                                     hasUp: parent && index !== 0 ? true : false,
                                     hasDown: parent && true,
                                 }}
-                                quote={child.quote}
+                                quote={tweet.quote}
                             />
                         );
                     }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getTweetsOnRealTime } from "../firebase/getters";
-export const useTweets = () => {
+export const useLoadTweets = () => {
     const [loading, setLoading] = useState(true);
     const [tweets, setTweets] = useState([]);
 
