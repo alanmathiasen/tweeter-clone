@@ -10,9 +10,12 @@ export const useTweet = ({ tweetId, isMain }) => {
 
     const initialState = {
         tweetId,
-        liked: false,
-        retweeted: false,
-        quoted: false,
+        isLiked: false,
+        likes: 0,
+        isRetweeted: false,
+        retweets: 0,
+        isQuoted: false,
+        quotes: 0,
         loading: true,
         date: "",
         isMain,
@@ -23,16 +26,29 @@ export const useTweet = ({ tweetId, isMain }) => {
         const tweetRef = doc(db, "tweets", tweetId);
         const unsubscribe = onSnapshot(tweetRef, (snap) => {
             if (snap.data()) {
-                if (snap.data().likes && snap.data().likes.includes(emailLogueado)) {
-                    dispatch({ type: "like", payload: true });
-                } else {
-                    dispatch({ type: "like", payload: false });
+                if (!!snap.data().likes) {
+                    dispatch({ type: "likes", payload: snap.data().likes.length });
+                    if (snap.data().likes.includes(emailLogueado)) {
+                        dispatch({ type: "isLiked", payload: true });
+                    } else {
+                        dispatch({ type: "isLiked", payload: false });
+                    }
                 }
-
-                if (snap.data().retweets && snap.data().retweets.includes(emailLogueado)) {
-                    dispatch({ type: "retweet", payload: true });
-                } else {
-                    dispatch({ type: "retweet", payload: false });
+                if (snap.data().quotes) {
+                    dispatch({ type: "quotes", payload: snap.data().quotes.length });
+                    if (snap.data().quotes.includes(emailLogueado)) {
+                        dispatch({ type: "isQuoted", payload: true });
+                    } else {
+                        dispatch({ type: "isQuoted", payload: false });
+                    }
+                }
+                if (snap.data().retweets) {
+                    dispatch({ type: "retweets", payload: snap.data().retweets.length });
+                    if (snap.data().retweets.includes(emailLogueado)) {
+                        dispatch({ type: "isRetweeted", payload: true });
+                    } else {
+                        dispatch({ type: "isRetweeted", payload: false });
+                    }
                 }
 
                 if (isMain) dispatch({ type: "longDate", payload: snap.data().timestamp });
@@ -54,12 +70,18 @@ export const useTweet = ({ tweetId, isMain }) => {
 
 export const reducer = (state, action) => {
     switch (action.type) {
-        case "like":
-            return { ...state, liked: action.payload };
-        case "retweet":
-            return { ...state, retweeted: action.payload };
-        case "quote":
-            return { ...state, quoted: action.payload };
+        case "isLiked":
+            return { ...state, isLiked: action.payload };
+        case "likes":
+            return { ...state, likes: action.payload };
+        case "isRetweeted":
+            return { ...state, isRetweeted: action.payload };
+        case "retweets":
+            return { ...state, retweets: action.payload };
+        case "isQuoted":
+            return { ...state, isQuoted: action.payload };
+        case "quotes":
+            return { ...state, quotes: action.payload };
         case "author":
             return { ...state, author: action.payload };
         case "loading":

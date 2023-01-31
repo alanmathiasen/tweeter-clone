@@ -40,19 +40,14 @@ const TweetIndividual = ({ tweet, mainTweet = false, lines, hasUp, children }) =
 
     const { state, dispatch } = useTweet({ tweetId: tweet.id, isMain: mainTweet });
 
-    function isLoggedIn() {
-        if (!emailLogueado) {
-            alert("please login");
-            return;
-        }
-    }
+    function isLoggedIn() {}
     //gets author and sets date
 
     useEffect(() => {
         try {
             (async () => {
                 setAuthor(await getAuthor(tweet.usuario));
-                console.log(tweet.usuario);
+                // console.log(tweet.usuario);
                 //setAuthor("AUTHOR");
             })();
         } catch (err) {
@@ -69,25 +64,38 @@ const TweetIndividual = ({ tweet, mainTweet = false, lines, hasUp, children }) =
 
     const handleShowModal = (e) => {
         e.stopPropagation();
-        isLoggedIn();
+        if (!emailLogueado) {
+            alert("please login");
+            return;
+        }
         setReplyModal(true);
     };
 
     const eliminarTweet = async (e) => {
         e.stopPropagation();
-        isLoggedIn();
+        if (!emailLogueado) {
+            alert("please login");
+            return;
+        }
         await deleteTweet(tweet, emailLogueado);
     };
 
     const handleLikeTweet = async (e) => {
         e.stopPropagation();
-        isLoggedIn();
+        if (!emailLogueado) {
+            alert("please login");
+            return;
+        }
+        console.log(emailLogueado);
         await likeTweet(tweet.id, emailLogueado);
     };
 
     const handleRetweet = async (e) => {
         e.stopPropagation();
-        isLoggedIn();
+        if (!emailLogueado) {
+            alert("please login");
+            return;
+        }
         await retweet(tweet.id, emailLogueado);
     };
 
@@ -121,16 +129,16 @@ const TweetIndividual = ({ tweet, mainTweet = false, lines, hasUp, children }) =
 
                     <ButtonGroup
                         replies={tweet.children ? tweet.children.length : null}
-                        likes={tweet.likes ? tweet.likes.length : null}
+                        likes={state.likes > 0 ? state.likes : null}
                         likeTweet={handleLikeTweet}
-                        liked={state.liked}
+                        liked={state.isLiked}
                         main={mainTweet}
                         showForm={setReplyModal}
-                        retweeted={state.retweeted}
+                        retweeted={state.isRetweeted}
                         retweet={handleRetweet}
-                        retweets={tweet.retweets ? tweet.retweets.length : null}
+                        retweets={state.retweets > 0 ? state.retweets : null}
                         setQuoteModal={setQuoteModal}
-                        quotes={tweet.quotes ? tweet.quotes.length : null}
+                        quotes={state.quotes > 0 ? state.quotes : null}
                     />
                 </MainContainer>
             ) : (
@@ -154,15 +162,15 @@ const TweetIndividual = ({ tweet, mainTweet = false, lines, hasUp, children }) =
                     <TweetContent>{tweet.descripcion && <p>{tweet.descripcion}</p>}</TweetContent>
                     <ButtonGroup
                         replies={tweet.children ? tweet.children.length : null}
-                        likes={tweet.likes ? tweet.likes.length : null}
+                        likes={state.likes > 0 ? state.likes : null}
                         likeTweet={handleLikeTweet}
-                        liked={state.liked}
+                        liked={state.isLiked}
                         showForm={setReplyModal}
-                        retweeted={state.retweeted}
+                        retweeted={state.isRetweeted}
                         retweet={handleRetweet}
-                        retweets={tweet.retweets ? tweet.retweets.length : null}
+                        retweets={state.retweets > 0 ? state.retweets : null}
                         setQuoteModal={setQuoteModal}
-                        quotes={tweet.quotes ? tweet.quotes.length : null}
+                        quotes={state.quotes > 0 ? state.quotes : null}
                     />
                     {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : <></>}
                     <QuoteModal showModal={quoteModal} setShowModal={setQuoteModal} author={author} tweet={tweet} />

@@ -89,7 +89,7 @@ const TweetPage = () => {
         const arr = [];
         const tweetRef = doc(db, "tweets", id);
         const tweetSnap = await getDoc(tweetRef);
-        console.log(tweetSnap.data().parentId);
+        // console.log(tweetSnap.data().parentId);
         if (tweetSnap.data().parentId) {
             arr.push(tweetSnap.data().parentId);
             await hasParent(tweetSnap.data().parentId, arr);
