@@ -5,27 +5,32 @@ import TweetIndividual from "../TweetIndividual";
 import { Wrapper, RetweetIcon, Text } from "./Retweet.styles";
 import { db } from "../../firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+import { getAuthor, getTweet } from "../../firebase/getters";
 const Retweet = ({ tweet }) => {
-    const [retweetFrom, setRetweetFrom] = useState();
+    const [author, setAuthor] = useState();
+    const [parentTweet, setParentTweet] = useState(undefined);
 
     useEffect(() => {
-        (async function getAuthor() {
-            const userRef = doc(db, "usuarios", tweet.parent);
-            const userSnap = await getDoc(userRef);
-            userSnap.data()
-                ? setRetweetFrom(userSnap.data())
-                : setRetweetFrom({});
+        (async function getData() {
+            // const userRef = doc(db, "usuarios", tweet.parent);
+            // const userSnap = await getDoc(userRef);
+            // userSnap.data() ? setRetweetFrom(userSnap.data()) : setRetweetFrom({});
+            console.log("tweet on retweet", { tweet });
+            if (tweet && tweet.parent) setAuthor(await getAuthor(tweet.parent));
+            if (tweet && tweet.retweet) setParentTweet(await getTweet(tweet.retweet));
         })();
     }, [tweet]);
 
     return (
         <>
-            <TweetIndividual tweetId={tweet.retweet}>
-                <RetweetIcon>
-                    <VscGitCompare />
-                </RetweetIcon>
-                <Text>{retweetFrom ? retweetFrom.ruta : null}</Text>
-            </TweetIndividual>
+            {parentTweet && (
+                <TweetIndividual tweetId={parentTweet.id} tweet={parentTweet}>
+                    <RetweetIcon>
+                        <VscGitCompare />
+                    </RetweetIcon>
+                    <Text>{author ? author.ruta : null}</Text>
+                </TweetIndividual>
+            )}
         </>
     );
 };

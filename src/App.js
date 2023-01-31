@@ -21,47 +21,39 @@ import { PerfilProvider } from "./context/PerfilContext";
 import { SugeridosProvider } from "./context/SugeridosContext";
 
 const App = () => {
-  const { usuarioLogueado, handleTweettModal, tweettModal } =
-    useGlobalContext();
+    const { usuarioLogueado, handleTweettModal, tweettModal } = useGlobalContext();
 
-  return (
-    <Browser>
-      <TweetModal />
-      <OverlayModal
-        tweettModal={tweettModal}
-        onClick={() => handleTweettModal()}
-      />
-      <AppWrapper>
-        <Sidebar />
-        <PerfilProvider>
-          {/* PERFIL CONTEXT PROVIDER */}
-          <SugeridosProvider>
-            <Routes>
-              {usuarioLogueado ? (
-                <Route exact path="/" element={<Home />} />
-              ) : (
-                <Route exact path="/" element={<Home />} />
-              )}
-              <Route exact path="/:id" element={<Perfil />} />
-              <Route exact path="/registro" element={<Registro />} />
-              <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
-              <Route exact path="/:id/seguidores" element={<Seguidores />} />
-              <Route exact path="/tweet/:id" element={<TweetPage />} />
-              <Route exact path="/sugeridos" element={<Sugeridos />} />
-              <Route
-                exact
-                path="/notificaciones"
-                element={<Notificaciones />}
-              />
-            </Routes>
-            <RightMenu />
-          </SugeridosProvider>
-          {/* PERFIL CONTEXT PROVIDER */}
-        </PerfilProvider>
-      </AppWrapper>
-      {!usuarioLogueado && <LoginBar />}
-    </Browser>
-  );
+    return (
+        <Browser>
+            {/* {tweettModal && <TweetModal />}
+            <OverlayModal tweettModal={tweettModal} onClick={() => handleTweettModal()} /> */}
+            <AppWrapper>
+                <Sidebar />
+                <PerfilProvider>
+                    {/* PERFIL CONTEXT PROVIDER */}
+                    <SugeridosProvider>
+                        <Routes>
+                            {usuarioLogueado ? (
+                                <Route exact path="/" element={<Home />} />
+                            ) : (
+                                <Route exact path="/" element={<Home />} />
+                            )}
+                            <Route exact path="/:id" element={<Perfil />} />
+                            <Route exact path="/registro" element={<Registro />} />
+                            <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
+                            <Route exact path="/:id/seguidores" element={<Seguidores />} />
+                            <Route exact path="/tweet/:id" element={<TweetPage />} />
+                            <Route exact path="/sugeridos" element={<Sugeridos />} />
+                            <Route exact path="/notificaciones" element={<Notificaciones />} />
+                        </Routes>
+                        <RightMenu />
+                    </SugeridosProvider>
+                    {/* PERFIL CONTEXT PROVIDER */}
+                </PerfilProvider>
+            </AppWrapper>
+            {!usuarioLogueado && <LoginBar />}
+        </Browser>
+    );
 };
 
 export default App;

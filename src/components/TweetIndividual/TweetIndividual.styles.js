@@ -3,8 +3,7 @@ import { tweetGrid } from "../../styles/mixins";
 export const TweetContainer = styled.div`
     ${tweetGrid}
 
-    border-bottom: ${(props) =>
-        props.lines.hasDown ? "" : "1px solid #ededed"};
+    border-bottom: ${(props) => (props.lines.hasDown ? "" : "1px solid #ededed")};
     padding: 8px 16px;
     cursor: pointer;
     position: relative;
@@ -33,7 +32,7 @@ export const ImgPerfil = styled.div`
     z-index: 1401;
     grid-column: 1;
     grid-row: span 5;
-    justify-self: end;
+    justify-self: start;
     img {
         height: 48px;
         width: 48px;
@@ -97,7 +96,6 @@ export const TweetNav = styled.div`
 `;
 
 export const TweetContent = styled.div`
-    padding-top: 5px;
     grid-column: 2/4;
 `;
 export const Username = styled.span`
@@ -144,14 +142,5 @@ export const TweetMainContent = styled.div`
     p {
         font-size: 20px;
         margin: 12px 0;
-    }
-`;
-
-export const RespondingTo = styled.div`
-    color: grey;
-
-    span {
-        font-weight: 500;
-        color: #bf5252;
     }
 `;

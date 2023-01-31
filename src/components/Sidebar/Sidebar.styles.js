@@ -6,8 +6,9 @@ export const Wrapper = styled.div`
     list-style: none;
     padding-left: 1rem;
     justify-content: space-between;
-    height: 98vh;
-    margin-top: 0.5rem;
+    height: 100vh;
+    position: sticky;
+    top: 0;
 
     ul {
         display: flex;
@@ -128,8 +129,7 @@ export const ModalWrapper = styled.div`
     padding: 12px 0;
     position: absolute;
     bottom: 6rem;
-    box-shadow: rgb(101 119 134 / 20%) 0px 0px 15px,
-        rgb(101 119 134 / 15%) 0px 0px 3px 1px;
+    box-shadow: rgb(101 119 134 / 20%) 0px 0px 15px, rgb(101 119 134 / 15%) 0px 0px 3px 1px;
 `;
 
 export const UserCardOnModal = styled.div`

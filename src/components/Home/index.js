@@ -1,54 +1,18 @@
-import React, { useState, useEffect } from "react";
-
-import { HomeWrapper } from "./Home.styles";
+import React from "react";
+import { useLoadTweets } from "../../hooks/useLoadTweets";
+import { HomeWrapper, TweetFormWrapper } from "./Home.styles";
 import TweetForm from "../TweetForm";
-import Tweet from "../Tweet";
-import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
-
-import { useGlobalContext } from "../../context/GlobalContext";
+import TweetHome from "../TweetHome";
 
 const Home = () => {
-    const { emailLogueado } = useGlobalContext();
-
-    const [arrayTweets, setArrayTweets] = useState([]);
-
-    const [tweetsConQuery, setTweetsConQuery] = useState([]);
-
-    const getTweets = () => {
-        const docQuery = query(
-            collection(db, "tweets"),
-            orderBy("timestamp", "desc")
-        );
-
-        const misDatos = onSnapshot(docQuery, (querySnapshot) => {
-            const misTweets = [];
-            querySnapshot.forEach((doc) => {
-                console.log(doc.data(), "ACA HAY ALGUN RETWEET");
-                misTweets.push({ ...doc.data(), id: doc.id });
-            });
-
-            setArrayTweets(misTweets);
-        });
-    };
-
-    useEffect(() => {
-        getTweets();
-    }, []);
-
-    useEffect(() => {
-        console.log(arrayTweets);
-    }, [arrayTweets]);
-
+    const { tweets, loading } = useLoadTweets();
     return (
         <HomeWrapper>
             <h2>Inicio</h2>
-            <TweetForm
-                correoUsuario={emailLogueado}
-                arrayTweets={arrayTweets}
-                setArrayTweets={setArrayTweets}
-            />
-            <Tweet correoUsuario={emailLogueado} arrayTweets={arrayTweets} />
+            <TweetFormWrapper>
+                <TweetForm />
+            </TweetFormWrapper>
+            {!tweets || tweets.length === 0 ? "loading" : <TweetHome arrayTweets={tweets} />}
         </HomeWrapper>
     );
 };
