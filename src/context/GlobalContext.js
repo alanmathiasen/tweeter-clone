@@ -21,7 +21,7 @@ const AppProvider = ({ children }) => {
             if (user !== null) {
                 const email = user.email;
                 setEmailLogueado(email);
-                // console.log({ user });
+                console.log({ user });
                 const [name, mail] = String(email).split("@");
                 const ruta = name;
                 const docRef = doc(db, "usuarios", email);

@@ -1,18 +1,19 @@
 import React from "react";
-import { useLoadTweets } from "../../hooks/useLoadTweets";
+import { useTweets } from "../../hooks/useTweets";
 import { HomeWrapper, TweetFormWrapper } from "./Home.styles";
 import TweetForm from "../TweetForm";
 import TweetHome from "../TweetHome";
 
 const Home = () => {
-    const { tweets, loading } = useLoadTweets();
+    const { tweets, loading } = useTweets();
+
     return (
         <HomeWrapper>
             <h2>Inicio</h2>
             <TweetFormWrapper>
                 <TweetForm />
             </TweetFormWrapper>
-            {!tweets || tweets.length === 0 ? "loading" : <TweetHome arrayTweets={tweets} />}
+            {loading ? "loading" : <TweetHome arrayTweets={tweets} />}
         </HomeWrapper>
     );
 };

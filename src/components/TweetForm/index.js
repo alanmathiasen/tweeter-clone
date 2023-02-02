@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TweetFormWrapper, ButtonTwittear, ImagenPerfil, InputWrapper, TweetInput } from "./TweetForm.styles";
-import ModalBase from "../Modals/ModalBase";
+import ModalBase from "../ModalBase";
 import {
     collection,
     doc,

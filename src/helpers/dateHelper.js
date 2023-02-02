@@ -22,5 +22,3 @@ export const shortDate = (timestamp) => {
         return format(new Date(timestamp), "DD/MM");
     }
 };
-
-export const longDate = (timestamp) => format(new Date(timestamp), "hh:mm a · D MMM YYYY");

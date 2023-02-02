@@ -1,5 +1,5 @@
 import React from "react";
-import ModalBase from "../../Modals/ModalBase";
+import ModalBase from "../../ModalBase";
 
 import TweetForm from "../../TweetForm";
 
@@ -9,7 +9,11 @@ const QuoteModal = ({ showModal, setShowModal, author, tweet }) => {
     return (
         <>
             <ModalBase showModal={showModal} setShowModal={setShowModal}>
-                <TweetForm quoteId={tweet.id} className="tweetForm" setShowModal={setShowModal}>
+                <TweetForm
+                    quoteId={tweet.id}
+                    className="tweetForm"
+                    setShowModal={setShowModal}
+                >
                     <Quote tweetId={tweet.id}></Quote>
                 </TweetForm>
             </ModalBase>

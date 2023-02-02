@@ -40,12 +40,22 @@ const ButtonGroup = ({
                 </div>
                 <div>
                     <span className="retweet" onClick={(e) => retweet(e)}>
-                        <VscGitCompare className={retweeted ? "retweetBtn retweeted" : "retweetBtn"} />
+                        <VscGitCompare
+                            className={
+                                retweeted
+                                    ? "retweetBtn retweeted"
+                                    : "retweetBtn"
+                            }
+                        />
                     </span>
                 </div>
                 <div>
                     {liked ? (
-                        <span className="like liked" onClick={likeTweet} href="#">
+                        <span
+                            className="like liked"
+                            onClick={likeTweet}
+                            href="#"
+                        >
                             <IoHeartSharp className="likeBtn" />
                         </span>
                     ) : (
@@ -77,7 +87,11 @@ const ButtonGroup = ({
                 </span>
             </div>
             <div>
-                <span className={retweeted ? "retweet retweeted" : "retweet"} href="#" onClick={retweet}>
+                <span
+                    className={retweeted ? "retweet retweeted" : "retweet"}
+                    href="#"
+                    onClick={retweet}
+                >
                     <VscGitCompare className="retweetBtn" />
                     <span>{retweets > 0 ? retweets : ""}</span>
                 </span>
