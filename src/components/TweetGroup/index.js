@@ -1,9 +1,4 @@
-import { useState, useEffect } from "react";
-
 import { Wrapper } from "./TweetGroup.styles";
-
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
 
 import TweetIndividual from "../TweetIndividual";
 import Retweet from "../Retweet";

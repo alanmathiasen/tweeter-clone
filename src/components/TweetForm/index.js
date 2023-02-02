@@ -18,8 +18,9 @@ import { db } from "../../firebase/firebaseConfig";
 import FotoPerfil from "../../imgs/perfil.jpg";
 import { ButtonColored } from "../Utils/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { createTweet } from "../../firebase/tweetCrud";
 
-const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children }) => {
+const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, placeholder = "Que esta pasando?" }) => {
     const { emailLogueado, datosUser } = useGlobalContext();
 
     const [detalles, setDetalles] = useState("");
@@ -28,45 +29,32 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children }) 
         setDetalles(e.target.value);
     };
 
-    async function agregarTweet(e) {
+    async function postTweet(e) {
         try {
+            e.stopPropagation();
             e.preventDefault();
+            console.log("hola");
             if (typeof setShowModal === "function") {
                 setShowModal(false);
             }
-            const tweetsCollectionRef = collection(db, "tweets");
-            const docRef = await addDoc(tweetsCollectionRef, {
+            const tweet = {
                 usuario: emailLogueado,
                 descripcion: detalles,
                 timestamp: +new Date(),
                 parentId: parentId || null,
                 quoteId: quoteId || null,
                 children: [],
-            });
-            if (quoteId) {
-                const tweetRef = doc(db, "tweets", quoteId);
-                await updateDoc(tweetRef, {
-                    quotes: arrayUnion(emailLogueado),
-                });
-            }
-            if (parentId) await addChildren(parentId, docRef.id);
+            };
+            await createTweet(tweet);
         } catch (err) {
             console.error(err);
+        } finally {
+            setDetalles("");
         }
-
-        //setDetalles("");
-    }
-
-    async function addChildren(parentId, childId) {
-        const parentDocRef = doc(db, "tweets", parentId);
-
-        await updateDoc(parentDocRef, {
-            children: arrayUnion(childId),
-        });
     }
 
     return (
-        <TweetFormWrapper>
+        <TweetFormWrapper onSubmit={postTweet}>
             <ImagenPerfil src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}></ImagenPerfil>
             <InputWrapper>
                 <TweetInput
@@ -74,14 +62,14 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children }) 
                     id="detalles"
                     onChange={handleChange}
                     value={detalles}
-                    placeholder="Que esta pasando?"
+                    placeholder={placeholder}
                 />
                 {/*
        TODO
        no dejar twittear si no se esta loggeado 
        */}
                 {children}
-                <ButtonColored type="submit" onClick={(e) => agregarTweet(e)}>
+                <ButtonColored type="submit" disabled={detalles === ""}>
                     Tweet
                 </ButtonColored>
                 {/* <ButtonTwittear type="submit">Tweet</ButtonTwittear> */}
