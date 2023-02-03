@@ -1,11 +1,11 @@
 import React from "react";
 import { useTweets } from "../../hooks/useTweets";
-import { HomeWrapper, TweetFormWrapper } from "./Home.styles";
+import { HomeWrapper, NewTweets, TweetFormWrapper } from "./Home.styles";
 import TweetForm from "../TweetForm";
-import TweetHome from "../TweetHome";
+import TweetGroup from "../TweetGroup";
 
 const Home = () => {
-    const { tweets, loading } = useTweets();
+    const { tweets, loading, queuedTweets, mergeTweets } = useTweets();
 
     return (
         <HomeWrapper>
@@ -13,7 +13,12 @@ const Home = () => {
             <TweetFormWrapper>
                 <TweetForm />
             </TweetFormWrapper>
-            {loading ? "loading" : <TweetHome arrayTweets={tweets} />}
+            {/* {loading ? "loading" : <TweetHome arrayTweets={tweets} />} */}
+
+            {queuedTweets.length > 0 && (
+                <NewTweets onClick={mergeTweets}>Mostrar {queuedTweets.length} tweets nuevos.</NewTweets>
+            )}
+            <TweetGroup tweetArray={tweets} />
         </HomeWrapper>
     );
 };
