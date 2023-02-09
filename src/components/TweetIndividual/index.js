@@ -81,64 +81,70 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
         setShowReplyModal(true);
     };
 
-    if (loading) return <></>;
-
     if (mainTweet) {
         return (
             <MainContainer>
-                <RelatedTweetLine hasUp={hasUp} />
-                <TweetHeader>
-                    <ImgPerfil>
-                        <img src={(author && author.photoURL) || imgPerfil} alt="" />
-                    </ImgPerfil>
+                {loading ? (
+                    <>Loading</>
+                ) : (
+                    <>
+                        <RelatedTweetLine hasUp={hasUp} />
+                        <TweetHeader>
+                            <ImgPerfil>
+                                <img
+                                    src={(author && author.photoURL) || imgPerfil}
+                                    referrerPolicy="no-referrer"
+                                    alt="user profile"
+                                />
+                            </ImgPerfil>
 
-                    <MainUser>
-                        <Username>{author && author.nombre}</Username>
-                        <span>{author && `@${author.ruta}`}</span>
-                    </MainUser>
+                            <MainUser>
+                                <Username>{author && author.nombre}</Username>
+                                <span>{author && `@${author.ruta}`}</span>
+                            </MainUser>
 
-                    <BorrarTweet onClick={(e) => handleDeleteTweet(e, tweetId)}>
-                        <BsThreeDotsVertical className="commentBtn" />
-                    </BorrarTweet>
-                </TweetHeader>
-                <TweetMainContent>
-                    {tweet.descripcion && <p>{tweet.descripcion}</p>}
-                    <span></span>
-                    {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : ""}
-                </TweetMainContent>
-                <div>{date}</div>
-
-                <ButtonGroup
-                    replies={tweet.children ? tweet.children.length : null}
-                    likes={tweet.likes ? tweet.likes.length : null}
-                    likeTweet={handleLikeTweet}
-                    liked={isLikedByUser}
-                    main={mainTweet}
-                    showForm={setShowReplyModal}
-                    retweeted={isRetweetedByUser}
-                    retweet={reTweet}
-                    retweets={tweet.retweets ? tweet.retweets.length : null}
-                    setQuoteModal={setShowQuoteModal}
-                    quotes={tweet.quotes ? tweet.quotes.length : null}
-                />
-
-                <ModalBase showModal={showReplyModal} setShowModal={setShowReplyModal}>
-                    <BaseTweet author={author} tweet={tweet}>
-                        <RespondingTo>
-                            Respondiendo a <span>{author && `@${author.ruta}`}</span>
-                        </RespondingTo>
-                        <RelatedTweetLine hasDown paddingLeft={"24px"} />
-                    </BaseTweet>
-                    <TweetForm parentId={tweetId} className="tweetForm" setShowModal={setShowReplyModal}>
-                        <RelatedTweetLine hasUp paddingLeft={"24px"} />
-                    </TweetForm>
-                </ModalBase>
-                <QuoteModal
-                    showModal={showQuoteModal}
-                    setShowModal={setShowQuoteModal}
-                    author={author}
-                    tweet={tweet}
-                ></QuoteModal>
+                            <BorrarTweet onClick={(e) => handleDeleteTweet(e, tweetId)}>
+                                <BsThreeDotsVertical className="commentBtn" />
+                            </BorrarTweet>
+                        </TweetHeader>
+                        <TweetMainContent>
+                            {tweet.descripcion && <p>{tweet.descripcion}</p>}
+                            <span></span>
+                            {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : ""}
+                        </TweetMainContent>
+                        <div>{date}</div>
+                        <ButtonGroup
+                            replies={tweet.children ? tweet.children.length : null}
+                            likes={tweet.likes ? tweet.likes.length : null}
+                            likeTweet={handleLikeTweet}
+                            liked={isLikedByUser}
+                            main={mainTweet}
+                            showForm={setShowReplyModal}
+                            retweeted={isRetweetedByUser}
+                            retweet={reTweet}
+                            retweets={tweet.retweets ? tweet.retweets.length : null}
+                            setQuoteModal={setShowQuoteModal}
+                            quotes={tweet.quotes ? tweet.quotes.length : null}
+                        />
+                        <ModalBase showModal={showReplyModal} setShowModal={setShowReplyModal}>
+                            <BaseTweet author={author} tweet={tweet}>
+                                <RespondingTo>
+                                    Respondiendo a <span>{author && `@${author.ruta}`}</span>
+                                </RespondingTo>
+                                <RelatedTweetLine hasDown paddingLeft={"24px"} />
+                            </BaseTweet>
+                            <TweetForm parentId={tweetId} className="tweetForm" setShowModal={setShowReplyModal}>
+                                <RelatedTweetLine hasUp paddingLeft={"24px"} />
+                            </TweetForm>
+                        </ModalBase>
+                        <QuoteModal
+                            showModal={showQuoteModal}
+                            setShowModal={setShowQuoteModal}
+                            author={author}
+                            tweet={tweet}
+                        ></QuoteModal>
+                    </>
+                )}
             </MainContainer>
         );
     } else {
@@ -153,7 +159,11 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                     <BsThreeDotsVertical className="commentBtn" />
                 </BorrarTweet>
                 <ImgPerfil>
-                    <img src={(author && author.photoURL) || imgPerfil} alt="" />
+                    <img
+                        src={(author && author.photoURL) || imgPerfil}
+                        referrerPolicy="no-referrer"
+                        alt="user profile"
+                    />
                 </ImgPerfil>
                 <TweetNav>
                     <Username>{author && author.nombre}</Username>

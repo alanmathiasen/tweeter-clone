@@ -6,7 +6,7 @@ import { onAuthStateChanged, GoogleAuthProvider, getRedirectResult } from "fireb
 const GlobalContext = React.createContext();
 
 const AppProvider = ({ children }) => {
-    const [usuarioLogueado, setUsuarioLogueado] = useState({});
+    const [usuarioLogueado, setUsuarioLogueado] = useState();
     const [emailLogueado, setEmailLogueado] = useState("");
     const [datosUser, setDatosUser] = useState({}); //Usuario Logueado
     const [tweettModal, setTweettModal] = useState(false);
@@ -58,6 +58,11 @@ const AppProvider = ({ children }) => {
 
         getDatosUsuario();
     }, [usuarioLogueado]);
+
+    useEffect(() => {
+        console.log({ usuarioLogueado });
+        console.log({ datosUser });
+    }, [datosUser]);
 
     const handleTweettModal = () => {
         setTweettModal(!tweettModal);

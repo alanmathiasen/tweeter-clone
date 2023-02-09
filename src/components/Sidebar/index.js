@@ -26,17 +26,10 @@ import ModalBase from "../ModalBase";
 import TweetForm from "../TweetForm";
 
 const Sidebar = () => {
-    const { emailLogueado, datosUser, tweettModal, setTweettModal, handleTweettModal } = useGlobalContext();
+    const { datosUser } = useGlobalContext();
+
     const [modalState, setModalState] = useState(false);
-    // const [tweettModal, setTweettModal] = useState(false);
-
-    let usuario = String(emailLogueado);
-    const [name, email] = usuario.split("@");
-
-    // const handleTweettModal = () => {
-    //   setTweettModal(!tweettModal);
-    // };
-    const [showModal, setShowModal] = useState(false);
+    const [tweetModal, setTweetModal] = useState(false);
     const handleModal = () => {
         setModalState(!modalState);
     };
@@ -63,13 +56,13 @@ const Sidebar = () => {
                             </Icon>
                             Notificaciones
                         </Link>
-                        <Link to={`/${name}`}>
+                        <Link to={`/${datosUser.ruta}`}>
                             <Icon>
                                 <HiOutlineUser />
                             </Icon>
                             Perfil
                         </Link>
-                        <ButtonColored children="Tweet" onClick={() => setShowModal(!showModal)} />
+                        <ButtonColored children="Tweet" onClick={() => setTweetModal(!tweetModal)} />
                     </ul>
                 </div>
                 {modalState && auth.currentUser && (
@@ -95,11 +88,12 @@ const Sidebar = () => {
                     </ModalWrapper>
                 )}
                 {auth.currentUser && (
-                    <UserCard onClick={() => handleModal()}>
+                    <UserCard onClick={handleModal}>
                         <CardContent>
                             <ImagenPerfil
                                 src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
                                 alt="foto de perfil"
+                                referrerPolicy="no-referrer"
                             ></ImagenPerfil>
                             <UserInfo>
                                 <h3>{datosUser.nombre}</h3>
@@ -112,8 +106,8 @@ const Sidebar = () => {
                     </UserCard>
                 )}
             </Wrapper>
-            <ModalBase showModal={showModal} setShowModal={setShowModal}>
-                <TweetForm className="tweetForm" setShowModal={setShowModal} />
+            <ModalBase showModal={tweetModal} setShowModal={setTweetModal}>
+                <TweetForm className="tweetForm" setShowModal={setTweetModal} />
             </ModalBase>
         </>
     );

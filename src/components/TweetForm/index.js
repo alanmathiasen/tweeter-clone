@@ -1,20 +1,5 @@
 import React, { useState } from "react";
-import { TweetFormWrapper, ButtonTwittear, ImagenPerfil, InputWrapper, TweetInput } from "./TweetForm.styles";
-import ModalBase from "../ModalBase";
-import {
-    collection,
-    doc,
-    addDoc,
-    updateDoc,
-    arrayUnion,
-    // arrayRemove,
-    // query,
-    // where,
-    // deleteDoc,
-    // getDocs,
-    // getDoc,
-} from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
+import { TweetFormWrapper, ImagenPerfil, InputWrapper, TweetInput } from "./TweetForm.styles";
 import FotoPerfil from "../../imgs/perfil.jpg";
 import { ButtonColored } from "../Utils/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";

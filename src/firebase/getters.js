@@ -3,7 +3,7 @@ import { db } from "./firebaseConfig";
 
 export const getAuthor = async (tweet) => {
     try {
-        if (Object.keys(tweet).length !== 0 && tweet !== "ERROR") {
+        if (Object.keys(tweet).length !== 0 && tweet !== "ERROR" && tweet.usuario) {
             const userRef = doc(db, "usuarios", tweet.usuario);
             const userSnap = await getDoc(userRef);
             return userSnap.data() ? userSnap.data() : {};
