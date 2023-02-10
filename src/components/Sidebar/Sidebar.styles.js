@@ -4,15 +4,16 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     list-style: none;
-    padding-left: 1rem;
     justify-content: space-between;
     height: 100vh;
     position: sticky;
     top: 0;
-
+    width: 251px;
+    padding: 0 12px;
     ul {
         display: flex;
         flex-direction: column;
+        padding: 0;
         a {
             display: flex;
             text-decoration: none;
@@ -21,7 +22,6 @@ export const Wrapper = styled.div`
             font-weight: 400;
             margin: 0.5rem 0;
             border-radius: 50px;
-            padding: 0.5rem;
 
             &:hover {
                 background-color: #eee;
@@ -39,7 +39,6 @@ export const LogoImg = styled.span`
         justify-content: center;
         align-items: center;
         height: 3rem;
-        margin-left: 40px;
         &:hover {
             background: #f7d4d4;
         }

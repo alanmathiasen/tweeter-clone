@@ -1,20 +1,15 @@
 import styled from "styled-components";
 
 export const AppWrapper = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 1fr;
-    grid-column-gap: 20px;
-    grid-row-gap: 0px;
-    margin: 0 16rem;
-    @media (max-width: 1400px) {
-        margin: 0 3rem;
+    display: flex;
+    margin: 0 auto;
+    max-width: 1240px;    
     }
 `;
 
-export const RoutesWrapper = styled.div`
-    border: solid lightgray;
-    border-width: 0px 1px;
+export const ContentWrapper = styled.div`
+    display: flex;
+    width: 100%;
 `;
 
 export const OverlayModal = styled.div`
@@ -26,4 +21,9 @@ export const OverlayModal = styled.div`
     left: 0;
     position: absolute;
     z-index: 1500;
+`;
+
+export const RouteWrapper = styled.div`
+    min-width: 600px;
+    flex-grow: 1;
 `;

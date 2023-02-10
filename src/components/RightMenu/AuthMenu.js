@@ -1,23 +1,19 @@
-import React, { useState } from "react";
-import { FormWrapper, FormContent } from "./Registro.style";
-import { auth, db } from "../../firebase/firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
-
-import { useNavigate } from "react-router";
-//Métodos de firebase auth.
 import {
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signInWithRedirect,
-    signInWithPopup,
     GoogleAuthProvider,
-    getRedirectResult,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signInWithPopup,
 } from "firebase/auth";
-
+import { doc, setDoc } from "firebase/firestore";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth, db } from "../../firebase/firebaseConfig";
+import GoogleSVG from "../common/GoogleSVG";
+import { AuthButton, AuthWrapper, Buttons, SignUpButton, Title } from "./RightMenu.styles";
 const googleProvider = new GoogleAuthProvider();
 
-const Registro = () => {
+const AuthMenu = () => {
     const [estaRegistrado, setEstaRegistrado] = useState(false);
 
     const navigate = useNavigate();
@@ -64,27 +60,19 @@ const Registro = () => {
         await signInWithPopup(auth, googleProvider);
         navigate("/");
     };
-
     return (
-        <div>
-            <FormWrapper>
-                <h3>{estaRegistrado ? "Inicia sesión" : "Registrate"}</h3>
-                <FormContent onSubmit={handleSubmit}>
-                    <input type="text" placeholder="Email" name="email" />
-                    <input type="password" placeholder="Contraseña" name="password" />
-                    <button type="submit">{estaRegistrado ? "Inicia sesión" : "Registrate"}</button>
-                </FormContent>
-
-                <button type="submit" onClick={signInWithGoogle}>
-                    Acceder con Google
-                </button>
-
-                <button onClick={() => setEstaRegistrado(!estaRegistrado)}>
-                    {estaRegistrado ? "¿No tenes cuenta? Registrate" : "¿Ya tenes cuenta? Inicia sesión"}
-                </button>
-            </FormWrapper>
-        </div>
+        <AuthWrapper>
+            <Title>¿Eres nuevo en Tweeter?</Title>
+            <div>Regístrate ahora para obtener tu propia cronología personalizada.</div>
+            <Buttons>
+                <SignUpButton>
+                    <GoogleSVG width="20px" height="20px" /> Registrarse con Google
+                </SignUpButton>
+                <SignUpButton>Crear cuenta</SignUpButton>
+            </Buttons>
+            <div>Al registrarte, aceptas un monton de cosas.</div>
+        </AuthWrapper>
     );
 };
 
-export default Registro;
+export default AuthMenu;
