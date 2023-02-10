@@ -24,12 +24,13 @@ import FotoPerfil from "../../imgs/perfil.jpg";
 import TweeterLogo from "../../imgs/tweetter-logo.png";
 import ModalBase from "../ModalBase";
 import TweetForm from "../TweetForm";
+import { limitString } from "../../helpers/stringHelper";
 
 const Sidebar = () => {
     const { datosUser } = useGlobalContext();
-
     const [modalState, setModalState] = useState(false);
     const [tweetModal, setTweetModal] = useState(false);
+
     const handleModal = () => {
         setModalState(!modalState);
     };
@@ -65,9 +66,25 @@ const Sidebar = () => {
                         <ButtonColored children="Tweet" onClick={() => setTweetModal(!tweetModal)} />
                     </ul>
                 </div>
+                {auth.currentUser && (
+                    <UserCard onClick={handleModal}>
+                        <CardContent>
+                            <ImagenPerfil
+                                src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
+                                alt="foto de perfil"
+                                referrerPolicy="no-referrer"
+                            ></ImagenPerfil>
+                            <UserInfo>
+                                <h3>{datosUser.nombre}</h3>
+                                <p>@{datosUser.ruta && limitString(datosUser.ruta, 16)}</p>
+                            </UserInfo>
+                        </CardContent>
+                        <HiOutlineDotsHorizontal />
+                    </UserCard>
+                )}
                 {modalState && auth.currentUser && (
                     <ModalWrapper modalState={modalState}>
-                        <UserCardOnModal>
+                        {/* <UserCardOnModal>
                             <ImagenPerfil
                                 src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
                                 alt="foto de perfil"
@@ -79,31 +96,13 @@ const Sidebar = () => {
                             <span>
                                 <HiOutlineCheck />
                             </span>
-                        </UserCardOnModal>
+                        </UserCardOnModal> */}
                         {auth.currentUser && (
                             <CerrarSesion onClick={() => signOut(auth)}>
                                 Cerrar Sesión de @{datosUser.ruta}
                             </CerrarSesion>
                         )}
                     </ModalWrapper>
-                )}
-                {auth.currentUser && (
-                    <UserCard onClick={handleModal}>
-                        <CardContent>
-                            <ImagenPerfil
-                                src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
-                                alt="foto de perfil"
-                                referrerPolicy="no-referrer"
-                            ></ImagenPerfil>
-                            <UserInfo>
-                                <h3>{datosUser.nombre}</h3>
-                                <p>@{datosUser.ruta}</p>
-                            </UserInfo>
-                        </CardContent>
-                        <span>
-                            <HiOutlineDotsHorizontal />
-                        </span>
-                    </UserCard>
                 )}
             </Wrapper>
             <ModalBase showModal={tweetModal} setShowModal={setTweetModal}>

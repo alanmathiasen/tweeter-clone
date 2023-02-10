@@ -17,13 +17,13 @@ export const Buscar = styled.input`
 export const Wrapper = styled.div`
     flex-grow: 1;
     overflow: hidden;
+    padding: 12px 12px 64px 24px;
 `;
 
 export const AuthWrapper = styled.div`
     padding: 12px 16px 16px 16px;
     border: 1px solid lightgray;
     border-radius: 10px;
-    margin: 12px 12px 64px 24px;
     display: block;
     div {
         font-size: 12px;

@@ -11,12 +11,12 @@ const RightMenu = () => {
     return (
         <Wrapper>
             {usuarioLogueado ? (
-                <div>
+                <>
                     <BuscarWrapper>
                         <Buscar placeholder="Buscar en tweeter" />
                     </BuscarWrapper>
                     {usuarioLogueado && <AQuienSeguir />}
-                </div>
+                </>
             ) : (
                 <AuthMenu />
             )}

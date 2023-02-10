@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
     height: 100vh;
     position: sticky;
     top: 0;
-    width: 251px;
+    min-width: 275px;
     padding: 0 12px;
     ul {
         display: flex;
@@ -20,9 +20,9 @@ export const Wrapper = styled.div`
             color: #000;
             font-size: 1.4rem;
             font-weight: 400;
-            margin: 0.5rem 0;
             border-radius: 50px;
-
+            padding: 6px 12px;
+            margin: 6px 0;
             &:hover {
                 background-color: #eee;
             }
@@ -77,9 +77,9 @@ export const UserCard = styled.div`
     border-radius: 50px;
     align-items: center;
     padding: 0.8rem;
+    margin-bottom: 12px;
     justify-content: space-between;
     cursor: pointer;
-    margin-left: 30px;
     &:hover {
         background-color: #dedede;
     }
@@ -87,6 +87,7 @@ export const UserCard = styled.div`
 
 export const CardContent = styled.div`
     display: flex;
+    align-items: center;
 `;
 
 export const ImagenPerfil = styled.img`
@@ -98,18 +99,21 @@ export const ImagenPerfil = styled.img`
 export const UserInfo = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: 0.6rem;
+    justify-content: center;
+    margin-left: 4px;
     h3 {
-        font-size: 1rem;
+        font-size: 15px;
         font-weight: 500;
         margin: 0;
         padding: 0;
+        line-height: 20px;
     }
     p {
         color: #717a7a;
-        font-size: 1rem;
+        font-size: 15px;
         margin: 0;
         padding: 0;
+        line-height: 20px;
     }
 `;
 
@@ -121,13 +125,13 @@ export const ModalWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     background-color: #fff;
-    min-height: 180px;
+    min-height: 80px;
     width: 280px;
     max-height: 260px;
     border-radius: 18px;
-    padding: 12px 0;
     position: absolute;
-    bottom: 6rem;
+    bottom: 80px;
+    right: 2px;
     box-shadow: rgb(101 119 134 / 20%) 0px 0px 15px, rgb(101 119 134 / 15%) 0px 0px 3px 1px;
 `;
 
@@ -137,7 +141,6 @@ export const UserCardOnModal = styled.div`
     align-items: center;
     padding: 16px;
     justify-content: space-between;
-
     span {
         color: #ee6262;
         font-size: 1.5rem;
