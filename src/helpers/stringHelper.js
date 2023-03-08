@@ -1,1 +1,1 @@
-export const limitString = (string, limit) => (string.length > 16 ? string.slice(0, limit) + "..." : string);
+export const limitString = (string, limit) => (string.length > limit ? string.slice(0, limit) + "..." : string);

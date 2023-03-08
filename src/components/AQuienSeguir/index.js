@@ -14,7 +14,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import ImgPerfil from "../../imgs/perfil.jpg";
-import { ButtonSeguir } from "../Utils/ButtonSeguir";
+import { ButtonSeguir } from "../common/ButtonSeguir";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { usePerfilContext } from "../../context/PerfilContext";
 import { useSugeridosContext } from "../../context/SugeridosContext";

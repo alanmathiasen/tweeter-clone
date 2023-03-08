@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ButtonOutline } from "../common/buttons.styles";
 
 export const BuscarWrapper = styled.div`
     display: flex;
@@ -39,28 +40,26 @@ export const Title = styled.h2`
     margin: 0;
 `;
 
-export const SignUpButton = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 0 auto;
-    width: 100%;
-    border-radius: 40px;
-    border: 1px solid #999;
-    background-color: #fff;
-    font-size: 16px;
-    font-color: #444;
-    padding: 10px 0;
-    margin-bottom: 12px;
-    cursor: pointer;
-    &:hover {
-        background-color: rgba(238, 98, 98, 0.1);
-        border-color: rgba(238, 98, 98, 0.6);
-    }
-`;
-
-export const Buttons = styled.div`
+export const ButtonGroup = styled.div`
     padding-top: 16px;
     margin: 0;
+`;
+
+export const RegisterForm = styled.form`
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+`;
+
+export const ButtonRegister = styled(ButtonOutline)`
+    padding: 20px 0;
+    margin: 0 auto;
+`;
+
+export const RegisterFormTitle = styled.h3`
+    color: #000;
+    font-size: 31px;
+    font-weight: 600;
 `;

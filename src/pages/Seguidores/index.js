@@ -19,7 +19,7 @@ import { db } from "../../firebase/firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { usePerfilContext } from "../../context/PerfilContext.js";
-import { ButtonSeguir } from "../../components/Utils/ButtonSeguir/index.js";
+import { ButtonSeguir } from "../../components/common/ButtonSeguir/index.js";
 import ImgPerfil from "../../imgs/perfil.jpg";
 
 const Seguidores = () => {

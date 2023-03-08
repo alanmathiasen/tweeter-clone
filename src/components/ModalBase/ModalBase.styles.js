@@ -24,7 +24,6 @@ export const Modal = styled.div`
     background-color: #fff;
     z-index: 2500;
     border-radius: 18px;
-    padding: 70px 16px 40px 16px;
 
     .tweet-info {
         width: 100%;

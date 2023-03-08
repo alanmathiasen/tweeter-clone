@@ -24,7 +24,6 @@ export const Modal = styled.div`
     background-color: #fff;
     z-index: 2500;
     border-radius: 18px;
-    padding: 70px 16px 40px 16px;
 
     .tweet-info {
         width: 100%;
@@ -35,20 +34,22 @@ export const Modal = styled.div`
 `;
 
 export const CloseBtn = styled.button`
-    //display: flex;
     position: absolute;
-    top: 20px;
-    left: 20px;
+    display: flex;
+    place-items: center;
+    top: 5px;
+    left: 5px;
     cursor: pointer;
     font-size: 1.6rem;
     border: none;
     background: none;
     border-radius: 50px;
-    width: 2.6rem;
-    height: 2.6rem;
+    width: 2.2rem;
+    height: 2.2rem;
     align-items: center;
     justify-content: center;
     &:hover {
         background-color: #dedede;
     }
+    transition-duration: 0.3s;
 `;

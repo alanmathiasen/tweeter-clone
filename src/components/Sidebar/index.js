@@ -18,7 +18,7 @@ import { HiHome, HiOutlineUser, HiOutlineDotsHorizontal, HiOutlineCheck } from "
 import { IoNotificationsOutline } from "react-icons/io5";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
-import { ButtonColored } from "../Utils/ButtonColored";
+import { ButtonColored } from "../common/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
 import FotoPerfil from "../../imgs/perfil.jpg";
 import TweeterLogo from "../../imgs/tweetter-logo.png";

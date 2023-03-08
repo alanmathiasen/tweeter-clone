@@ -9,12 +9,16 @@ import { doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase/firebaseConfig";
+import { ButtonOutline } from "../common/buttons.styles";
 import GoogleSVG from "../common/GoogleSVG";
-import { AuthButton, AuthWrapper, Buttons, SignUpButton, Title } from "./RightMenu.styles";
+import RegisterModal from "./RegisterModal";
+import { AuthWrapper, ButtonGroup, Title } from "./RightMenu.styles";
 const googleProvider = new GoogleAuthProvider();
 
 const AuthMenu = () => {
     const [estaRegistrado, setEstaRegistrado] = useState(false);
+
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
 
     const navigate = useNavigate();
     const [usuarioLogueado, setUsuarioLogueado] = useState({});
@@ -64,13 +68,14 @@ const AuthMenu = () => {
         <AuthWrapper>
             <Title>¿Eres nuevo en Tweeter?</Title>
             <div>Regístrate ahora para obtener tu propia cronología personalizada.</div>
-            <Buttons>
-                <SignUpButton>
+            <ButtonGroup>
+                <ButtonOutline onClick={signInWithGoogle}>
                     <GoogleSVG width="20px" height="20px" /> Registrarse con Google
-                </SignUpButton>
-                <SignUpButton>Crear cuenta</SignUpButton>
-            </Buttons>
+                </ButtonOutline>
+                <ButtonOutline onClick={() => setShowRegisterModal(!showRegisterModal)}>Crear cuenta</ButtonOutline>
+            </ButtonGroup>
             <div>Al registrarte, aceptas un monton de cosas.</div>
+            <RegisterModal showModal={showRegisterModal} setShowModal={setShowRegisterModal}></RegisterModal>
         </AuthWrapper>
     );
 };

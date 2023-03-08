@@ -17,7 +17,6 @@ const ModalBase = ({ children, showModal, setShowModal }) => {
                         <CloseBtn onClick={() => setShowModal(false)}>
                             <VscClose />
                         </CloseBtn>
-
                         {children}
                         {/* <TweetForm/> */}
                     </Modal>

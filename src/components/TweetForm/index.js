@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TweetFormWrapper, ImagenPerfil, InputWrapper, TweetInput } from "./TweetForm.styles";
 import FotoPerfil from "../../imgs/perfil.jpg";
-import { ButtonColored } from "../Utils/ButtonColored";
+import { ButtonColored } from "../common/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { createTweet } from "../../firebase/tweetCrud";
 
