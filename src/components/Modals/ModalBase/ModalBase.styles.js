@@ -22,7 +22,7 @@ export const Modal = styled.div`
     min-height: 200px;
     width: 600px;
     background-color: #fff;
-    z-index: 2500;
+    z-index: 50;
     border-radius: 18px;
 
     .tweet-info {

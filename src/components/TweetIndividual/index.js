@@ -4,7 +4,7 @@ import { useTweet } from "../../hooks/useTweet";
 
 import { deleteTweet, likeTweet, retweet } from "../../firebase/tweetCrud";
 
-import ModalBase from "../ModalBase";
+import ModalBase from "../Modals/ModalBase";
 import RelatedTweetLine from "../RelatedTweetLine";
 import Quote from "../Quote";
 import QuoteModal from "../Quote/QuoteModal/index";

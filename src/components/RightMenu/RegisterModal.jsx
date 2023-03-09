@@ -5,6 +5,7 @@ import ModalBase from "../Modals/ModalBase";
 import { auth, db } from "../../firebase/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 import { ButtonRegister, RegisterForm, RegisterFormTitle } from "./RightMenu.styles";
+import AnimatedInput from "../common/AnimatedInput";
 
 const RegisterModal = ({ showModal, setShowModal }) => {
     const navigate = useNavigate();
@@ -36,14 +37,21 @@ const RegisterModal = ({ showModal, setShowModal }) => {
         }
         // }
     };
+
+    const testSubmit = (e) => {
+        e.preventDefault();
+        console.log(e.target);
+    };
+
     return (
         <ModalBase showModal={showModal} setShowModal={setShowModal}>
-            <RegisterForm>
+            <RegisterForm onSubmit={testSubmit} action="#">
                 <RegisterFormTitle>Crea tu cuenta</RegisterFormTitle>
-                <input type="text" />
-                <input type="text" />
-
-                <ButtonRegister onClick={() => alert("asd")}>Registrarse</ButtonRegister>
+                <AnimatedInput title="Nombre" />
+                <AnimatedInput title="Email" type="email" />
+                <AnimatedInput title="Password" type="password" />
+                <button type="submit">SUBMITELCDTM</button>
+                <ButtonRegister type="submit">Registrarse</ButtonRegister>
             </RegisterForm>
         </ModalBase>
     );

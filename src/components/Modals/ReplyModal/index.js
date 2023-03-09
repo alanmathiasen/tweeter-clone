@@ -1,7 +1,7 @@
 import React from "react";
 import BaseTweet from "../../BaseTweet";
 import { RespondingTo } from "./ReplyModal.styles";
-import ModalBase from "../ModalBase";
+import ModalBase from "../Modals/ModalBase";
 import TweetForm from "../../TweetForm";
 import RelatedTweetLine from "../../RelatedTweetLine";
 

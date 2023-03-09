@@ -22,7 +22,7 @@ import { ButtonColored } from "../common/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
 import FotoPerfil from "../../imgs/perfil.jpg";
 import TweeterLogo from "../../imgs/tweetter-logo.png";
-import ModalBase from "../ModalBase";
+import ModalBase from "../Modals/ModalBase";
 import TweetForm from "../TweetForm";
 import { limitString } from "../../helpers/stringHelper";
 

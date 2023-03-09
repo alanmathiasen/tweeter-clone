@@ -18,7 +18,6 @@ const ModalBase = ({ children, showModal, setShowModal }) => {
                             <VscClose />
                         </CloseBtn>
                         {children}
-                        {/* <TweetForm/> */}
                     </Modal>
                 </Overlay>
             )}
