@@ -1,68 +1,66 @@
-import React from "react";
-import { TweetFormWrapper, ButtonTwittear } from "./TweetForm.styles";
-import {
-  collection,
-  doc,
-  addDoc,
-  updateDoc,
-  arrayUnion,
-} from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
+import React, { useState } from "react";
+import { TweetFormWrapper, ImagenPerfil, InputWrapper, TweetInput } from "./TweetForm.styles";
+import FotoPerfil from "../../imgs/perfil.jpg";
+import { ButtonColored } from "../common/ButtonColored";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { createTweet } from "../../firebase/tweetCrud";
 
-const TweetForm = ({
-  correoUsuario,
-  arrayTweets,
-  setArrayTweets,
-  parentId,
-}) => {
-  const tweetsCollectionRef = collection(db, "tweets");
+const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, placeholder = "Que esta pasando?" }) => {
+    const { emailLogueado, datosUser } = useGlobalContext();
 
-  async function agregarTweet(e) {
-    e.preventDefault();
-    const descripcion = e.target.detalles.value;
+    const [detalles, setDetalles] = useState("");
 
-    // if (arrayTweets) {
-    //   const nuevoArrayTweets = [
-    //     ...arrayTweets,
-    //     { timestamp: +new Date(), detalles: descripcion },
-    //   ];
-    //   setArrayTweets(nuevoArrayTweets);
-    // } else {
-    //   const nuevoArrayTweets = [
-    //     { timestamp: +new Date(), detalles: descripcion },
-    //   ];
-    //   setArrayTweets(nuevoArrayTweets);
-    // }
+    const handleChange = (e) => {
+        setDetalles(e.target.value);
+    };
 
-    const docRef = await addDoc(tweetsCollectionRef, {
-      usuario: correoUsuario,
-      descripcion: descripcion,
-      timestamp: +new Date(),
-      parentId: parentId ? parentId : null,
-      children: [],
-    });
-    if (parentId) await addChildren(parentId, docRef.id);
-    e.target.detalles.value = "";
-  }
+    async function postTweet(e) {
+        try {
+            e.stopPropagation();
+            e.preventDefault();
+            console.log("hola");
+            if (typeof setShowModal === "function") {
+                setShowModal(false);
+            }
+            const tweet = {
+                usuario: emailLogueado,
+                descripcion: detalles,
+                timestamp: +new Date(),
+                parentId: parentId || null,
+                quoteId: quoteId || null,
+                children: [],
+            };
+            await createTweet(tweet);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setDetalles("");
+        }
+    }
 
-  async function addChildren(parentId, childId) {
-    const parentDocRef = doc(db, "tweets", parentId);
-    console.log(childId);
-    await updateDoc(parentDocRef, {
-      children: arrayUnion(childId),
-    });
-  }
-
-  return (
-    <TweetFormWrapper onSubmit={agregarTweet}>
-      <input type="text" placeholder="Qué está pasando?" id="detalles" />
-      {/*
+    return (
+        <TweetFormWrapper>
+            <ImagenPerfil src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}></ImagenPerfil>
+            <InputWrapper>
+                <TweetInput
+                    type="text"
+                    id="detalles"
+                    onChange={handleChange}
+                    value={detalles}
+                    placeholder={placeholder}
+                />
+                {/*
        TODO
        no dejar twittear si no se esta loggeado 
        */}
-      <ButtonTwittear type="submit">Tweet</ButtonTwittear>
-    </TweetFormWrapper>
-  );
+                {children}
+                <ButtonColored type="submit" disabled={detalles === ""} onClick={postTweet}>
+                    Tweet
+                </ButtonColored>
+                {/* <ButtonTwittear type="submit">Tweet</ButtonTwittear> */}
+            </InputWrapper>
+        </TweetFormWrapper>
+    );
 };
 
 export default TweetForm;

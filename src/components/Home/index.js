@@ -1,60 +1,26 @@
-import React, { useState, useEffect } from "react";
-
-import { HomeWrapper } from "./Home.styles";
+import React from "react";
+import { useTweets } from "../../hooks/useTweets";
+import { HomeWrapper, NewTweets, TweetFormWrapper } from "./Home.styles";
 import TweetForm from "../TweetForm";
-import Tweet from "../Tweet";
-import {
-  collection,
-  doc,
-  query,
-  onSnapshot,
-  updateDoc,
-  deleteDoc,
-  getDoc,
-  arrayRemove,
-} from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
-
-import { useGlobalContext } from "../../context/GlobalContext";
+import TweetGroup from "../TweetGroup";
 
 const Home = () => {
-  const { emailLogueado } = useGlobalContext();
+    const { tweets, loading, queuedTweets, mergeTweets } = useTweets();
 
-  const [arrayTweets, setArrayTweets] = useState([]);
+    return (
+        <HomeWrapper>
+            <h2>Inicio</h2>
+            <TweetFormWrapper>
+                <TweetForm />
+            </TweetFormWrapper>
+            {/* {loading ? "loading" : <TweetHome arrayTweets={tweets} />} */}
 
-  const [tweetsConQuery, setTweetsConQuery] = useState([]);
-
-  const getTweets = () => {
-    const docQuery = query(collection(db, "tweets"));
-
-    const misDatos = onSnapshot(docQuery, (querySnapshot) => {
-      const misTweets = [];
-      querySnapshot.forEach((doc) => {
-        misTweets.push({ ...doc.data(), id: doc.id });
-      });
-      setArrayTweets(misTweets);
-    });
-  };
-
-  useEffect(() => {
-    getTweets();
-  }, []);
-
-  useEffect(() => {
-    //console.log(arrayTweets);
-  }, [arrayTweets]);
-
-  return (
-    <HomeWrapper>
-      <h2>Home</h2>
-      <TweetForm
-        correoUsuario={emailLogueado}
-        arrayTweets={arrayTweets}
-        setArrayTweets={setArrayTweets}
-      />
-      <Tweet correoUsuario={emailLogueado} arrayTweets={arrayTweets} />
-    </HomeWrapper>
-  );
+            {queuedTweets.length > 0 && (
+                <NewTweets onClick={mergeTweets}>Mostrar {queuedTweets.length} tweets nuevos.</NewTweets>
+            )}
+            <TweetGroup tweetArray={tweets} />
+        </HomeWrapper>
+    );
 };
 
 export default Home;

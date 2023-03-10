@@ -1,137 +1,210 @@
-import {
-  ImgPerfil,
-  TweetContainer,
-  TweetNav,
-  TweetContent,
-  Username,
-  BorrarTweet,
-} from "./TweetIndividual.styles";
-
-import { useEffect, useState } from "react/cjs/react.development";
-import { useNavigate, Link } from "react-router-dom";
-import { GiCancel } from "react-icons/gi";
-import { BiComment, BiHeart } from "react-icons/bi";
-
+import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { useTweet } from "../../hooks/useTweet";
 
-import {
-  doc,
-  updateDoc,
-  deleteDoc,
-  getDoc,
-  arrayRemove,
-  arrayUnion,
-  onSnapshot,
-} from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
+import { deleteTweet, likeTweet, retweet } from "../../firebase/tweetCrud";
 
+import ModalBase from "../Modals/ModalBase";
+import RelatedTweetLine from "../RelatedTweetLine";
+import Quote from "../Quote";
+import QuoteModal from "../Quote/QuoteModal/index";
 import ButtonGroup from "./ButtonGroup";
 import TweetForm from "../TweetForm";
+import BaseTweet from "../BaseTweet";
+
+import { BsThreeDotsVertical } from "react-icons/bs";
+import "./ButtonGroup/ButtonGroup.styles";
+import {
+    ImgPerfil,
+    TweetContainer,
+    TweetNav,
+    TweetContent,
+    Username,
+    BorrarTweet,
+    MainContainer,
+    TweetHeader,
+    MainUser,
+    TweetMainContent,
+    RespondingTo,
+} from "./TweetIndividual.styles";
 import imgPerfil from "../../imgs/perfil.jpg";
 
-const TweetIndividual = ({ tweetId }) => {
-  const [tweet, setTweet] = useState({});
-  const [liked, setLiked] = useState(false);
+const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children }) => {
+    const {
+        tweet,
+        isLikedByUser,
+        isRetweetedByUser,
+        author,
+        showReplyModal,
+        setShowReplyModal,
+        showQuoteModal,
+        setShowQuoteModal,
+        date,
+        loading,
+    } = useTweet({ tweetId, isMain: mainTweet });
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const { emailLogueado } = useGlobalContext();
 
-  const { emailLogueado, datosUser } = useGlobalContext();
+    async function handleDeleteTweet(e) {
+        e.stopPropagation();
 
-  async function eliminarTweet(idTweetAEliminar) {
-    //actualizar state con nuevo array
-    /*const nuevoArrayTweets = arrayTweets.filter(
-      (tweet) => tweet.id !== idTweetAEliminar
-    );*/
-    const tweetRef = doc(db, "tweets", idTweetAEliminar);
-    const tweetSnap = await getDoc(tweetRef);
-    if (tweetSnap.data().parentId) {
-      const parentRef = doc(db, "tweets", tweetSnap.data().parentId);
-
-      await updateDoc(parentRef, {
-        children: arrayRemove(idTweetAEliminar),
-      });
+        await deleteTweet({ email: emailLogueado, tweet });
     }
-    if (tweetSnap.data().children) {
-      tweetSnap.data().children.forEach(async (child) => {
-        await deleteDoc(doc(db, "tweets", child));
-      });
-    }
-    //actualizar base de datos
-    await deleteDoc(doc(db, "tweets", idTweetAEliminar));
-  }
 
-  async function likeTweet(e) {
-    if (!emailLogueado) {
-      alert("please login");
-      return 0;
+    async function handleLikeTweet(e) {
+        e.stopPropagation();
+        if (!emailLogueado) {
+            alert("please login");
+            return 0;
+        }
+
+        await likeTweet({ email: emailLogueado, tweetId });
     }
-    e.preventDefault();
-    const tweetRef = doc(db, "tweets", tweetId);
-    const tweetSnap = await getDoc(tweetRef);
-    if (
-      tweetSnap.data().likes &&
-      tweetSnap.data().likes.includes(emailLogueado)
-    ) {
-      await updateDoc(tweetRef, {
-        likes: arrayRemove(emailLogueado),
-      });
+
+    async function reTweet(e) {
+        e.stopPropagation();
+        if (!emailLogueado) {
+            alert("please login");
+            return 0;
+        }
+        await retweet({ email: emailLogueado, tweetId });
+    }
+
+    const goTo = (e) => {
+        e.stopPropagation();
+        navigate("/tweet/" + tweetId);
+    };
+
+    const handleShowModal = (e) => {
+        e.stopPropagation();
+        setShowReplyModal(true);
+    };
+
+    if (mainTweet) {
+        return (
+            <MainContainer>
+                {loading ? (
+                    <>Loading</>
+                ) : (
+                    <>
+                        <RelatedTweetLine hasUp={hasUp} />
+                        <TweetHeader>
+                            <ImgPerfil>
+                                <img
+                                    src={(author && author.photoURL) || imgPerfil}
+                                    referrerPolicy="no-referrer"
+                                    alt="user profile"
+                                />
+                            </ImgPerfil>
+
+                            <MainUser>
+                                <Username>{author && author.nombre}</Username>
+                                <span>{author && `@${author.ruta}`}</span>
+                            </MainUser>
+
+                            <BorrarTweet onClick={(e) => handleDeleteTweet(e, tweetId)}>
+                                <BsThreeDotsVertical className="commentBtn" />
+                            </BorrarTweet>
+                        </TweetHeader>
+                        <TweetMainContent>
+                            {tweet.descripcion && <p>{tweet.descripcion}</p>}
+                            <span></span>
+                            {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : ""}
+                        </TweetMainContent>
+                        <div>{date}</div>
+                        <ButtonGroup
+                            replies={tweet.children ? tweet.children.length : null}
+                            likes={tweet.likes ? tweet.likes.length : null}
+                            likeTweet={handleLikeTweet}
+                            liked={isLikedByUser}
+                            main={mainTweet}
+                            showForm={setShowReplyModal}
+                            retweeted={isRetweetedByUser}
+                            retweet={reTweet}
+                            retweets={tweet.retweets ? tweet.retweets.length : null}
+                            setQuoteModal={setShowQuoteModal}
+                            quotes={tweet.quotes ? tweet.quotes.length : null}
+                        />
+                        <ModalBase showModal={showReplyModal} setShowModal={setShowReplyModal}>
+                            <BaseTweet author={author} tweet={tweet}>
+                                <RespondingTo>
+                                    Respondiendo a <span>{author && `@${author.ruta}`}</span>
+                                </RespondingTo>
+                                <RelatedTweetLine hasDown paddingLeft={"24px"} />
+                            </BaseTweet>
+                            <TweetForm parentId={tweetId} className="tweetForm" setShowModal={setShowReplyModal}>
+                                <RelatedTweetLine hasUp paddingLeft={"24px"} />
+                            </TweetForm>
+                        </ModalBase>
+                        <QuoteModal
+                            showModal={showQuoteModal}
+                            setShowModal={setShowQuoteModal}
+                            author={author}
+                            tweet={tweet}
+                        ></QuoteModal>
+                    </>
+                )}
+            </MainContainer>
+        );
     } else {
-      await updateDoc(tweetRef, {
-        likes: arrayUnion(emailLogueado),
-      });
+        return (
+            <TweetContainer onClick={goTo} lines={lines ? lines : false}>
+                {children}
+                {lines && <RelatedTweetLine hasUp={lines.hasUp} hasDown={lines.hasDown} />}
+
+                {/* {lines.hasUp && <div className="up"></div>}
+                {lines.hasDown && <div className="down"></div>} */}
+                <BorrarTweet onClick={(e) => handleDeleteTweet(e, tweetId)}>
+                    <BsThreeDotsVertical className="commentBtn" />
+                </BorrarTweet>
+                <ImgPerfil>
+                    <img
+                        src={(author && author.photoURL) || imgPerfil}
+                        referrerPolicy="no-referrer"
+                        alt="user profile"
+                    />
+                </ImgPerfil>
+                <TweetNav>
+                    <Username>{author && author.nombre}</Username>
+                    <span>{author && `@${author.ruta}`}</span>
+                    <span>·</span>
+                    <span>{date}</span>
+                </TweetNav>
+                <TweetContent>{tweet.descripcion && <p>{tweet.descripcion}</p>}</TweetContent>
+                <ButtonGroup
+                    replies={tweet.children ? tweet.children.length : null}
+                    likes={tweet.likes ? tweet.likes.length : null}
+                    likeTweet={handleLikeTweet}
+                    liked={isLikedByUser}
+                    showForm={handleShowModal}
+                    retweeted={isRetweetedByUser}
+                    retweet={reTweet}
+                    retweets={tweet.retweets ? tweet.retweets.length : null}
+                    setQuoteModal={setShowQuoteModal}
+                    quotes={tweet.quotes ? tweet.quotes.length : null}
+                />
+                {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : <></>}
+                <QuoteModal
+                    showModal={showQuoteModal}
+                    setShowModal={setShowQuoteModal}
+                    author={author}
+                    tweet={tweet}
+                ></QuoteModal>
+                <ModalBase showModal={showReplyModal} setShowModal={setShowReplyModal}>
+                    <BaseTweet author={author} tweet={tweet}>
+                        <RespondingTo>
+                            Respondiendo a <span>{author && `@${author.ruta}`}</span>
+                        </RespondingTo>
+                        <RelatedTweetLine hasDown paddingLeft={"24px"} />
+                    </BaseTweet>
+                    <TweetForm parentId={tweetId} className="tweetForm" setShowModal={setShowReplyModal}>
+                        <RelatedTweetLine hasUp paddingLeft="24px" />
+                    </TweetForm>
+                </ModalBase>
+            </TweetContainer>
+        );
     }
-  }
-
-  useEffect(() => {
-    console.log(datosUser, emailLogueado);
-    //getTweet();
-    const tweetRef = doc(db, "tweets", tweetId);
-    const unsubscribe = onSnapshot(tweetRef, (snap) => {
-      if (snap.data()) setTweet(snap.data());
-      else setTweet({});
-      if (snap.data().likes && snap.data().likes.includes(emailLogueado)) {
-        setLiked(true);
-      } else {
-        setLiked(false);
-      }
-    });
-    return () => unsubscribe();
-  }, [tweetId]);
-
-  const goTo = (e) => {
-    console.log(e.target, e.currentTarget);
-
-    navigate("/tweet/" + tweetId);
-  };
-
-  return (
-    <TweetContainer onClick={goTo}>
-      {/* <Link to={"/tweet/" + tweetId + "/" + correoUsuario}>GOTO</Link> */}
-      <BorrarTweet onClick={() => eliminarTweet(tweetId)}>
-        <GiCancel />
-      </BorrarTweet>
-      <ImgPerfil>
-        <img src={imgPerfil} alt="" />
-      </ImgPerfil>
-      <TweetNav>
-        <Username>Nombre</Username>
-        <span>@alan_wtf</span>
-        <span>·</span>
-        <span>6h</span>
-      </TweetNav>
-      <TweetContent>
-        {tweet.descripcion && <p>{tweet.descripcion}</p>}
-      </TweetContent>
-      <ButtonGroup
-        replies={tweet.children ? tweet.children.length : null}
-        likes={tweet.likes ? tweet.likes.length : null}
-        likeTweet={likeTweet}
-        liked={liked}
-      />
-
-      {/* <TweetForm parentId={tweetId} correoUsuario={correoUsuario} /> */}
-    </TweetContainer>
-  );
 };
 
 export default TweetIndividual;

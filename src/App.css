@@ -1,17 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
 html,
 body,
 #root,
 .App {
-  height: 100%;
-  padding: 0;
-  margin: 0;
+    height: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 body {
-  font-family: "Segoe UI";
-  font-size: 1.2rem;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
