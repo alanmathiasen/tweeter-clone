@@ -39,7 +39,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
     }
 
     return (
-        <TweetFormWrapper onSubmit={postTweet}>
+        <TweetFormWrapper>
             <ImagenPerfil src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}></ImagenPerfil>
             <InputWrapper>
                 <TweetInput
@@ -54,7 +54,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
        no dejar twittear si no se esta loggeado 
        */}
                 {children}
-                <ButtonColored type="submit" disabled={detalles === ""}>
+                <ButtonColored type="submit" disabled={detalles === ""} onClick={postTweet}>
                     Tweet
                 </ButtonColored>
                 {/* <ButtonTwittear type="submit">Tweet</ButtonTwittear> */}

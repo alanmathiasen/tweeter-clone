@@ -1,11 +1,12 @@
 import React from "react";
-import { LabelWrapper } from "./AnimatedInput.styles";
+import { LabelWrapper, SpanError } from "./AnimatedInput.styles";
 
-const AnimatedInput = ({ title = "Name", type = "text" }) => {
+const AnimatedInput = ({ title, error, ...props }) => {
     return (
-        <LabelWrapper htmlFor={title}>
-            <input type={type} name={title} placeholder=" " />
+        <LabelWrapper htmlFor={title} isError={!!error}>
+            <input placeholder=" " isError={!!error} {...props} />
             <span>{title}</span>
+            {error && <SpanError>{error}</SpanError>}
         </LabelWrapper>
     );
 };
