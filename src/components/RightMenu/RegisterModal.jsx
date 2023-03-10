@@ -7,6 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { ButtonRegister, RegisterForm, RegisterFormTitle } from "./RightMenu.styles";
 import AnimatedInput from "../common/AnimatedInput";
 import { registerUser } from "../../firebase/userCrud";
+import { SpanError } from "../common/AnimatedInput/AnimatedInput.styles";
 
 const RegisterModal = ({ showModal, setShowModal }) => {
     const navigate = useNavigate();
@@ -15,12 +16,9 @@ const RegisterModal = ({ showModal, setShowModal }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
-
+    const [firebaseError, setFirebaseError] = useState();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        //const email = e.target.email.value;
-        //const password = e.target.password.value;
-
         // if (user !== null) {
         try {
             //if (estaRegistrado) {
@@ -30,36 +28,28 @@ const RegisterModal = ({ showModal, setShowModal }) => {
             const validateErrors = validateForm();
             if (Object.keys(validateErrors).length !== 0) {
                 setErrors(validateErrors);
-                console.log(validateErrors);
                 return;
             }
 
-            alert("REGISTRADO");
-            //await registerUser(name, email, password);
+            await registerUser(name, email, password);
             navigate("/");
         } catch (error) {
-            console.log(error.message);
+            setFirebaseError(error);
         }
         // }
     };
 
     const validateForm = () => {
         let validateErrors = {};
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            validateErrors.email = "Email invalido";
-        }
         if (email.length === 0) validateErrors.email = "Debes ingresar un email";
-        if (name.length > 50) {
-            validateErrors.name = "El nombre no debe superar los 50 caracteres";
-        }
-        if (name.length === 0) {
-            console.log({ name });
-            validateErrors.name = "Debes ingresar un nombre";
-        }
-        if (password.length < 6) {
-            validateErrors.password = "El password debe tener mas de 6 caracteres";
-        }
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) validateErrors.email = "Email invalido";
+
+        if (name.length === 0) validateErrors.name = "Debes ingresar un nombre";
+        if (name.length > 50) validateErrors.name = "El nombre no debe superar los 50 caracteres";
+
         if (password.length === 0) validateErrors.password = "Debes ingresar un password";
+        if (password.length < 6) validateErrors.password = "El password debe tener mas de 6 caracteres";
+
         return validateErrors;
     };
 
@@ -99,6 +89,7 @@ const RegisterModal = ({ showModal, setShowModal }) => {
                     onChange={(e) => handleChange(e.target, setPassword)}
                     error={errors.password}
                 />
+                {firebaseError && <SpanError>El email ya se encuentra en uso.</SpanError>}
                 <ButtonRegister onClick={handleSubmit}>Registrarse</ButtonRegister>
             </RegisterForm>
         </ModalBase>
