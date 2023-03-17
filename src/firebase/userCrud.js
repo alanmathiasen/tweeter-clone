@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
 
 export const registerUser = async (name, email, password) => {
@@ -15,6 +15,19 @@ export const registerUser = async (name, email, password) => {
             seguidores: [],
             siguiendo: [],
         });
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getUsersByQuery = async (text) => {
+    try {
+        const userRef = collection(db, "usuarios");
+        const q = query(userRef, where("ruta", ">=", text), where("ruta", "<=", text + "\uf8ff"));
+        const querySnapshot = await getDocs(q);
+        const result = [];
+        querySnapshot.forEach((doc) => result.push({ ...doc.data(), id: doc.id }));
+        return result;
     } catch (err) {
         throw err;
     }

@@ -13,6 +13,17 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
+export const getTweet = async (idTweet) => {
+    const tweetRef = doc(db, "tweets", idTweet);
+    const tweetSnapshot = await getDoc(tweetRef);
+    if (tweetSnapshot.exists()) {
+        const twit = { ...tweetSnapshot.data() };
+        return twit;
+    } else {
+        return "ERROR";
+    }
+};
+
 export const createTweet = async (tweet) => {
     const tweetsCollectionRef = collection(db, "tweets");
     const docRef = await addDoc(tweetsCollectionRef, tweet);
@@ -93,9 +104,8 @@ export const deleteTweet = async ({ email, tweet }) => {
     const q = query(collection(db, "tweets"), where("retweet", "==", tweet.id));
     const querySnapshot = await getDocs(q);
     console.log(querySnapshot, "query");
-    querySnapshot.forEach((doc) => {
-        console.log(doc, "eliminando");
-        deleteDoc(doc.ref);
+    querySnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
     });
     if (tweet.quoteId) {
         const tweetRef = doc(db, "tweets", tweet.quoteId);

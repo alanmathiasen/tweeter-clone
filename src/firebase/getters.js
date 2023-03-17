@@ -14,18 +14,7 @@ export const getAuthor = async (tweet) => {
         console.error(err);
     }
 };
-
-export const getTweet = async (idTweet) => {
-    const tweetRef = doc(db, "tweets", idTweet);
-    const tweetSnap = await getDoc(tweetRef);
-    if (tweetSnap.exists()) {
-        const twit = { ...tweetSnap.data() };
-        return twit;
-    } else {
-        return "ERROR";
-    }
-};
-
+//TODO i dont like this
 export const getTweetsOnRealTime = async (setTweets) => {
     try {
         const docQuery = query(collection(db, "tweets"), orderBy("timestamp", "desc"));
