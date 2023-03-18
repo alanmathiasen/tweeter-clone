@@ -102,7 +102,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
                         trigger="#"
                         displayTransform={(tag) => `#${tag}`}
                         data={[{ display: "example", id: "example" }]}
-                        markup="#[__id__](__display__)"
+                        markup="$$$____id__~~~____display__$$$~~~"
                         className="mentions__mention"
                     />
                     <Mention
@@ -110,6 +110,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
                         displayTransform={(mention) => `@${mention}`}
                         data={handleGetData}
                         className="mentions__mention"
+                        markup="@@@____id__^^^____display__@@@^^^"
                     />
                 </MentionsInput>
                 {/*
