@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-    Wrapper,
-    Header,
-    ImgPerfil,
-    Username,
-    TweetContent,
-} from "./Quote.styles";
-import { getAuthor, getTweet } from "../../firebase/getters";
+import { Wrapper, Header, ImgPerfil, Username, TweetContent } from "./Quote.styles";
+import { getAuthor } from "../../firebase/getters";
+import { getTweet } from "../../firebase/tweetCrud";
 import imgPerfil from "../../imgs/perfil.jpg";
 import { shortDate } from "../../helpers/dateHelper";
 import { useNavigate } from "react-router-dom";
@@ -47,9 +42,7 @@ const Quote = ({ tweetId = null }) => {
                 <span>·</span>
                 {<span>{tweet.timestamp && shortDate(tweet.timestamp)}</span>}
             </Header>
-            <TweetContent>
-                {tweet.descripcion && <p>{tweet.descripcion}</p>}
-            </TweetContent>
+            <TweetContent>{tweet.descripcion && <p>{tweet.descripcion}</p>}</TweetContent>
         </Wrapper>
     );
 };

@@ -14,6 +14,7 @@ const TweetPage = () => {
     const [childrenIds, setChildrenIds] = useState([]);
     const [parents, setParents] = useState([]);
     const tweetRef = doc(db, "tweets", id);
+    //TODO use tweetCrud fn
     const getTweet = async (idTweet) => {
         //const tweetRef = doc(db, "tweets", idTweet);
         const tweetSnap = await getDoc(tweetRef);

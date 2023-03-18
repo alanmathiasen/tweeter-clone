@@ -28,6 +28,9 @@ import {
     RespondingTo,
 } from "./TweetIndividual.styles";
 import imgPerfil from "../../imgs/perfil.jpg";
+import reactStringReplace from "react-string-replace";
+import MentionInTweet from "../common/Tags/MentionInTweet";
+import Hashtag from "../common/Tags/Hashtag";
 
 const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children }) => {
     const {
@@ -81,6 +84,21 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
         setShowReplyModal(true);
     };
 
+    const parseMentions = (description) => {
+        let mentionRegex = /@+__(.*?)\^+__.*?@+\^+/;
+        let tagRegex = /\$+__(.*?)~+__.*?\$+~+/;
+        const descWithMentions = reactStringReplace(description, mentionRegex, (match) => (
+            <MentionInTweet mention={match} />
+        ));
+        const descWithMentionsAndTags = reactStringReplace(descWithMentions, tagRegex, (match) => (
+            <Hashtag tag={match} />
+        ));
+        // const insideText = /\[([A-Za-z0-9]+(\.[A-Za-z0-9]+)+)\]/;
+        // //const parsedDesc = description;
+        // if (mentionRegex.test(description)) return description + "axxxxx" + description.match(insideText);
+        return descWithMentionsAndTags;
+    };
+
     if (mainTweet) {
         return (
             <MainContainer>
@@ -108,7 +126,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                             </BorrarTweet>
                         </TweetHeader>
                         <TweetMainContent>
-                            {tweet.descripcion && <p>{tweet.descripcion}</p>}
+                            {tweet.descripcion && <p>{parseMentions(tweet.descripcion)}</p>}
                             <span></span>
                             {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : ""}
                         </TweetMainContent>
@@ -171,7 +189,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                     <span>·</span>
                     <span>{date}</span>
                 </TweetNav>
-                <TweetContent>{tweet.descripcion && <p>{tweet.descripcion}</p>}</TweetContent>
+                <TweetContent>{tweet.descripcion && <p>{parseMentions(tweet.descripcion)}</p>}</TweetContent>
                 <ButtonGroup
                     replies={tweet.children ? tweet.children.length : null}
                     likes={tweet.likes ? tweet.likes.length : null}
