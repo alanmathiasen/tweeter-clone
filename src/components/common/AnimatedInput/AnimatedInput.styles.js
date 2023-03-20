@@ -22,12 +22,12 @@ export const LabelWrapper = styled.label`
 
         &:focus {
             border: 1px solid transparent;
-            outline: 2px solid #ee6262;
+            outline: 2px solid ${(props) => props.theme.colors.main};
 
             + span {
                 font-size: 12px;
                 top: 4px;
-                color: #ee6262;
+                color: ${(props) => props.theme.colors.main};
             }
         }
 

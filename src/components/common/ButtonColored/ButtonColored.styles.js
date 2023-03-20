@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const CustomButton = styled.button`
     border: none;
-    background-color: #ee6262;
+    background-color: ${(props) => props.theme.colors.main};
     color: #fff;
     border-radius: 50px;
     cursor: pointer;

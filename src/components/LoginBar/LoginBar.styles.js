@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const BarWrapper = styled.div`
-    background-color: #ee6262;
+    background-color: ${(props) => props.theme.colors.main};
     display: flex;
     position: fixed;
     margin: 0;

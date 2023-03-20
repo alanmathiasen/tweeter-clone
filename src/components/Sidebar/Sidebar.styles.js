@@ -142,7 +142,7 @@ export const UserCardOnModal = styled.div`
     padding: 16px;
     justify-content: space-between;
     span {
-        color: #ee6262;
+        color: ${(props) => props.theme.colors.main};
         font-size: 1.5rem;
     }
 `;

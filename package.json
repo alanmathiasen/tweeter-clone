@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@popperjs/core": "^2.11.6",
         "@testing-library/jest-dom": "^5.15.1",
         "@testing-library/react": "^11.2.7",
         "@testing-library/user-event": "^12.8.3",
@@ -11,10 +12,11 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-icons": "^4.3.1",
-    "react-mentions": "^4.4.7",
+        "react-mentions": "^4.4.7",
+        "react-popper": "^2.3.0",
         "react-router-dom": "^6.0.2",
         "react-scripts": "^5.0.1",
-    "react-string-replace": "^1.1.0",
+        "react-string-replace": "^1.1.0",
         "redux": "^4.1.2",
         "styled-components": "^5.3.3",
         "web-vitals": "^1.1.2"

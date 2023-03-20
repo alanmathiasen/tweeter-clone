@@ -18,41 +18,44 @@ import Sugeridos from "./pages/Sugeridos";
 import { useGlobalContext } from "./context/GlobalContext";
 import { PerfilProvider } from "./context/PerfilContext";
 import { SugeridosProvider } from "./context/SugeridosContext";
-
+import { ThemeProvider } from "styled-components";
+import { theme } from "./styles/theme";
 const App = () => {
     const { usuarioLogueado } = useGlobalContext();
 
     return (
         <Browser>
-            <AppWrapper>
-                <Sidebar />
-                <PerfilProvider>
-                    {/* PERFIL CONTEXT PROVIDER */}
-                    <SugeridosProvider>
-                        <ContentWrapper>
-                            <RouteWrapper>
-                                <Routes>
-                                    {usuarioLogueado ? (
-                                        <Route exact path="/" element={<Home />} />
-                                    ) : (
-                                        <Route exact path="/" element={<Home />} />
-                                    )}
-                                    <Route exact path="/:id" element={<Perfil />} />
-                                    <Route exact path="/registro" element={<Registro />} />
-                                    <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
-                                    <Route exact path="/:id/seguidores" element={<Seguidores />} />
-                                    <Route exact path="/tweet/:id" element={<TweetPage />} />
-                                    <Route exact path="/sugeridos" element={<Sugeridos />} />
-                                    <Route exact path="/notificaciones" element={<Notificaciones />} />
-                                </Routes>
-                            </RouteWrapper>
-                            <RightMenu />
-                        </ContentWrapper>
-                    </SugeridosProvider>
-                    {/* PERFIL CONTEXT PROVIDER */}
-                </PerfilProvider>
-            </AppWrapper>
-            {!usuarioLogueado && <LoginBar />}
+            <ThemeProvider theme={theme}>
+                <AppWrapper>
+                    <Sidebar />
+                    <PerfilProvider>
+                        {/* PERFIL CONTEXT PROVIDER */}
+                        <SugeridosProvider>
+                            <ContentWrapper>
+                                <RouteWrapper>
+                                    <Routes>
+                                        {usuarioLogueado ? (
+                                            <Route exact path="/" element={<Home />} />
+                                        ) : (
+                                            <Route exact path="/" element={<Home />} />
+                                        )}
+                                        <Route exact path="/:id" element={<Perfil />} />
+                                        <Route exact path="/registro" element={<Registro />} />
+                                        <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
+                                        <Route exact path="/:id/seguidores" element={<Seguidores />} />
+                                        <Route exact path="/tweet/:id" element={<TweetPage />} />
+                                        <Route exact path="/sugeridos" element={<Sugeridos />} />
+                                        <Route exact path="/notificaciones" element={<Notificaciones />} />
+                                    </Routes>
+                                </RouteWrapper>
+                                <RightMenu />
+                            </ContentWrapper>
+                        </SugeridosProvider>
+                        {/* PERFIL CONTEXT PROVIDER */}
+                    </PerfilProvider>
+                </AppWrapper>
+                {!usuarioLogueado && <LoginBar />}
+            </ThemeProvider>
         </Browser>
     );
 };
