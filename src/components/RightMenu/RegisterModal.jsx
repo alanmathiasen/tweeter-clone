@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ModalBase from "../Modals/ModalBase";
+import BaseModal from "../Modals/BaseModal";
 import { auth, db } from "../../firebase/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 import { ButtonRegister, RegisterForm, RegisterFormTitle } from "./RightMenu.styles";
@@ -63,7 +63,7 @@ const RegisterModal = ({ showModal, setShowModal }) => {
     };
 
     return (
-        <ModalBase showModal={showModal} setShowModal={setShowModal}>
+        <BaseModal showModal={showModal} setShowModal={setShowModal}>
             <RegisterForm>
                 <RegisterFormTitle>Crea tu cuenta</RegisterFormTitle>
                 <AnimatedInput
@@ -92,7 +92,7 @@ const RegisterModal = ({ showModal, setShowModal }) => {
                 {firebaseError && <SpanError>El email ya se encuentra en uso.</SpanError>}
                 <ButtonRegister onClick={handleSubmit}>Registrarse</ButtonRegister>
             </RegisterForm>
-        </ModalBase>
+        </BaseModal>
     );
 };
 

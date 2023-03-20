@@ -1,9 +1,9 @@
 import React from "react";
 
-import { Overlay, Modal, CloseBtn } from "./ModalBase.styles";
+import { Overlay, Modal, CloseBtn } from "./BaseModal.styles";
 import { VscClose } from "react-icons/vsc";
 
-const ModalBase = ({ children, showModal, setShowModal }) => {
+const BaseModal = ({ children, showModal, setShowModal }) => {
     const handleOverlayClick = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -25,4 +25,4 @@ const ModalBase = ({ children, showModal, setShowModal }) => {
     );
 };
 
-export default ModalBase;
+export default BaseModal;

@@ -4,7 +4,6 @@ import { useTweet } from "../../hooks/useTweet";
 
 import { deleteTweet, likeTweet, retweet } from "../../firebase/tweetCrud";
 
-import ModalBase from "../Modals/ModalBase";
 import RelatedTweetLine from "../RelatedTweetLine";
 import Quote from "../Quote";
 import QuoteModal from "../Quote/QuoteModal/index";
@@ -25,12 +24,11 @@ import {
     TweetHeader,
     MainUser,
     TweetMainContent,
-    RespondingTo,
 } from "./TweetIndividual.styles";
 import imgPerfil from "../../imgs/perfil.jpg";
-import reactStringReplace from "react-string-replace";
-import MentionInTweet from "../common/Tags/MentionInTweet";
-import Hashtag from "../common/Tags/Hashtag";
+
+import { parseMentions } from "../../helpers/tweetHelper";
+import ReplyModal from "../Modals/ReplyModal";
 
 const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children }) => {
     const {
@@ -51,7 +49,6 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
 
     async function handleDeleteTweet(e) {
         e.stopPropagation();
-
         await deleteTweet({ email: emailLogueado, tweet });
     }
 
@@ -82,21 +79,6 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
     const handleShowModal = (e) => {
         e.stopPropagation();
         setShowReplyModal(true);
-    };
-
-    const parseMentions = (description) => {
-        let mentionRegex = /@+__(.*?)\^+__.*?@+\^+/;
-        let tagRegex = /\$+__(.*?)~+__.*?\$+~+/;
-        const descWithMentions = reactStringReplace(description, mentionRegex, (match) => (
-            <MentionInTweet mention={match} />
-        ));
-        const descWithMentionsAndTags = reactStringReplace(descWithMentions, tagRegex, (match) => (
-            <Hashtag tag={match} />
-        ));
-        // const insideText = /\[([A-Za-z0-9]+(\.[A-Za-z0-9]+)+)\]/;
-        // //const parsedDesc = description;
-        // if (mentionRegex.test(description)) return description + "axxxxx" + description.match(insideText);
-        return descWithMentionsAndTags;
     };
 
     if (mainTweet) {
@@ -144,23 +126,19 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                             setQuoteModal={setShowQuoteModal}
                             quotes={tweet.quotes ? tweet.quotes.length : null}
                         />
-                        <ModalBase showModal={showReplyModal} setShowModal={setShowReplyModal}>
-                            <BaseTweet author={author} tweet={tweet}>
-                                <RespondingTo>
-                                    Respondiendo a <span>{author && `@${author.ruta}`}</span>
-                                </RespondingTo>
-                                <RelatedTweetLine hasDown paddingLeft={"24px"} />
-                            </BaseTweet>
-                            <TweetForm parentId={tweetId} className="tweetForm" setShowModal={setShowReplyModal}>
-                                <RelatedTweetLine hasUp paddingLeft={"24px"} />
-                            </TweetForm>
-                        </ModalBase>
+                        <ReplyModal
+                            showModal={showReplyModal}
+                            setShowModal={setShowReplyModal}
+                            author={author}
+                            tweet={tweet}
+                            tweetId={tweetId}
+                        />
                         <QuoteModal
                             showModal={showQuoteModal}
                             setShowModal={setShowQuoteModal}
                             author={author}
                             tweet={tweet}
-                        ></QuoteModal>
+                        />
                     </>
                 )}
             </MainContainer>
@@ -189,7 +167,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                     <span>·</span>
                     <span>{date}</span>
                 </TweetNav>
-                <TweetContent>{tweet.descripcion && <p>{parseMentions(tweet.descripcion)}</p>}</TweetContent>
+                <TweetContent>{tweet.descripcion && parseMentions(tweet.descripcion)}</TweetContent>
                 <ButtonGroup
                     replies={tweet.children ? tweet.children.length : null}
                     likes={tweet.likes ? tweet.likes.length : null}
@@ -209,17 +187,13 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                     author={author}
                     tweet={tweet}
                 ></QuoteModal>
-                <ModalBase showModal={showReplyModal} setShowModal={setShowReplyModal}>
-                    <BaseTweet author={author} tweet={tweet}>
-                        <RespondingTo>
-                            Respondiendo a <span>{author && `@${author.ruta}`}</span>
-                        </RespondingTo>
-                        <RelatedTweetLine hasDown paddingLeft={"24px"} />
-                    </BaseTweet>
-                    <TweetForm parentId={tweetId} className="tweetForm" setShowModal={setShowReplyModal}>
-                        <RelatedTweetLine hasUp paddingLeft="24px" />
-                    </TweetForm>
-                </ModalBase>
+                <ReplyModal
+                    showModal={showReplyModal}
+                    setShowModal={setShowReplyModal}
+                    author={author}
+                    tweet={tweet}
+                    tweetId={tweetId}
+                />
             </TweetContainer>
         );
     }

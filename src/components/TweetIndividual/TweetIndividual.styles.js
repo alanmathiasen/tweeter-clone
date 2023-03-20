@@ -2,29 +2,29 @@ import styled from "styled-components";
 import { tweetGrid } from "../../styles/mixins";
 export const TweetContainer = styled.div`
     ${tweetGrid}
+    padding: 8px 16px;
+    font-size: 15px;
+    transition: 0.2s;
+    position: relative;
 
     border-bottom: ${(props) => (props.lines.hasDown ? "" : "1px solid #ededed")};
-    padding: 8px 16px;
-    cursor: pointer;
-    position: relative;
     a {
         text-decoration: none;
     }
     p {
         margin: 0;
     }
-    font-size: 15px;
-    transition: 0.2s;
     &:hover {
+        cursor: pointer;
         background-color: #f3f3f3;
     }
     form {
         grid-column: 2/3;
     }
 
-    .modal {
-        z-index: 1000;
-    }
+    // .modal {
+    //     z-index: 1000;
+    // }
 `;
 
 export const ImgPerfil = styled.div`

@@ -22,9 +22,10 @@ import { ButtonColored } from "../common/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
 import FotoPerfil from "../../imgs/perfil.jpg";
 import TweeterLogo from "../../imgs/tweetter-logo.png";
-import ModalBase from "../Modals/ModalBase";
+import BaseModal from "../Modals/BaseModal";
 import TweetForm from "../TweetForm";
 import { limitString } from "../../helpers/stringHelper";
+import TweetModal from "../Modals/TweetModal";
 
 const Sidebar = () => {
     const { datosUser } = useGlobalContext();
@@ -84,19 +85,6 @@ const Sidebar = () => {
                 )}
                 {modalState && auth.currentUser && (
                     <ModalWrapper modalState={modalState}>
-                        {/* <UserCardOnModal>
-                            <ImagenPerfil
-                                src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
-                                alt="foto de perfil"
-                            ></ImagenPerfil>
-                            <UserInfo>
-                                <h3>{datosUser.nombre}</h3>
-                                <p>@{datosUser.ruta}</p>
-                            </UserInfo>
-                            <span>
-                                <HiOutlineCheck />
-                            </span>
-                        </UserCardOnModal> */}
                         {auth.currentUser && (
                             <CerrarSesion onClick={() => signOut(auth)}>
                                 Cerrar Sesión de @{datosUser.ruta}
@@ -105,9 +93,7 @@ const Sidebar = () => {
                     </ModalWrapper>
                 )}
             </Wrapper>
-            <ModalBase showModal={tweetModal} setShowModal={setTweetModal}>
-                <TweetForm className="tweetForm" setShowModal={setTweetModal} />
-            </ModalBase>
+            <TweetModal showModal={tweetModal} setShowModal={setTweetModal} />
         </>
     );
 };
