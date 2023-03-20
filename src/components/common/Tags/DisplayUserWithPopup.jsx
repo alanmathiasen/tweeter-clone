@@ -1,46 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import { usePopper } from "react-popper";
 import { Loader } from "../Loader/Loader.styles";
-import { Name, Popup, Wrapper } from "./Tags.styles";
-
+import { Name, Popup, PopupWrapper, Wrapper } from "./Tags.styles";
+import {
+    useFloating,
+    autoUpdate,
+    offset,
+    flip,
+    shift,
+    useInteractions,
+    FloatingFocusManager,
+    useHover,
+} from "@floating-ui/react";
 const PopupContent = () => {
     return (
-        <div
+        <PopupWrapper
             onMouseOver={(e) => {
                 e.stopPropagation();
             }}
         >
             asdasdsa
-        </div>
+        </PopupWrapper>
     );
 };
 
 const DisplayUserWithPopup = ({ mention }) => {
-    const [mentionRef, setMentionRef] = useState(null);
-    const [popperRef, setPopperRef] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
 
-    const { styles, attributes } = usePopper(mentionRef, popperRef, { placement: "" });
+    const { x, y, refs, strategy, context } = useFloating({
+        open: isOpen,
+        onOpenChange: setIsOpen,
+        middleware: [offset(10), flip({ fallbackAxisSideDirection: "end" }), shift()],
+        whileElementsMounted: autoUpdate,
+    });
 
-    const showPopup = () => {
-        popperRef.setAttribute("data-show", true);
-    };
+    const hover = useHover(context, { delay: { close: 300 } });
 
-    const hidePopup = () => {
-        setTimeout(() => {
-            popperRef.removeAttribute("data-show");
-        }, 300);
-    };
-    console.log(styles.popper, attributes.popper);
+    const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
+
     return (
-        <Wrapper onMouseEnter={showPopup} onMouseLeave={hidePopup}>
-            <Name ref={setMentionRef}>{mention}</Name>
-
-            <Popup ref={setPopperRef} style={styles.popper} {...attributes.popper}>
-                <PopupContent />
-            </Popup>
+        <Wrapper>
+            <Name ref={refs.setReference} {...getReferenceProps()}>
+                {mention}
+            </Name>
+            {isOpen && (
+                <FloatingFocusManager context={context}>
+                    <Popup
+                        ref={refs.setFloating}
+                        style={{ position: strategy, top: y ?? 0, left: x ?? 0, width: "max-content" }}
+                        {...getFloatingProps()}
+                    >
+                        <PopupContent />
+                    </Popup>
+                </FloatingFocusManager>
+            )}
         </Wrapper>
     );
 };
-
 export default DisplayUserWithPopup;
