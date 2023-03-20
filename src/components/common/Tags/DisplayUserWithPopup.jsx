@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Loader } from "../Loader/Loader.styles";
-import { Name, Popup, PopupWrapper, Wrapper } from "./Tags.styles";
+import Loader from "../Loader";
+import { LoaderWrapper, Name, Popup, PopupWrapper, Wrapper } from "./Tags.styles";
 import {
     useFloating,
     autoUpdate,
@@ -10,20 +10,36 @@ import {
     useInteractions,
     FloatingFocusManager,
     useHover,
+    FloatingPortal,
 } from "@floating-ui/react";
-const PopupContent = () => {
+import { getUserByRoute, getUsersByQuery } from "../../../firebase/userCrud";
+const PopupContent = ({ username }) => {
+    const [user, setUser] = useState();
+    useEffect(() => {
+        (async () => {
+            const user = await getUsersByQuery(username);
+            setUser(user[0]);
+        })();
+    }, []);
+    console.log({ user });
     return (
         <PopupWrapper
             onMouseOver={(e) => {
                 e.stopPropagation();
             }}
         >
-            asdasdsa
+            {user ? (
+                <div>{user.nombre}</div>
+            ) : (
+                <LoaderWrapper>
+                    <Loader />
+                </LoaderWrapper>
+            )}
         </PopupWrapper>
     );
 };
 
-const DisplayUserWithPopup = ({ mention }) => {
+const DisplayUserWithPopup = ({ mention, addAt }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const { x, y, refs, strategy, context } = useFloating({
@@ -33,25 +49,25 @@ const DisplayUserWithPopup = ({ mention }) => {
         whileElementsMounted: autoUpdate,
     });
 
-    const hover = useHover(context, { delay: { close: 300 } });
+    const hover = useHover(context, { delay: 300 });
 
     const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
 
     return (
         <Wrapper>
             <Name ref={refs.setReference} {...getReferenceProps()}>
-                {mention}
+                {addAt ? "@" + mention : mention}
             </Name>
             {isOpen && (
-                <FloatingFocusManager context={context}>
+                <FloatingPortal>
                     <Popup
                         ref={refs.setFloating}
                         style={{ position: strategy, top: y ?? 0, left: x ?? 0, width: "max-content" }}
                         {...getFloatingProps()}
                     >
-                        <PopupContent />
+                        <PopupContent username={mention} />
                     </Popup>
-                </FloatingFocusManager>
+                </FloatingPortal>
             )}
         </Wrapper>
     );

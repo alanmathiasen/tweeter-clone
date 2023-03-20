@@ -9,12 +9,11 @@ const Retweet = ({ tweet }) => {
     const [retweetFrom, setRetweetFrom] = useState();
 
     useEffect(() => {
+        //TODO abstract this
         (async function getAuthor() {
             const userRef = doc(db, "usuarios", tweet.parent);
             const userSnap = await getDoc(userRef);
-            userSnap.data()
-                ? setRetweetFrom(userSnap.data())
-                : setRetweetFrom({});
+            userSnap.data() ? setRetweetFrom(userSnap.data()) : setRetweetFrom({});
         })();
     }, [tweet]);
 

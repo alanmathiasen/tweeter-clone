@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
 
 export const registerUser = async (name, email, password) => {
@@ -30,5 +30,19 @@ export const getUsersByQuery = async (text) => {
         return result;
     } catch (err) {
         throw err;
+    }
+};
+
+export const getUserByTweet = async (tweet) => {
+    try {
+        if (Object.keys(tweet).length !== 0 && tweet !== "ERROR" && tweet.usuario) {
+            const userRef = doc(db, "usuarios", tweet.usuario);
+            const userSnap = await getDoc(userRef);
+            return userSnap.data() ? userSnap.data() : {};
+        } else {
+            return null;
+        }
+    } catch (err) {
+        console.error(err);
     }
 };

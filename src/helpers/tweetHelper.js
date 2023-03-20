@@ -6,7 +6,7 @@ export const parseMentions = (description) => {
     let mentionRegex = /@+__(.*?)\^+__.*?@+\^+/;
     let tagRegex = /\$+__(.*?)~+__.*?\$+~+/;
     const descWithMentions = reactStringReplace(description, mentionRegex, (match) => (
-        <DisplayUserWithPopup mention={"@" + match} />
+        <DisplayUserWithPopup mention={match} addAt={true} />
     ));
     const descWithMentionsAndTags = reactStringReplace(descWithMentions, tagRegex, (match) => <Hashtag tag={match} />);
 

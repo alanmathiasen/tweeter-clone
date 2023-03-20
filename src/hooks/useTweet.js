@@ -3,8 +3,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useReducer, useState } from "react";
 import { useGlobalContext } from "../context/GlobalContext";
 import { db } from "../firebase/firebaseConfig";
-import { getAuthor } from "../firebase/getters";
-// import { getAuthor } from "../firebase/getters";
+import { getUserByTweet } from "../firebase/userCrud";
 import { longDate, shortDate } from "../helpers/dateHelper";
 
 export const useTweet = ({ tweetId, isMain }) => {
@@ -43,7 +42,7 @@ export const useTweet = ({ tweetId, isMain }) => {
     useEffect(() => {
         try {
             (async () => {
-                setAuthor(await getAuthor(tweet));
+                setAuthor(await getUserByTweet(tweet));
             })();
         } catch (err) {
             console.error(err);

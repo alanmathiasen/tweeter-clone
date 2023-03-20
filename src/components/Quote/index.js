@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Wrapper, Header, ImgPerfil, Username, TweetContent } from "./Quote.styles";
-import { getAuthor } from "../../firebase/getters";
+import { getUserByTweet } from "../../firebase/userCrud";
 import { getTweet } from "../../firebase/tweetCrud";
 import imgPerfil from "../../imgs/perfil.jpg";
 import { shortDate } from "../../helpers/dateHelper";
@@ -19,10 +19,10 @@ const Quote = ({ tweetId = null }) => {
     }, [tweetId]);
 
     useEffect(() => {
-        async function fetchAuthor() {
-            setAuthor(await getAuthor(tweet));
-        }
-        fetchAuthor();
+        (async () => {
+            const author = await getUserByTweet(tweet);
+            setAuthor(author);
+        })();
     }, [tweet]);
 
     const goTo = (e) => {

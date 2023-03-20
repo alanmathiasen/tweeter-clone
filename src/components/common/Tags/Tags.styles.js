@@ -13,4 +13,12 @@ export const Wrapper = styled.div`
     display: inline-block;
 `;
 
-export const PopupWrapper = styled.div``;
+export const PopupWrapper = styled.div`
+    min-width: 200px;
+`;
+
+export const LoaderWrapper = styled.div`
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+`;
