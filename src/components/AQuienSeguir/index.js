@@ -14,7 +14,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import ImgPerfil from "../../imgs/perfil.jpg";
-import { ButtonSeguir } from "../common/ButtonSeguir";
+import { FollowButton } from "../common/FollowButton";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { usePerfilContext } from "../../context/PerfilContext";
 import { useSugeridosContext } from "../../context/SugeridosContext";
@@ -146,7 +146,7 @@ const AQuienSeguir = () => {
 
                                 <ButtonMargin>
                                     {datosUser.siguiendo.includes(item.id) ? (
-                                        <ButtonSeguir
+                                        <FollowButton
                                             onClick={() => handleClick(item.id)}
                                             btnState={btnState}
                                             color={"#000"}
@@ -157,11 +157,11 @@ const AQuienSeguir = () => {
                                             contentTxt={"Dejar de seguir"}
                                         >
                                             <span>Siguiendo</span>
-                                        </ButtonSeguir>
+                                        </FollowButton>
                                     ) : (
-                                        <ButtonSeguir onClick={() => handleClick(item.id)} contentTxt={"Seguir"}>
+                                        <FollowButton onClick={() => handleClick(item.id)} contentTxt={"Seguir"}>
                                             <span>Seguir</span>
-                                        </ButtonSeguir>
+                                        </FollowButton>
                                     )}
                                 </ButtonMargin>
                             </Card>
@@ -186,7 +186,7 @@ const AQuienSeguir = () => {
 
                                 <ButtonMargin>
                                     {datosUser.siguiendo.includes(item.id) ? (
-                                        <ButtonSeguir
+                                        <FollowButton
                                             onClick={() => handleClick(item.id)}
                                             btnState={btnState}
                                             color={"#000"}
@@ -197,11 +197,11 @@ const AQuienSeguir = () => {
                                             contentTxt={"Dejar de seguir"}
                                         >
                                             <span>Siguiendo</span>
-                                        </ButtonSeguir>
+                                        </FollowButton>
                                     ) : (
-                                        <ButtonSeguir onClick={() => handleClick(item.id)} contentTxt={"Seguir"}>
+                                        <FollowButton onClick={() => handleClick(item.id)} contentTxt={"Seguir"}>
                                             <span>Seguir</span>
-                                        </ButtonSeguir>
+                                        </FollowButton>
                                     )}
                                 </ButtonMargin>
                             </Card>

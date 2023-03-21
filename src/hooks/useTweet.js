@@ -29,7 +29,6 @@ export const useTweet = ({ tweetId, isMain }) => {
                     setIsLikedByUser(false);
                 }
                 if (snap.data().retweets && snap.data().retweets.includes(emailLogueado)) {
-                    console.log(snap.data().retweets);
                     setIsRetweetedByUser(true);
                 } else {
                     setIsRetweetedByUser(false);

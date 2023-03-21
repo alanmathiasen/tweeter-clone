@@ -17,7 +17,7 @@ import { usePerfilContext } from "../../../context/PerfilContext";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import ImgPortada from "../../../imgs/portada.jpg";
 import imgPerfil from "../../../imgs/perfil.jpg";
-import { ButtonSeguir } from "../../common/ButtonSeguir";
+import { FollowButton } from "../../common/FollowButton";
 //ICONS
 import { GoLocation } from "react-icons/go";
 import { IoIosLink } from "react-icons/io";
@@ -102,7 +102,7 @@ const DatosPerfil = ({ handlePerfilModal }) => {
                     {console.log("editar perfil")}
                 </EditarPerfil>
             ) : (
-                <ButtonSeguir
+                <FollowButton
                     itsCurrentUserProfile={itsCurrentUserProfile}
                     btnState={btnState}
                     maxWidth={"200px"}
@@ -112,7 +112,7 @@ const DatosPerfil = ({ handlePerfilModal }) => {
                     onClick={() => handleClick()}
                 >
                     <span>{btnState ? "Siguiendo" : "Seguir"}</span>
-                </ButtonSeguir>
+                </FollowButton>
             )}
 
             <InfoPerfil>

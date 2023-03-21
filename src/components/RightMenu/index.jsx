@@ -7,7 +7,6 @@ import AuthMenu from "./AuthMenu";
 
 const RightMenu = () => {
     const { usuarioLogueado } = useGlobalContext();
-    console.log(usuarioLogueado);
     return (
         <Wrapper>
             {usuarioLogueado ? (

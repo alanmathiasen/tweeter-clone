@@ -6,14 +6,16 @@ import { onAuthStateChanged, GoogleAuthProvider, getRedirectResult } from "fireb
 const GlobalContext = React.createContext();
 
 const AppProvider = ({ children }) => {
-    const [usuarioLogueado, setUsuarioLogueado] = useState();
+    const [usuarioLogueado, setUsuarioLogueado] = useState(undefined);
     const [emailLogueado, setEmailLogueado] = useState("");
     const [datosUser, setDatosUser] = useState({}); //Usuario Logueado
     const [tweettModal, setTweettModal] = useState(false);
 
     const user = auth.currentUser;
     onAuthStateChanged(auth, (currentUser) => {
-        setUsuarioLogueado(currentUser);
+        if (currentUser) {
+            setUsuarioLogueado({ currentUser });
+        }
     });
 
     useEffect(() => {
@@ -34,8 +36,8 @@ const AppProvider = ({ children }) => {
                         sitioWeb: docSnap.data().sitioWeb,
                         ubicacion: docSnap.data().ubicacion,
                         ruta: docSnap.data().ruta,
-                        siguiendo: docSnap.data().siguiendo,
-                        seguidores: docSnap.data().seguidores,
+                        siguiendo: docSnap.data().siguiendo ?? [],
+                        seguidores: docSnap.data().seguidores ?? [],
                         photoURL: docSnap.data().photoURL,
                         email: docSnap.data().email,
                     };

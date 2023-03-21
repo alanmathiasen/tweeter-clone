@@ -9,10 +9,10 @@ import {
     CardContent,
 } from "../../components/AQuienSeguir/AQuienSeguir.styles";
 import ImgPerfil from "../../imgs/perfil.jpg";
-import { ButtonSeguir } from "../../components/common/ButtonSeguir";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { usePerfilContext } from "../../context/PerfilContext";
 import { useSugeridosContext } from "../../context/SugeridosContext";
+import { FollowButton } from "../../components/common/FollowButton";
 
 const Sugeridos = () => {
     const { datosUser } = useGlobalContext();
@@ -53,7 +53,7 @@ const Sugeridos = () => {
                                         </InfoUser>
                                     </CardContent>
                                     {datosUser.siguiendo.includes(item.id) ? (
-                                        <ButtonSeguir
+                                        <FollowButton
                                             onClick={() => handleClick(item.id)}
                                             btnState={btnState}
                                             color={"#000"}
@@ -64,11 +64,11 @@ const Sugeridos = () => {
                                             contentTxt={"Dejar de seguir"}
                                         >
                                             <span>Siguiendo</span>
-                                        </ButtonSeguir>
+                                        </FollowButton>
                                     ) : (
-                                        <ButtonSeguir onClick={() => handleClick(item.id)} contentTxt={"Seguir"}>
+                                        <FollowButton onClick={() => handleClick(item.id)} contentTxt={"Seguir"}>
                                             <span>Seguir</span>
-                                        </ButtonSeguir>
+                                        </FollowButton>
                                     )}
                                 </Card>
                             );

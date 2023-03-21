@@ -27,7 +27,6 @@ const TweetPage = () => {
     };
 
     const getChildren = async () => {
-        console.log(idState, "twwrsdtdsfds");
         //const tweetRef = doc(db, "tweets", idState);
         const tweetSnap = await getDoc(tweetRef);
         let childs = [];
@@ -41,11 +40,9 @@ const TweetPage = () => {
                 })
             );
         } else {
-            console.log("no tweets??");
         }
 
         const lastChilds = childs.filter((child) => {
-            console.log(childs, "CHILDS");
             if (child === "ERROR") {
                 return false;
             }
@@ -77,7 +74,6 @@ const TweetPage = () => {
         if (pIds) {
             parents = await Promise.all(
                 pIds.map(async (idP) => {
-                    console.log(pIds, "dentro del promise");
                     const newChild = await getTweet(idP);
                     if (newChild !== "ERROR") newChild.id = idP;
                     return newChild;
@@ -91,7 +87,6 @@ const TweetPage = () => {
     const hasParent = async (id, pIds) => {
         const tweetRef = doc(db, "tweets", id);
         const tweetSnap = await getDoc(tweetRef);
-        console.log(tweetSnap.data().parentId);
         if (tweetSnap.data().parentId) {
             pIds.push(tweetSnap.data().parentId);
             await hasParent(tweetSnap.data().parentId, pIds);

@@ -1,22 +1,20 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BaseModal from "../Modals/BaseModal";
-import { auth, db } from "../../firebase/firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
 import { ButtonRegister, RegisterForm, RegisterFormTitle } from "./RightMenu.styles";
 import AnimatedInput from "../common/AnimatedInput";
 import { registerUser } from "../../firebase/userCrud";
 import { SpanError } from "../common/AnimatedInput/AnimatedInput.styles";
 
 const RegisterModal = ({ showModal, setShowModal }) => {
-    const navigate = useNavigate();
-
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
     const [firebaseError, setFirebaseError] = useState();
+
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         // if (user !== null) {
@@ -42,7 +40,7 @@ const RegisterModal = ({ showModal, setShowModal }) => {
     const validateForm = () => {
         let validateErrors = {};
         if (email.length === 0) validateErrors.email = "Debes ingresar un email";
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) validateErrors.email = "Email invalido";
+        if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) validateErrors.email = "Email invalido";
 
         if (name.length === 0) validateErrors.name = "Debes ingresar un nombre";
         if (name.length > 50) validateErrors.name = "El nombre no debe superar los 50 caracteres";

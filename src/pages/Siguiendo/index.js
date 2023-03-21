@@ -18,10 +18,10 @@ import { Link } from "react-router-dom";
 import { ButtonColored } from "../../components/common/ButtonColored";
 import { db } from "../../firebase/firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { ButtonSeguir } from "../../components/common/ButtonSeguir";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { usePerfilContext } from "../../context/PerfilContext";
 import ImgPerfil from "../../imgs/perfil.jpg";
+import { FollowButton } from "../../components/common/FollowButton";
 
 const Siguiendo = () => {
     const { datosUser } = useGlobalContext();
@@ -65,7 +65,6 @@ const Siguiendo = () => {
                 });
                 if (checkExist === false) {
                     setUsersFollowing((usersFollowing) => [...usersFollowing, newArray]);
-                    console.log("cargando state");
                 } else {
                     return;
                 }
@@ -124,7 +123,7 @@ const Siguiendo = () => {
                                     </div>
                                 </div>
                                 {datosUser.siguiendo.includes(user.id) ? (
-                                    <ButtonSeguir
+                                    <FollowButton
                                         onClick={() => handleClick(user.id)}
                                         btnState={btnState}
                                         color={"#000"}
@@ -135,11 +134,11 @@ const Siguiendo = () => {
                                         contentTxt={"Dejar de seguir"}
                                     >
                                         <span>Siguiendo</span>
-                                    </ButtonSeguir>
+                                    </FollowButton>
                                 ) : (
-                                    <ButtonSeguir onClick={() => handleClick(user.id)} contentTxt={"Seguir"}>
+                                    <FollowButton onClick={() => handleClick(user.id)} contentTxt={"Seguir"}>
                                         <span>Seguir</span>
-                                    </ButtonSeguir>
+                                    </FollowButton>
                                 )}
                             </UserCard>
                         );

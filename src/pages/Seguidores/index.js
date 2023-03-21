@@ -19,8 +19,8 @@ import { db } from "../../firebase/firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { usePerfilContext } from "../../context/PerfilContext.js";
-import { ButtonSeguir } from "../../components/common/ButtonSeguir/index.js";
 import ImgPerfil from "../../imgs/perfil.jpg";
+import { FollowButton } from "../../components/common/FollowButton/index.js";
 
 const Seguidores = () => {
     const { datosUser } = useGlobalContext();
@@ -65,7 +65,6 @@ const Seguidores = () => {
                 });
                 if (checkExist === false) {
                     setUsersFollowers((usersFollowers) => [...usersFollowers, newArray]);
-                    console.log("cargando state");
                 } else {
                     return;
                 }
@@ -126,7 +125,7 @@ const Seguidores = () => {
                                 </div>
 
                                 {datosUser.siguiendo.includes(user.id) ? (
-                                    <ButtonSeguir
+                                    <FollowButton
                                         onClick={() => handleClick(user.id)}
                                         btnState={btnState}
                                         color={"#000"}
@@ -137,11 +136,11 @@ const Seguidores = () => {
                                         contentTxt={"Dejar de seguir"}
                                     >
                                         <span>Siguiendo</span>
-                                    </ButtonSeguir>
+                                    </FollowButton>
                                 ) : (
-                                    <ButtonSeguir onClick={() => handleClick(user.id)} contentTxt={"Seguir"}>
+                                    <FollowButton onClick={() => handleClick(user.id)} contentTxt={"Seguir"}>
                                         <span>Seguir</span>
-                                    </ButtonSeguir>
+                                    </FollowButton>
                                 )}
                             </UserCard>
                         );

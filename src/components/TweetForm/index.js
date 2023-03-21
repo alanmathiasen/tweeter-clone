@@ -95,7 +95,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
                     placeholder={placeholder}
                     a11ySuggestionsListLabel={"Personas sugeridas para mencionar."}
                     className="mentions"
-                    spellcheck="false"
+                    spellCheck="false"
                     suggestionsPortalHost={container}
                 >
                     <Mention

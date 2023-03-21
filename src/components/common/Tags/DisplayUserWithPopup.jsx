@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Loader from "../Loader";
 import { LoaderWrapper, Name, Popup, PopupWrapper, Wrapper } from "./Tags.styles";
 import {
@@ -13,23 +13,31 @@ import {
     FloatingPortal,
 } from "@floating-ui/react";
 import { getUserByRoute, getUsersByQuery } from "../../../firebase/userCrud";
+import imgPerfil from "../../../imgs/perfil.jpg";
+import { ImgPerfil } from "../../TweetIndividual/TweetIndividual.styles";
+import { GlobalContext, useGlobalContext } from "../../../context/GlobalContext";
+
 const PopupContent = ({ username }) => {
     const [user, setUser] = useState();
+    const { datosUser } = useGlobalContext();
     useEffect(() => {
         (async () => {
             const user = await getUsersByQuery(username);
             setUser(user[0]);
         })();
     }, []);
-    console.log({ user });
     return (
-        <PopupWrapper
-            onMouseOver={(e) => {
-                e.stopPropagation();
-            }}
-        >
+        <PopupWrapper>
             {user ? (
-                <div>{user.nombre}</div>
+                <div>
+                    <ImgPerfil>
+                        <img
+                            src={user.photoURL || imgPerfil}
+                            referrerPolicy="no-referrer"
+                            alt={`${user.nombre} profile`}
+                        />
+                    </ImgPerfil>
+                </div>
             ) : (
                 <LoaderWrapper>
                     <Loader />

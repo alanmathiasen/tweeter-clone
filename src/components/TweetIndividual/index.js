@@ -8,8 +8,6 @@ import RelatedTweetLine from "../RelatedTweetLine";
 import Quote from "../Quote";
 import QuoteModal from "../Quote/QuoteModal/index";
 import ButtonGroup from "./ButtonGroup";
-import TweetForm from "../TweetForm";
-import BaseTweet from "../BaseTweet";
 
 import { BsThreeDotsVertical } from "react-icons/bs";
 import "./ButtonGroup/ButtonGroup.styles";

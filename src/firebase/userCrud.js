@@ -6,10 +6,10 @@ export const registerUser = async (name, email, password) => {
     try {
         const user = await createUserWithEmailAndPassword(auth, email, password);
         let usuario = String(email);
-        const [ruta] = usuario.split("@");
-        console.log(name);
-        const docRef = await setDoc(doc(db, "usuarios", email), {
-            ruta: ruta,
+        const [route] = usuario.split("@");
+        console.log("aca entra");
+        const docRef = await setDoc(doc(db, "users", name), {
+            ruta: name,
             email: email,
             nombre: name,
             seguidores: [],

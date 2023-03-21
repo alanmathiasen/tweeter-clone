@@ -55,7 +55,7 @@ const Registro = () => {
             }
             navigate("/");
         } catch (error) {
-            console.log(error.message);
+            throw error;
         }
         // }
     };
