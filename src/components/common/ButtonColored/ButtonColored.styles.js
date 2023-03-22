@@ -15,4 +15,8 @@ export const CustomButton = styled.button`
     &:hover {
         background-color: #bf5252;
     }
+    &:disabled {
+        background-color: gray;
+        cursor: default;
+    }
 `;

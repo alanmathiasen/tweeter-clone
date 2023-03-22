@@ -7,11 +7,11 @@ import { useGlobalContext } from "../../context/GlobalContext";
 
 const Home = () => {
     const { tweets, loading, queuedTweets, mergeTweets } = useTweets();
-    const { usuarioLogueado } = useGlobalContext();
+    const { userData } = useGlobalContext();
     return (
         <HomeWrapper>
             <h2>Inicio</h2>
-            {usuarioLogueado && (
+            {userData && (
                 <TweetFormWrapper>
                     <TweetForm />
                 </TweetFormWrapper>

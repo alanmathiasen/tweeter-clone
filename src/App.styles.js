@@ -12,16 +12,16 @@ export const ContentWrapper = styled.div`
     width: 100%;
 `;
 
-export const OverlayModal = styled.div`
-    display: ${(props) => (props.tweettModal ? "block" : "none")};
-    background-color: rgba(0, 0, 0, 0.4);
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    left: 0;
-    position: absolute;
-    z-index: 1500;
-`;
+// export const OverlayModal = styled.div`
+//     display: ${(props) => (props.tweettModal ? "block" : "none")};
+//     background-color: rgba(0, 0, 0, 0.4);
+//     height: 100vh;
+//     width: 100vw;
+//     overflow: hidden;
+//     left: 0;
+//     position: absolute;
+//     z-index: 1500;
+// `;
 
 export const RouteWrapper = styled.div`
     min-width: 600px;

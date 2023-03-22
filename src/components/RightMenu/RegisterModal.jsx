@@ -5,34 +5,30 @@ import { ButtonRegister, RegisterForm, RegisterFormTitle } from "./RightMenu.sty
 import AnimatedInput from "../common/AnimatedInput";
 import { registerUser } from "../../firebase/userCrud";
 import { SpanError } from "../common/AnimatedInput/AnimatedInput.styles";
+import { registerWithEmailAndPassword } from "../../firebase/auth";
 
 const RegisterModal = ({ showModal, setShowModal }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
-    const [firebaseError, setFirebaseError] = useState();
-
+    const [errorMessage, setErrorMessage] = useState();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (user !== null) {
         try {
-            //if (estaRegistrado) {
-            //await signInWithEmailAndPassword(auth, email, password);
-            //} else {
-            //CREACION DE DATOS USER EN FIRESTORE, REGISTRO CON MAIL Y PASS NUEVOS
             const validateErrors = validateForm();
             if (Object.keys(validateErrors).length !== 0) {
                 setErrors(validateErrors);
                 return;
             }
 
-            await registerUser(name, email, password);
+            await registerWithEmailAndPassword(name, email, password);
             navigate("/");
         } catch (error) {
-            setFirebaseError(error);
+            if (error.code === "auth/email-already-in-use") setErrorMessage("El email ya se encuentra en uso.");
+            if (error.message === "El nombre de usuario ya existe.") setErrorMessage("El nombre de usuario ya existe.");
         }
         // }
     };
@@ -87,7 +83,11 @@ const RegisterModal = ({ showModal, setShowModal }) => {
                     onChange={(e) => handleChange(e.target, setPassword)}
                     error={errors.password}
                 />
-                {firebaseError && <SpanError>El email ya se encuentra en uso.</SpanError>}
+                {errorMessage && (
+                    <SpanError>
+                        <span>{errorMessage}</span>{" "}
+                    </SpanError>
+                )}
                 <ButtonRegister onClick={handleSubmit}>Registrarse</ButtonRegister>
             </RegisterForm>
         </BaseModal>

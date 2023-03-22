@@ -6,15 +6,15 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import AuthMenu from "./AuthMenu";
 
 const RightMenu = () => {
-    const { usuarioLogueado } = useGlobalContext();
+    const { userData } = useGlobalContext();
     return (
         <Wrapper>
-            {usuarioLogueado ? (
+            {userData ? (
                 <>
                     <BuscarWrapper>
                         <Buscar placeholder="Buscar en tweeter" />
                     </BuscarWrapper>
-                    {usuarioLogueado && <AQuienSeguir />}
+                    {userData && <AQuienSeguir />}
                 </>
             ) : (
                 <AuthMenu />

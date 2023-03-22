@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FormWrapper, FormContent } from "./Registro.style";
 import { auth, db } from "../../firebase/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
-
+//TODO DELETE ALL THIS?
 import { useNavigate } from "react-router";
 //Métodos de firebase auth.
 import {

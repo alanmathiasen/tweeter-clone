@@ -25,10 +25,9 @@ import TweeterLogo from "../../imgs/tweetter-logo.png";
 import BaseModal from "../Modals/BaseModal";
 import TweetForm from "../TweetForm";
 import { limitString } from "../../helpers/stringHelper";
-import TweetModal from "../Modals/TweetModal";
 
 const Sidebar = () => {
-    const { datosUser } = useGlobalContext();
+    const { userData } = useGlobalContext();
     const [modalState, setModalState] = useState(false);
     const [tweetModal, setTweetModal] = useState(false);
 
@@ -58,42 +57,44 @@ const Sidebar = () => {
                             </Icon>
                             Notificaciones
                         </Link>
-                        <Link to={`/${datosUser.ruta}`}>
+                        {/* <Link to={`/${userData.route}`}>
                             <Icon>
                                 <HiOutlineUser />
                             </Icon>
                             Perfil
-                        </Link>
+                        </Link> */}
                         <ButtonColored children="Tweet" onClick={() => setTweetModal(!tweetModal)} />
                     </ul>
                 </div>
-                {auth.currentUser && (
+                {auth.currentUser && userData && (
                     <UserCard onClick={handleModal}>
                         <CardContent>
                             <ImagenPerfil
-                                src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}
+                                src={userData.photoURL ? userData.photoURL : FotoPerfil}
                                 alt="foto de perfil"
                                 referrerPolicy="no-referrer"
                             ></ImagenPerfil>
                             <UserInfo>
-                                <h3>{datosUser.nombre}</h3>
-                                <p>@{datosUser.ruta && limitString(datosUser.ruta, 16)}</p>
+                                <h3>{userData.nombre}</h3>
+                                <p>@{userData.route && limitString(userData.route, 16)}</p>
                             </UserInfo>
                         </CardContent>
                         <HiOutlineDotsHorizontal />
                     </UserCard>
                 )}
-                {modalState && auth.currentUser && (
+                {modalState && auth.currentUser && userData && (
                     <ModalWrapper modalState={modalState}>
                         {auth.currentUser && (
                             <CerrarSesion onClick={() => signOut(auth)}>
-                                Cerrar Sesión de @{datosUser.ruta}
+                                Cerrar Sesión de @{userData.route}
                             </CerrarSesion>
                         )}
                     </ModalWrapper>
                 )}
             </Wrapper>
-            <TweetModal showModal={tweetModal} setShowModal={setTweetModal} />
+            <BaseModal showModal={tweetModal} setShowModal={setTweetModal}>
+                <TweetForm className="tweetForm" setShowModal={setTweetModal} />
+            </BaseModal>
         </>
     );
 };

@@ -21,7 +21,7 @@ import { SugeridosProvider } from "./context/SugeridosContext";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
 const App = () => {
-    const { usuarioLogueado } = useGlobalContext();
+    const { userData } = useGlobalContext();
 
     return (
         <Browser>
@@ -34,11 +34,8 @@ const App = () => {
                             <ContentWrapper>
                                 <RouteWrapper>
                                     <Routes>
-                                        {usuarioLogueado ? (
-                                            <Route exact path="/" element={<Home />} />
-                                        ) : (
-                                            <Route exact path="/" element={<Home />} />
-                                        )}
+                                        <Route exact path="/" element={<Home />} />
+
                                         <Route exact path="/:id" element={<Perfil />} />
                                         <Route exact path="/registro" element={<Registro />} />
                                         <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
@@ -54,7 +51,7 @@ const App = () => {
                         {/* PERFIL CONTEXT PROVIDER */}
                     </PerfilProvider>
                 </AppWrapper>
-                {!usuarioLogueado && <LoginBar />}
+                {!userData && <LoginBar />}
             </ThemeProvider>
         </Browser>
     );

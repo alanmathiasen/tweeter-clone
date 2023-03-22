@@ -10,7 +10,7 @@ import { getUsersByQuery } from "../../firebase/userCrud";
 let container;
 
 const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, placeholder = "Que esta pasando?" }) => {
-    const { emailLogueado, datosUser } = useGlobalContext();
+    const { userData } = useGlobalContext();
 
     const [tweetInput, setTweetInput] = useState("");
 
@@ -34,7 +34,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
                 setShowModal(false);
             }
             const tweet = {
-                usuario: emailLogueado,
+                usuario: userData.email,
                 descripcion: tweetInput,
                 timestamp: +new Date(),
                 parentId: parentId || null,
@@ -86,7 +86,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
     //     }
     return (
         <TweetFormWrapper>
-            <ImagenPerfil src={datosUser.photoURL ? datosUser.photoURL : FotoPerfil}></ImagenPerfil>
+            <ImagenPerfil src={userData.photoURL ?? FotoPerfil}></ImagenPerfil>
 
             <InputWrapper>
                 <MentionsInput

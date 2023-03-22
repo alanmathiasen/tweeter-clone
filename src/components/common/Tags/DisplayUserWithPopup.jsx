@@ -12,17 +12,16 @@ import {
     useHover,
     FloatingPortal,
 } from "@floating-ui/react";
-import { getUserByRoute, getUsersByQuery } from "../../../firebase/userCrud";
+import { getUsersByQuery } from "../../../firebase/userCrud";
 import imgPerfil from "../../../imgs/perfil.jpg";
 import { ImgPerfil } from "../../TweetIndividual/TweetIndividual.styles";
 import { GlobalContext, useGlobalContext } from "../../../context/GlobalContext";
 
 const PopupContent = ({ username }) => {
     const [user, setUser] = useState();
-    const { datosUser } = useGlobalContext();
     useEffect(() => {
         (async () => {
-            const user = await getUsersByQuery(username);
+            const user = await getUsersByQuery("route", username);
             setUser(user[0]);
         })();
     }, []);
@@ -34,7 +33,7 @@ const PopupContent = ({ username }) => {
                         <img
                             src={user.photoURL || imgPerfil}
                             referrerPolicy="no-referrer"
-                            alt={`${user.nombre} profile`}
+                            alt={`${user.username} profile`}
                         />
                     </ImgPerfil>
                 </div>

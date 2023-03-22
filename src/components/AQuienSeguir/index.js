@@ -21,7 +21,7 @@ import { useSugeridosContext } from "../../context/SugeridosContext";
 
 const AQuienSeguir = () => {
     const navigate = useNavigate();
-    const { datosUser, emailLogueado, usuarioLogueado } = useGlobalContext();
+    const { userData, emailLogueado } = useGlobalContext();
     const { handleFollow } = usePerfilContext();
     const {
         arrayDatos,
@@ -58,8 +58,8 @@ const AQuienSeguir = () => {
     }, [emailLogueado]);
 
     useEffect(() => {
-        setSiguiendo(datosUser.siguiendo);
-    }, [datosUser]);
+        setSiguiendo(userData.following || []);
+    }, [userData]);
 
     useEffect(() => {
         //filter users que no se siguen
@@ -76,43 +76,43 @@ const AQuienSeguir = () => {
         }
     }, [arrayDatos]);
 
-    useEffect(() => {
-        const handleLastFilter = () => {
-            let arrayUsers = [];
-            let arrayConUbi = [];
-            //filter user por ubicacion
-            if (datosUser.ubicacion) {
-                arrayConUbi = filteredArray.filter((item) => {
-                    return item.ubicacion === datosUser.ubicacion;
-                });
-            }
-            arrayUsers.push(
-                (arrayUsers = filteredArray.filter((item) => {
-                    return item.siguiendo.length > 0;
-                }))
-            );
-            arrayUsers.push.apply(arrayUsers, arrayConUbi);
-            setArrayUsersEnComun(arrayUsers);
-            let seguidoresEnComun = siguiendo;
-            //filter users por seguidores en comun
-            if (siguiendo) {
-                let result = arrayUsers.filter((item) => {
-                    return item.siguiendo.some((el) => seguidoresEnComun.indexOf(el) >= 0);
-                });
-                //agrega otros users
-                //si hay menos de 2 users con seguidores en comun
-                if (result.length < 3) {
-                    let newArray = arrayUsersEnComun.filter((el) => result.indexOf(el) === -1);
-                    let concatArr = result.concat(newArray);
-                    setMoreInCommun(concatArr);
-                } else {
-                    setMoreInCommun(result);
-                }
-            }
-        };
+    // useEffect(() => {
+    //     const handleLastFilter = () => {
+    //         let arrayUsers = [];
+    //         let arrayConUbi = [];
+    //         //filter user por ubicacion
+    //         if (userData.location) {
+    //             arrayConUbi = filteredArray.filter((item) => {
+    //                 return item.ubicacion === datosUser.ubicacion;
+    //             });
+    //         }
+    //         arrayUsers.push(
+    //             (arrayUsers = filteredArray.filter((item) => {
+    //                 return item.siguiendo.length > 0;
+    //             }))
+    //         );
+    //         arrayUsers.push.apply(arrayUsers, arrayConUbi);
+    //         setArrayUsersEnComun(arrayUsers);
+    //         let seguidoresEnComun = siguiendo;
+    //         //filter users por seguidores en comun
+    //         if (siguiendo) {
+    //             let result = arrayUsers.filter((item) => {
+    //                 return item.siguiendo.some((el) => seguidoresEnComun.indexOf(el) >= 0);
+    //             });
+    //             //agrega otros users
+    //             //si hay menos de 2 users con seguidores en comun
+    //             if (result.length < 3) {
+    //                 let newArray = arrayUsersEnComun.filter((el) => result.indexOf(el) === -1);
+    //                 let concatArr = result.concat(newArray);
+    //                 setMoreInCommun(concatArr);
+    //             } else {
+    //                 setMoreInCommun(result);
+    //             }
+    //         }
+    //     };
 
-        handleLastFilter();
-    }, [filteredArray, siguiendo]);
+    //     handleLastFilter();
+    // }, [filteredArray, siguiendo]);
 
     const handleClick = (uId) => {
         handleFollow(uId);
@@ -125,7 +125,7 @@ const AQuienSeguir = () => {
             <CardWrapper>
                 {moreInCommun.length >= 3 &&
                     moreInCommun.slice(0, 3).map((item, index) => {
-                        let rutaId = item.ruta;
+                        let rutaId = item.route;
                         return (
                             <Card key={index} onClick={() => navigate("/" + rutaId)}>
                                 <CardContent>
@@ -145,7 +145,7 @@ const AQuienSeguir = () => {
                                 </CardContent>
 
                                 <ButtonMargin>
-                                    {datosUser.siguiendo.includes(item.id) ? (
+                                    {userData.following.includes(item.id) ? (
                                         <FollowButton
                                             onClick={() => handleClick(item.id)}
                                             btnState={btnState}
@@ -169,23 +169,23 @@ const AQuienSeguir = () => {
                     })}
                 {moreInCommun.length < 3 &&
                     arrayUsersEnComun.slice(0, 3).map((item, index) => {
-                        let rutaId = item.ruta;
+                        let rutaId = item.route;
                         return (
                             <Card key={index} onClick={() => navigate("/" + rutaId)}>
                                 <CardContent>
                                     {item.photoURL ? (
-                                        <ImagePerfil src={item.photoURL} alt={`'Img perfil '${item.nombre}`} />
+                                        <ImagePerfil src={item.photoURL} alt={`'Img perfil '${item.username}`} />
                                     ) : (
-                                        <ImagePerfil src={ImgPerfil} alt={`'Img perfil '${item.nombre}`} />
+                                        <ImagePerfil src={ImgPerfil} alt={`'Img perfil '${item.username}`} />
                                     )}
                                     <InfoUser>
-                                        <h3>{item.nombre}</h3>
-                                        <p>@{item.ruta}</p>
+                                        <h3>{item.username}</h3>
+                                        <p>@{item.route}</p>
                                     </InfoUser>
                                 </CardContent>
 
                                 <ButtonMargin>
-                                    {datosUser.siguiendo.includes(item.id) ? (
+                                    {userData.siguiendo.includes(item.id) ? (
                                         <FollowButton
                                             onClick={() => handleClick(item.id)}
                                             btnState={btnState}
