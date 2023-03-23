@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { getDoc, doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase/firebaseConfig";
+import { auth } from "../firebase/firebaseConfig";
 import { onAuthStateChanged, GoogleAuthProvider, getRedirectResult } from "firebase/auth";
 import { getUsersByQuery } from "../firebase/userCrud";
 
@@ -14,19 +13,23 @@ const AppProvider = ({ children }) => {
     const [tweettModal, setTweettModal] = useState(false);
 
     onAuthStateChanged(auth, (currentUser) => {
-        setLoggedUser(currentUser);
+        if (currentUser) setLoggedUser(currentUser);
+        else setLoggedUser(undefined);
     });
 
     useEffect(() => {
-        (async () => {
-            if (loggedUser) {
+        //retry until user is created and retrieved from DB (this is because of google signup)
+        if (loggedUser) {
+            const interval = setInterval(async () => {
                 const userDB = await getUsersByQuery("email", loggedUser.email);
+                if (userDB.length === 0) {
+                    console.log("failed");
+                    return;
+                }
                 setUserData(userDB[0]);
-                setDatosUser(userDB[0]);
-            } else {
-                setUserData(undefined);
-            }
-        })();
+                clearInterval(interval);
+            }, 500);
+        }
     }, [loggedUser]);
 
     const handleTweettModal = () => {

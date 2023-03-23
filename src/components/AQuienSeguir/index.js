@@ -21,7 +21,7 @@ import { useSugeridosContext } from "../../context/SugeridosContext";
 
 const AQuienSeguir = () => {
     const navigate = useNavigate();
-    const { userData, emailLogueado } = useGlobalContext();
+    const { userData } = useGlobalContext();
     const { handleFollow } = usePerfilContext();
     const {
         arrayDatos,
@@ -41,7 +41,7 @@ const AQuienSeguir = () => {
     useEffect(() => {
         //fetch de todos los users, filtrando el logueado
         const getDatosUsers = async () => {
-            let mailToFilter = emailLogueado;
+            let mailToFilter = userData.email;
             const docRef = collection(db, "usuarios");
             const filterRef = query(docRef, where("email", "!=", mailToFilter));
             const querySnapshot = await getDocs(filterRef);
@@ -52,10 +52,10 @@ const AQuienSeguir = () => {
                 setArrayDatos((arrayDatos) => [...arrayDatos, arrayNew]);
             });
         };
-        if (emailLogueado) {
+        if (userData.email) {
             getDatosUsers();
         }
-    }, [emailLogueado]);
+    }, [userData.email]);
 
     useEffect(() => {
         setSiguiendo(userData.following || []);
@@ -64,7 +64,7 @@ const AQuienSeguir = () => {
     useEffect(() => {
         //filter users que no se siguen
         const filterData = () => {
-            let forDelete = emailLogueado;
+            let forDelete = userData.email;
             let newArray = arrayDatos.filter((item) => {
                 return !item.seguidores.includes(forDelete);
             });
@@ -125,7 +125,7 @@ const AQuienSeguir = () => {
             <CardWrapper>
                 {moreInCommun.length >= 3 &&
                     moreInCommun.slice(0, 3).map((item, index) => {
-                        let rutaId = item.route;
+                        let rutaId = item.ruta;
                         return (
                             <Card key={index} onClick={() => navigate("/" + rutaId)}>
                                 <CardContent>

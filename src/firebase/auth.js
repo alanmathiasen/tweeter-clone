@@ -5,8 +5,9 @@ import {
     signInWithPopup,
     signOut,
 } from "firebase/auth";
-import { addDoc, collection, getDocs, query, setDoc, where, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, query, setDoc, where, doc, getDoc } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
+import { getUsersByQuery } from "./userCrud";
 
 const googleProvider = new GoogleAuthProvider();
 export const signInWithGoogle = async () => {
@@ -14,17 +15,20 @@ export const signInWithGoogle = async () => {
     try {
         const res = await signInWithPopup(auth, googleProvider);
         const user = res.user;
-        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+        //delete spaces, limit characters to 10, add 4 random numbers
+        const newRoute =
+            user.displayName.replace(/\s+/g, "").slice(0, 10) + Math.floor(1000 + Math.random() * 9000).toString();
+        const q = query(collection(db, "users"), where("email", "==", user.email));
         const docs = await getDocs(q);
         if (docs.docs.length === 0) {
-            await addDoc(collection(db, "users"), {
-                nombre: user.displayName,
+            await setDoc(doc(db, "users", user.email), {
+                username: user.displayName,
+                route: newRoute,
                 email: user.email,
-                emailVerified: user.emailVerified,
                 photoURL: user.photoURL,
-                seguidores: [],
                 authProvider: "google",
-                siguiendo: [],
+                followers: [],
+                following: [],
             });
         }
         return user;
@@ -45,12 +49,13 @@ export const logInWithEmailAndPassword = async (email, password) => {
 
 export const registerWithEmailAndPassword = async (username, email, password) => {
     try {
-        const userExists = await getDoc(doc(db, "users", username));
+        //todo this should be get by query
+        const userExists = await getUsersByQuery("route", username);
 
-        if (userExists.exists()) throw new Error("El nombre de usuario ya existe.");
+        if (userExists.length > 0) throw new Error("El nombre de usuario ya existe.");
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
-        await setDoc(doc(db, "users", username), {
+        await setDoc(doc(db, "users", user.email), {
             route: username,
             email,
             username: username,

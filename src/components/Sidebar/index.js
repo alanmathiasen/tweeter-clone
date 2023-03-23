@@ -75,7 +75,7 @@ const Sidebar = () => {
                                 referrerPolicy="no-referrer"
                             ></ImagenPerfil>
                             <UserInfo>
-                                <h3>{userData.nombre}</h3>
+                                <h3>{userData.username}</h3>
                                 <p>@{userData.route && limitString(userData.route, 16)}</p>
                             </UserInfo>
                         </CardContent>
