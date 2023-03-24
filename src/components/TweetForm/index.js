@@ -20,9 +20,10 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
     };
 
     const handleGetData = async (search, updateSearchResults) => {
-        console.log(search);
-        const users = await getUsersByQuery(search);
-        const result = users.map((user) => ({ display: user.ruta, id: user.ruta }));
+        search = "";
+        const users = await getUsersByQuery("route", search);
+        const result = users.map((user) => ({ display: user.route, id: user.route }));
+        console.log(result);
         updateSearchResults(result);
     };
 
@@ -96,7 +97,6 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
                     a11ySuggestionsListLabel={"Personas sugeridas para mencionar."}
                     className="mentions"
                     spellCheck="false"
-                    suggestionsPortalHost={container}
                 >
                     <Mention
                         trigger="#"

@@ -1,6 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import Loader from "../Loader";
-import { LoaderWrapper, Name, Popup, PopupWrapper, Wrapper } from "./Tags.styles";
+import {
+    Followers,
+    Following,
+    LoaderWrapper,
+    Name,
+    Popover,
+    PopoverBody,
+    PopoverHeader,
+    PopoverImg,
+    PopoverWrapper,
+    Route,
+    UserFollowData,
+    Username,
+    Wrapper,
+} from "./Tags.styles";
 import {
     useFloating,
     autoUpdate,
@@ -8,7 +22,6 @@ import {
     flip,
     shift,
     useInteractions,
-    FloatingFocusManager,
     useHover,
     FloatingPortal,
 } from "@floating-ui/react";
@@ -17,7 +30,7 @@ import imgPerfil from "../../../imgs/perfil.jpg";
 import { ImgPerfil } from "../../TweetIndividual/TweetIndividual.styles";
 import { GlobalContext, useGlobalContext } from "../../../context/GlobalContext";
 
-const PopupContent = ({ username }) => {
+const PopoverContent = ({ username }) => {
     const [user, setUser] = useState();
     useEffect(() => {
         (async () => {
@@ -26,27 +39,43 @@ const PopupContent = ({ username }) => {
         })();
     }, []);
     return (
-        <PopupWrapper>
+        <PopoverWrapper>
             {user ? (
-                <div>
-                    <ImgPerfil>
-                        <img
-                            src={user.photoURL || imgPerfil}
-                            referrerPolicy="no-referrer"
-                            alt={`${user.username} profile`}
-                        />
-                    </ImgPerfil>
-                </div>
+                <>
+                    <PopoverHeader>
+                        <PopoverImg>
+                            <img
+                                src={user.photoURL || imgPerfil}
+                                referrerPolicy="no-referrer"
+                                alt={`${user.username} profile`}
+                            />
+                        </PopoverImg>
+                        <button>seguir</button>
+                    </PopoverHeader>
+                    <PopoverBody>
+                        <Username>{user.username}</Username>
+                        <Route>@{user.route}</Route>
+                        <p>{user.biography && user.biography}</p>
+                        <UserFollowData>
+                            <Following>
+                                {user.following.length} <span>siguiendo</span>
+                            </Following>{" "}
+                            <Followers>
+                                {user.followers.length} <span>seguidores</span>
+                            </Followers>
+                        </UserFollowData>
+                    </PopoverBody>
+                </>
             ) : (
                 <LoaderWrapper>
                     <Loader />
                 </LoaderWrapper>
             )}
-        </PopupWrapper>
+        </PopoverWrapper>
     );
 };
 
-const DisplayUserWithPopup = ({ mention, addAt }) => {
+const DisplayUserWithPopup = ({ route, children }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const { x, y, refs, strategy, context } = useFloating({
@@ -63,17 +92,17 @@ const DisplayUserWithPopup = ({ mention, addAt }) => {
     return (
         <Wrapper>
             <Name ref={refs.setReference} {...getReferenceProps()}>
-                {addAt ? "@" + mention : mention}
+                {children}
             </Name>
             {isOpen && (
                 <FloatingPortal>
-                    <Popup
+                    <Popover
                         ref={refs.setFloating}
                         style={{ position: strategy, top: y ?? 0, left: x ?? 0, width: "max-content" }}
                         {...getFloatingProps()}
                     >
-                        <PopupContent username={mention} />
-                    </Popup>
+                        <PopoverContent username={route} />
+                    </Popover>
                 </FloatingPortal>
             )}
         </Wrapper>

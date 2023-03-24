@@ -27,6 +27,7 @@ import imgPerfil from "../../imgs/perfil.jpg";
 
 import { parseMentions } from "../../helpers/tweetHelper";
 import ReplyModal from "../Modals/ReplyModal";
+import DisplayUserWithPopup from "../common/Tags/DisplayUserWithPopup";
 
 const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children }) => {
     const {
@@ -97,8 +98,16 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                             </ImgPerfil>
 
                             <MainUser>
-                                <Username>{author && author.nombre}</Username>
-                                <span>{author && `@${author.ruta}`}</span>
+                                {author && (
+                                    <DisplayUserWithPopup route={author.ruta}>
+                                        <Username>{author && author.nombre}</Username>
+                                    </DisplayUserWithPopup>
+                                )}
+                                <span>
+                                    {author && (
+                                        <DisplayUserWithPopup route={author.ruta}>@{author.ruta}</DisplayUserWithPopup>
+                                    )}
+                                </span>
                             </MainUser>
 
                             <BorrarTweet onClick={(e) => handleDeleteTweet(e, tweetId)}>
@@ -160,8 +169,14 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                     />
                 </ImgPerfil>
                 <TweetNav>
-                    <Username>{author && author.nombre}</Username>
-                    <span>{author && `@${author.ruta}`}</span>
+                    {author && (
+                        <DisplayUserWithPopup route={author.ruta}>
+                            <Username>{author && author.nombre}</Username>
+                        </DisplayUserWithPopup>
+                    )}
+                    <span>
+                        {author && <DisplayUserWithPopup route={author.ruta}>@{author.ruta}</DisplayUserWithPopup>}
+                    </span>
                     <span>·</span>
                     <span>{date}</span>
                 </TweetNav>

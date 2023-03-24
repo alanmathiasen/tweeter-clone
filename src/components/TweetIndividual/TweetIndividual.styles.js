@@ -29,7 +29,7 @@ export const TweetContainer = styled.div`
 
 export const ImgPerfil = styled.div`
     margin: 0;
-    z-index: 1401;
+    //z-index: 100;
     grid-column: 1;
     grid-row: span 5;
     justify-self: start;
