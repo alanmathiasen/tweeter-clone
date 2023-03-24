@@ -75,7 +75,7 @@ const PopoverContent = ({ username }) => {
     );
 };
 
-const DisplayUserWithPopup = ({ route, children }) => {
+const DisplayUserWithPopover = ({ route, children }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const { x, y, refs, strategy, context } = useFloating({
@@ -108,4 +108,4 @@ const DisplayUserWithPopup = ({ route, children }) => {
         </Wrapper>
     );
 };
-export default DisplayUserWithPopup;
+export default DisplayUserWithPopover;

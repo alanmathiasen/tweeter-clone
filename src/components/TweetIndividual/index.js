@@ -27,7 +27,7 @@ import imgPerfil from "../../imgs/perfil.jpg";
 
 import { parseMentions } from "../../helpers/tweetHelper";
 import ReplyModal from "../Modals/ReplyModal";
-import DisplayUserWithPopup from "../common/Tags/DisplayUserWithPopup";
+import DisplayUserWithPopover from "../common/Tags/DisplayUserWithPopover";
 
 const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children }) => {
     const {
@@ -99,13 +99,15 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
 
                             <MainUser>
                                 {author && (
-                                    <DisplayUserWithPopup route={author.ruta}>
+                                    <DisplayUserWithPopover route={author.ruta}>
                                         <Username>{author && author.nombre}</Username>
-                                    </DisplayUserWithPopup>
+                                    </DisplayUserWithPopover>
                                 )}
                                 <span>
                                     {author && (
-                                        <DisplayUserWithPopup route={author.ruta}>@{author.ruta}</DisplayUserWithPopup>
+                                        <DisplayUserWithPopover route={author.ruta}>
+                                            @{author.ruta}
+                                        </DisplayUserWithPopover>
                                     )}
                                 </span>
                             </MainUser>
@@ -170,12 +172,12 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                 </ImgPerfil>
                 <TweetNav>
                     {author && (
-                        <DisplayUserWithPopup route={author.ruta}>
+                        <DisplayUserWithPopover route={author.ruta}>
                             <Username>{author && author.nombre}</Username>
-                        </DisplayUserWithPopup>
+                        </DisplayUserWithPopover>
                     )}
                     <span>
-                        {author && <DisplayUserWithPopup route={author.ruta}>@{author.ruta}</DisplayUserWithPopup>}
+                        {author && <DisplayUserWithPopover route={author.ruta}>@{author.ruta}</DisplayUserWithPopover>}
                     </span>
                     <span>·</span>
                     <span>{date}</span>
