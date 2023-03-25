@@ -34,10 +34,10 @@ const Quote = ({ tweetId = null }) => {
         <Wrapper onClick={goTo}>
             <Header>
                 <ImgPerfil>
-                    <img alt="" src={imgPerfil} />
+                    <img alt="" src={author && (author.photoURL || imgPerfil)} />
                 </ImgPerfil>
 
-                <Username>Nombre</Username>
+                <Username>{author && author.nombre}</Username>
                 <span>{author && `@${author.ruta}`}</span>
                 <span>·</span>
                 {<span>{tweet.timestamp && shortDate(tweet.timestamp)}</span>}

@@ -1,4 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import {
+    useFloating,
+    autoUpdate,
+    offset,
+    flip,
+    shift,
+    useInteractions,
+    useHover,
+    FloatingPortal,
+} from "@floating-ui/react";
 import Loader from "../Loader";
 import {
     Followers,
@@ -15,20 +25,9 @@ import {
     Username,
     Wrapper,
 } from "./Tags.styles";
-import {
-    useFloating,
-    autoUpdate,
-    offset,
-    flip,
-    shift,
-    useInteractions,
-    useHover,
-    FloatingPortal,
-} from "@floating-ui/react";
 import { getUsersByQuery } from "../../../firebase/userCrud";
 import imgPerfil from "../../../imgs/perfil.jpg";
-import { ImgPerfil } from "../../TweetIndividual/TweetIndividual.styles";
-import { GlobalContext, useGlobalContext } from "../../../context/GlobalContext";
+import { FollowButton } from "../FollowButton";
 
 const PopoverContent = ({ username }) => {
     const [user, setUser] = useState();
@@ -50,7 +49,7 @@ const PopoverContent = ({ username }) => {
                                 alt={`${user.username} profile`}
                             />
                         </PopoverImg>
-                        <button>seguir</button>
+                        <FollowButton>Seguir</FollowButton>
                     </PopoverHeader>
                     <PopoverBody>
                         <Username>{user.username}</Username>

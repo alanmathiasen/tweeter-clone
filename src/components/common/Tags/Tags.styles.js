@@ -4,6 +4,7 @@ export const Popover = styled.div`
     border: 1px solid #ccc;
     border-radius: 14px;
     background: #fff;
+    box-shadow: rgb(101 119 134 / 20%) 0px 0px 15px, rgb(101 119 134 / 15%) 0px 0px 3px 1px;
 `;
 
 export const Name = styled.span``;
@@ -39,7 +40,6 @@ export const LoaderWrapper = styled.div`
 export const PopoverHeader = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
 `;
 
 export const PopoverBody = styled.div``;

@@ -19,6 +19,7 @@ const AppProvider = ({ children }) => {
 
     useEffect(() => {
         //retry until user is created and retrieved from DB (this is because of google signup)
+
         if (loggedUser) {
             const interval = setInterval(async () => {
                 const userDB = await getUsersByQuery("email", loggedUser.email);
@@ -30,6 +31,7 @@ const AppProvider = ({ children }) => {
                 clearInterval(interval);
             }, 500);
         }
+        setUserData(undefined);
     }, [loggedUser]);
 
     const handleTweettModal = () => {

@@ -144,7 +144,7 @@ const AQuienSeguir = () => {
                                     </InfoUser>
                                 </CardContent>
 
-                                <ButtonMargin>
+                                {/* <ButtonMargin>
                                     {userData.following.includes(item.id) ? (
                                         <FollowButton
                                             onClick={() => handleClick(item.id)}
@@ -163,7 +163,7 @@ const AQuienSeguir = () => {
                                             <span>Seguir</span>
                                         </FollowButton>
                                     )}
-                                </ButtonMargin>
+                                </ButtonMargin> */}
                             </Card>
                         );
                     })}

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonOutline } from "../common/buttons.styles";
+import { RoundedButton } from "../common/buttons.styles";
 
 export const BuscarWrapper = styled.div`
     display: flex;
@@ -53,9 +53,16 @@ export const RegisterForm = styled.form`
     margin-bottom: 30px;
 `;
 
-export const ButtonRegister = styled(ButtonOutline)`
-    padding: 20px 0;
-    margin: 0 auto;
+export const ButtonRegister = styled(RoundedButton)`
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #444;
+    &:hover {
+        background-color: rgba(238, 98, 98, 0.1);
+        border-color: rgba(238, 98, 98, 0.6);
+    }
 `;
 
 export const RegisterFormTitle = styled.h3`

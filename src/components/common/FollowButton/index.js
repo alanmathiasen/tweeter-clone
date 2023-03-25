@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGlobalContext } from "../../../context/GlobalContext";
-import { BtnSeguir } from "./FollowButton.styles";
+import useHoverButton from "../../../hooks/useHoverButton";
+import { Following, StopFollowing } from "./FollowButton.styles";
 
 export const FollowButton = ({ children, ...buttonProps }) => {
-    const { datosUser } = useGlobalContext();
+    const { userData } = useGlobalContext();
+    const [isFollowing, setIsFollowing] = useState(false);
+    const [isHovering, hoverProps] = useHoverButton();
+    const handleFollow = (e) => {
+        e.stopPropagation();
+        setIsFollowing(!isFollowing);
+    };
+    const handleUnfollow = (e) => {
+        e.stopPropagation();
+        setIsFollowing(!isFollowing);
+    };
 
     // const handleFollow = async (id) => {
     //   setHandleFollowButton(!handleFollowButton);
@@ -104,5 +115,16 @@ export const FollowButton = ({ children, ...buttonProps }) => {
     //         )}
     //     </>
     // );
-    return <BtnSeguir {...buttonProps}>{children}</BtnSeguir>;
+    return (
+        <>
+            {isFollowing ? (
+                <Following onClick={handleFollow}>Seguir</Following>
+            ) : (
+                <StopFollowing onClick={handleUnfollow} {...hoverProps}>
+                    {isHovering ? "Dejar de seguir" : "Siguiendo"}
+                </StopFollowing>
+            )}
+        </>
+    );
+    // <BtnSeguir {...buttonProps}>{children}</BtnSeguir>;
 };

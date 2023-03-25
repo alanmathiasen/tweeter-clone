@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { ButtonOutline } from "../common/buttons.styles";
 import GoogleSVG from "../common/GoogleSVG";
 import RegisterModal from "./RegisterModal";
-import { AuthWrapper, ButtonGroup, Title } from "./RightMenu.styles";
+import { AuthWrapper, ButtonGroup, Title, ButtonRegister } from "./RightMenu.styles";
 import { signInWithGoogle } from "../../firebase/auth";
 
 const AuthMenu = () => {
@@ -24,10 +23,10 @@ const AuthMenu = () => {
             <Title>¿Eres nuevo en Tweeter?</Title>
             <div>Regístrate ahora para obtener tu propia cronología personalizada.</div>
             <ButtonGroup>
-                <ButtonOutline onClick={handleSignInWithGoogle}>
+                <ButtonRegister onClick={handleSignInWithGoogle}>
                     <GoogleSVG width="20px" height="20px" /> Registrarse con Google
-                </ButtonOutline>
-                <ButtonOutline onClick={() => setShowRegisterModal(!showRegisterModal)}>Crear cuenta</ButtonOutline>
+                </ButtonRegister>
+                <ButtonRegister onClick={() => setShowRegisterModal(!showRegisterModal)}>Crear cuenta</ButtonRegister>
             </ButtonGroup>
             <div>Al registrarte, aceptas un monton de cosas.</div>
             <RegisterModal showModal={showRegisterModal} setShowModal={setShowRegisterModal}></RegisterModal>
