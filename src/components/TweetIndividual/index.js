@@ -167,7 +167,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                     <img
                         src={(author && author.photoURL) || imgPerfil}
                         referrerPolicy="no-referrer"
-                        alt="user profile"
+                        alt={`${author && author.nombre}`}
                     />
                 </ImgPerfil>
                 <TweetNav>

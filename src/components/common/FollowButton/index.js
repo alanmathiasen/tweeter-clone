@@ -1,20 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../../context/GlobalContext";
+import { followUser, unfollowUser } from "../../../firebase/userCrud";
 import useHoverButton from "../../../hooks/useHoverButton";
 import { Following, StopFollowing } from "./FollowButton.styles";
 
-export const FollowButton = ({ children, ...buttonProps }) => {
-    const { userData } = useGlobalContext();
-    const [isFollowing, setIsFollowing] = useState(false);
+export const FollowButton = ({ mentionUserId }) => {
+    const { userData, setUserData } = useGlobalContext();
     const [isHovering, hoverProps] = useHoverButton();
-    const handleFollow = (e) => {
+    const [isFollowing, setIsFollowing] = useState(userData && userData.following.includes(mentionUserId));
+
+    const handleFollow = async (e) => {
         e.stopPropagation();
-        setIsFollowing(!isFollowing);
+        try {
+            await followUser(mentionUserId, userData.email);
+            const newFollowingArray = [...userData.following, mentionUserId];
+            console.log(userData);
+            setUserData({ ...userData, following: newFollowingArray });
+            setIsFollowing(!isFollowing);
+        } catch (err) {
+            alert(err);
+        }
     };
-    const handleUnfollow = (e) => {
+
+    const handleUnfollow = async (e) => {
         e.stopPropagation();
-        setIsFollowing(!isFollowing);
+        try {
+            await unfollowUser(mentionUserId, userData.email);
+            const newFollowingArray = userData.following.filter((user) => user !== mentionUserId);
+            setUserData({ ...userData, following: newFollowingArray });
+            setIsFollowing(!isFollowing);
+        } catch (err) {
+            alert(err);
+        }
     };
+
+    return (
+        <>
+            {userData ? (
+                isFollowing ? (
+                    <StopFollowing onClick={handleUnfollow} {...hoverProps}>
+                        {isHovering ? "Dejar de seguir" : "Siguiendo"}
+                    </StopFollowing>
+                ) : (
+                    <Following onClick={handleFollow}>Seguir</Following>
+                )
+            ) : (
+                <></>
+            )}
+        </>
+    );
 
     // const handleFollow = async (id) => {
     //   setHandleFollowButton(!handleFollowButton);
@@ -92,7 +126,7 @@ export const FollowButton = ({ children, ...buttonProps }) => {
     //   }
     // };
 
-    const handleFollowUser = () => {};
+    //const handleFollowUser = () => {};
     // return (
     //     <>
     //         {datosUser.siguiendo.includes(userToFollowId) ? (
@@ -115,16 +149,6 @@ export const FollowButton = ({ children, ...buttonProps }) => {
     //         )}
     //     </>
     // );
-    return (
-        <>
-            {isFollowing ? (
-                <Following onClick={handleFollow}>Seguir</Following>
-            ) : (
-                <StopFollowing onClick={handleUnfollow} {...hoverProps}>
-                    {isHovering ? "Dejar de seguir" : "Siguiendo"}
-                </StopFollowing>
-            )}
-        </>
-    );
+
     // <BtnSeguir {...buttonProps}>{children}</BtnSeguir>;
 };

@@ -7,7 +7,7 @@ const GlobalContext = React.createContext();
 
 const AppProvider = ({ children }) => {
     const [loggedUser, setLoggedUser] = useState();
-    const [emailLogueado, setEmailLogueado] = useState("");
+    const [emailLogueado, setEmailLogueado] = useState("asdasdsa");
     const [userData, setUserData] = useState();
     const [datosUser, setDatosUser] = useState({});
     const [tweettModal, setTweettModal] = useState(false);
@@ -44,10 +44,12 @@ const AppProvider = ({ children }) => {
                 loggedUser,
                 emailLogueado,
                 userData,
+                setUserData,
                 datosUser,
                 setDatosUser,
                 tweettModal,
                 setTweettModal,
+                setEmailLogueado,
                 handleTweettModal,
             }}
         >

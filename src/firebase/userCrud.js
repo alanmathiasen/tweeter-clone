@@ -1,5 +1,16 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
+import {
+    arrayRemove,
+    arrayUnion,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    setDoc,
+    updateDoc,
+    where,
+} from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
 
 export const registerUser = async (name, email, password) => {
@@ -32,7 +43,7 @@ export const getUsersByQuery = async (field, text) => {
         throw err;
     }
 };
-
+//todo arreglar
 export const getUserByTweet = async (tweet) => {
     try {
         if (Object.keys(tweet).length !== 0 && tweet !== "ERROR" && tweet.usuario) {
@@ -44,5 +55,31 @@ export const getUserByTweet = async (tweet) => {
         }
     } catch (err) {
         console.error(err);
+    }
+};
+
+export const followUser = async (userToFollow, userWhoFollows) => {
+    try {
+        await updateDoc(doc(db, "users", userToFollow), {
+            followers: arrayUnion(userWhoFollows),
+        });
+        await updateDoc(doc(db, "users", userWhoFollows), {
+            following: arrayUnion(userToFollow),
+        });
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const unfollowUser = async (userToUnfollow, userWhoUnfollows) => {
+    try {
+        await updateDoc(doc(db, "users", userToUnfollow), {
+            followers: arrayRemove(userWhoUnfollows),
+        });
+        await updateDoc(doc(db, "users", userWhoUnfollows), {
+            following: arrayRemove(userToUnfollow),
+        });
+    } catch (err) {
+        throw err;
     }
 };

@@ -8,6 +8,8 @@ import {
     useInteractions,
     useHover,
     FloatingPortal,
+    useDismiss,
+    useTransitionStyles,
 } from "@floating-ui/react";
 import Loader from "../Loader";
 import {
@@ -37,6 +39,7 @@ const PopoverContent = ({ username }) => {
             setUser(user[0]);
         })();
     }, []);
+
     return (
         <PopoverWrapper>
             {user ? (
@@ -49,7 +52,7 @@ const PopoverContent = ({ username }) => {
                                 alt={`${user.username} profile`}
                             />
                         </PopoverImg>
-                        <FollowButton>Seguir</FollowButton>
+                        <FollowButton mentionUserId={user.email} />
                     </PopoverHeader>
                     <PopoverBody>
                         <Username>{user.username}</Username>
@@ -83,22 +86,23 @@ const DisplayUserWithPopover = ({ route, children }) => {
         middleware: [offset(10), flip({ fallbackAxisSideDirection: "end" }), shift()],
         whileElementsMounted: autoUpdate,
     });
-
+    const { isMounted, styles } = useTransitionStyles(context);
     const hover = useHover(context, { delay: 300 });
+    const dismiss = useDismiss(context);
 
-    const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
-
+    const { getReferenceProps, getFloatingProps } = useInteractions([hover, dismiss]);
     return (
         <Wrapper>
             <Name ref={refs.setReference} {...getReferenceProps()}>
                 {children}
             </Name>
-            {isOpen && (
-                <FloatingPortal>
+            {isMounted && (
+                <FloatingPortal context={context}>
                     <Popover
                         ref={refs.setFloating}
-                        style={{ position: strategy, top: y ?? 0, left: x ?? 0, width: "max-content" }}
+                        style={{ position: strategy, top: y ?? 0, left: x ?? 0, width: "max-content", ...styles }}
                         {...getFloatingProps()}
+                        onClick={(e) => e.stopPropagation()}
                     >
                         <PopoverContent username={route} />
                     </Popover>

@@ -44,7 +44,7 @@ export const PopoverHeader = styled.div`
 
 export const PopoverBody = styled.div``;
 
-export const UserFollowData = styled.p`
+export const UserFollowData = styled.div`
     display: flex;
     gap: 20px;
     font-size: 16px;
