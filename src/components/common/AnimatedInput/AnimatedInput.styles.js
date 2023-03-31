@@ -6,8 +6,8 @@ export const LabelWrapper = styled.label`
     & input {
         padding: 26px 10px 6px 10px;
         font-size: 20px;
-        outline: ${(props) => (props.isError ? "2px solid red" : "none")};
-        border: 1px solid ${(props) => (props.isError ? "transparent" : "#999")};
+        outline: ${(props) => (props.iserror ? "2px solid red" : "none")};
+        border: 1px solid ${(props) => (props.iserror ? "transparent" : "#999")};
         border-radius: 4px;
         width: 100%;
 
@@ -16,8 +16,9 @@ export const LabelWrapper = styled.label`
             position: absolute;
             top: 20px;
             left: 10px;
-            color: ${(props) => (props.isError ? "red" : "#999")} !important;
+            color: ${(props) => (props.iserror ? "red" : "#999")} !important;
             transition-duration: 100ms;
+            cursor: text;
         }
 
         &:focus {
@@ -44,4 +45,5 @@ export const LabelWrapper = styled.label`
 
 export const SpanError = styled.span`
     color: red;
+    font-size: 12px;
 `;

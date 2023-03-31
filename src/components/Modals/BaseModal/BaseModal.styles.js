@@ -16,8 +16,6 @@ export const Overlay = styled.div`
 export const Modal = styled.div`
     position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
     min-height: 200px;
     width: 600px;

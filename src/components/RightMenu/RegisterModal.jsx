@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BaseModal from "../Modals/BaseModal";
-import { ButtonRegister, RegisterForm, RegisterFormTitle } from "./RightMenu.styles";
+import {
+    ButtonRegister,
+    RegisterForm,
+    RegisterFormTitle,
+    GoToLogin,
+    ModalAuthWrapper,
+    ModalTitle,
+    LogoWrapper,
+} from "./RightMenu.styles";
 import AnimatedInput from "../common/AnimatedInput";
 import { registerUser } from "../../firebase/userCrud";
 import { SpanError } from "../common/AnimatedInput/AnimatedInput.styles";
 import { registerWithEmailAndPassword } from "../../firebase/auth";
+import { useModalContext } from "../../context/ModalContext";
+import Logo from "../common/Logo";
 
 const RegisterModal = ({ showModal, setShowModal }) => {
     const [name, setName] = useState("");
@@ -13,6 +23,7 @@ const RegisterModal = ({ showModal, setShowModal }) => {
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
     const [errorMessage, setErrorMessage] = useState();
+    const { isRegisterModalOpen, setIsRegisterModalOpen, setIsSigninModalOpen } = useModalContext();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -25,6 +36,7 @@ const RegisterModal = ({ showModal, setShowModal }) => {
             }
 
             await registerWithEmailAndPassword(name, email, password);
+            setIsRegisterModalOpen(false);
             navigate("/");
         } catch (error) {
             if (error.code === "auth/email-already-in-use") setErrorMessage("El email ya se encuentra en uso.");
@@ -56,40 +68,54 @@ const RegisterModal = ({ showModal, setShowModal }) => {
         setValue(target.value);
     };
 
+    const handleShowSignin = (e) => {
+        e.stopPropagation();
+        setIsRegisterModalOpen(false);
+        setIsSigninModalOpen(true);
+    };
+
     return (
         <BaseModal showModal={showModal} setShowModal={setShowModal}>
-            <RegisterForm>
-                <RegisterFormTitle>Crea tu cuenta</RegisterFormTitle>
-                <AnimatedInput
-                    title="Nombre"
-                    name="name"
-                    value={name}
-                    onChange={(e) => handleChange(e.target, setName)}
-                    error={errors.name}
-                />
-                <AnimatedInput
-                    title="Email"
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => handleChange(e.target, setEmail)}
-                    error={errors.email}
-                />
-                <AnimatedInput
-                    title="Password"
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => handleChange(e.target, setPassword)}
-                    error={errors.password}
-                />
-                {errorMessage && (
-                    <SpanError>
-                        <span>{errorMessage}</span>{" "}
-                    </SpanError>
-                )}
-                <ButtonRegister onClick={handleSubmit}>Registrarse</ButtonRegister>
-            </RegisterForm>
+            <ModalAuthWrapper>
+                <LogoWrapper>
+                    <Logo />
+                </LogoWrapper>
+                <ModalTitle>Unite hoy a Tweeter</ModalTitle>
+                <RegisterForm>
+                    <AnimatedInput
+                        title="Nombre"
+                        name="name"
+                        value={name}
+                        onChange={(e) => handleChange(e.target, setName)}
+                        error={errors.name}
+                    />
+                    <AnimatedInput
+                        title="Email"
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => handleChange(e.target, setEmail)}
+                        error={errors.email}
+                    />
+                    <AnimatedInput
+                        title="Password"
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={(e) => handleChange(e.target, setPassword)}
+                        error={errors.password}
+                    />
+                    {errorMessage && (
+                        <SpanError>
+                            <span>{errorMessage}</span>{" "}
+                        </SpanError>
+                    )}
+                    <ButtonRegister onClick={handleSubmit}>Registrarse</ButtonRegister>
+                </RegisterForm>
+                <GoToLogin>
+                    Ya tienes una cuenta? <span onClick={handleShowSignin}>Inicia sesión</span>
+                </GoToLogin>
+            </ModalAuthWrapper>
         </BaseModal>
     );
 };

@@ -46,10 +46,10 @@ export const ButtonGroup = styled.div`
 `;
 
 export const RegisterForm = styled.form`
-    width: 80%;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    margin: 0 auto;
     margin-bottom: 30px;
 `;
 
@@ -69,4 +69,31 @@ export const RegisterFormTitle = styled.h3`
     color: #000;
     font-size: 31px;
     font-weight: 600;
+`;
+
+export const ModalAuthWrapper = styled.div`
+    width: 300px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+`;
+
+export const LogoWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+`;
+
+export const ModalTitle = styled.h3`
+    font-size: 24px;
+    margin: 30px 0;
+`;
+
+export const GoToLogin = styled.div`
+    font-size: 14px;
+    color: ${({ theme }) => theme.colors.lightFont};
+
+    & span {
+        color: ${({ theme }) => theme.colors.main};
+        cursor: pointer;
+    }
 `;

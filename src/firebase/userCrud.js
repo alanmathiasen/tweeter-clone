@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import {
     arrayRemove,
     arrayUnion,
@@ -79,6 +79,17 @@ export const unfollowUser = async (userToUnfollow, userWhoUnfollows) => {
         await updateDoc(doc(db, "users", userWhoUnfollows), {
             following: arrayRemove(userToUnfollow),
         });
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const signInWithUser = async (user, password) => {
+    try {
+        const userDB = await getUsersByQuery("route", user);
+        if (userDB.length === 0) throw new Error("El usuario no existe.");
+        console.log(userDB);
+        await signInWithEmailAndPassword(auth, userDB[0].email, password);
     } catch (err) {
         throw err;
     }

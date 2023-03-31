@@ -20,6 +20,8 @@ import { PerfilProvider } from "./context/PerfilContext";
 import { SugeridosProvider } from "./context/SugeridosContext";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
+import { ModalProvider, useModalContext } from "./context/ModalContext";
+import Modals from "./components/Modals";
 const App = () => {
     const { userData } = useGlobalContext();
 
@@ -31,27 +33,30 @@ const App = () => {
                     <PerfilProvider>
                         {/* PERFIL CONTEXT PROVIDER */}
                         <SugeridosProvider>
-                            <ContentWrapper>
-                                <RouteWrapper>
-                                    <Routes>
-                                        <Route exact path="/" element={<Home />} />
+                            <ModalProvider>
+                                <ContentWrapper>
+                                    <RouteWrapper>
+                                        <Routes>
+                                            <Route exact path="/" element={<Home />} />
 
-                                        <Route exact path="/:id" element={<Perfil />} />
-                                        <Route exact path="/registro" element={<Registro />} />
-                                        <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
-                                        <Route exact path="/:id/seguidores" element={<Seguidores />} />
-                                        <Route exact path="/tweet/:id" element={<TweetPage />} />
-                                        <Route exact path="/sugeridos" element={<Sugeridos />} />
-                                        <Route exact path="/notificaciones" element={<Notificaciones />} />
-                                    </Routes>
-                                </RouteWrapper>
-                                <RightMenu />
-                            </ContentWrapper>
+                                            <Route exact path="/:id" element={<Perfil />} />
+                                            <Route exact path="/registro" element={<Registro />} />
+                                            <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
+                                            <Route exact path="/:id/seguidores" element={<Seguidores />} />
+                                            <Route exact path="/tweet/:id" element={<TweetPage />} />
+                                            <Route exact path="/sugeridos" element={<Sugeridos />} />
+                                            <Route exact path="/notificaciones" element={<Notificaciones />} />
+                                        </Routes>
+                                    </RouteWrapper>
+                                    <RightMenu />
+                                    <Modals />
+                                    {!userData && <LoginBar />}
+                                </ContentWrapper>
+                            </ModalProvider>
                         </SugeridosProvider>
                         {/* PERFIL CONTEXT PROVIDER */}
                     </PerfilProvider>
                 </AppWrapper>
-                {!userData && <LoginBar />}
             </ThemeProvider>
         </Browser>
     );
