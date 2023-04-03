@@ -4,6 +4,7 @@ import { RiSearchLine } from "react-icons/ri";
 import AQuienSeguir from "../AQuienSeguir";
 import { useGlobalContext } from "../../context/GlobalContext";
 import AuthMenu from "./AuthMenu";
+import SearchInput from "../common/SearchInput";
 
 const RightMenu = () => {
     const { userData } = useGlobalContext();
@@ -11,9 +12,7 @@ const RightMenu = () => {
         <Wrapper>
             {userData ? (
                 <>
-                    <BuscarWrapper>
-                        <Buscar placeholder="Buscar en tweeter" />
-                    </BuscarWrapper>
+                    <SearchInput />
                     {userData && <AQuienSeguir />}
                 </>
             ) : (
