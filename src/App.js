@@ -4,7 +4,7 @@ import { BrowserRouter as Browser, Route, Routes } from "react-router-dom";
 
 import { AppWrapper, ContentWrapper, RouteWrapper } from "./App.styles";
 
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import Sidebar from "./components/Sidebar";
 import Perfil from "./pages/Perfil";
 import Registro from "./pages/Registro";
@@ -22,6 +22,7 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
 import { ModalProvider, useModalContext } from "./context/ModalContext";
 import Modals from "./components/Modals";
+import Explore from "./pages/Explore";
 const App = () => {
     const { userData } = useGlobalContext();
 
@@ -38,8 +39,11 @@ const App = () => {
                                     <RouteWrapper>
                                         <Routes>
                                             <Route exact path="/" element={<Home />} />
+                                            <Route exact path="/explore" element={<Explore />} />
 
-                                            <Route exact path="/:id" element={<Perfil />} />
+                                            <Route exact path="/:id" element={<Perfil />}>
+                                                <Route exact path="" element={<div>hola</div>}></Route>
+                                            </Route>
                                             <Route exact path="/registro" element={<Registro />} />
                                             <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
                                             <Route exact path="/:id/seguidores" element={<Seguidores />} />

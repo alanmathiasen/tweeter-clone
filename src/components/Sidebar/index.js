@@ -66,6 +66,12 @@ const Sidebar = () => {
                                     </Icon>
                                     Notificaciones
                                 </Link>
+                                <Link to="/explore">
+                                    <Icon>
+                                        <HiOutlineHashtag />
+                                    </Icon>
+                                    Explorar
+                                </Link>
                                 {/* <Link to={`/${userData.route}`}>
                                 <Icon>
                                     <HiOutlineUser />
@@ -77,7 +83,7 @@ const Sidebar = () => {
                         ) : (
                             <>
                                 {/*TODO link to explore page*/}
-                                <Link to="/">
+                                <Link to="/explore">
                                     <Icon>
                                         <HiOutlineHashtag />
                                     </Icon>

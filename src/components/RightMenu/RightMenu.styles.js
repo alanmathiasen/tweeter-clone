@@ -1,24 +1,10 @@
 import styled from "styled-components";
 import { RoundedButton } from "../common/buttons.styles";
 
-export const BuscarWrapper = styled.div`
-    display: flex;
-    margin-top: 0.5rem;
-`;
-
-export const Buscar = styled.input`
-    border-radius: 9999px;
-    border: none;
-    background-color: #ededed;
-    font-size: 1rem;
-    padding: 1rem;
-    width: 100%;
-`;
-
 export const Wrapper = styled.div`
-    flex-grow: 1;
+    width: 350px;
     overflow: hidden;
-    padding: 12px 12px 64px 24px;
+    margin: 0 12px 32px 24px;
 `;
 
 export const AuthWrapper = styled.div`

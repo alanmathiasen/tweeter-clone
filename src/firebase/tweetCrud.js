@@ -10,6 +10,7 @@ import {
     deleteDoc,
     arrayUnion,
     addDoc,
+    setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
@@ -122,5 +123,46 @@ export const deleteTweet = async ({ email, tweet }) => {
         querySnapshot.forEach((doc) => {
             deleteDoc(doc.ref);
         });
+    }
+};
+
+export const postTag = async (tag, user) => {
+    const tagRef = doc(db, "hashtags", tag);
+    const tagSnap = await getDoc(tagRef);
+    if (tagSnap.exists()) {
+        await updateDoc(doc(db, "hashtags", tag), {
+            users: arrayUnion(user),
+        });
+    } else {
+        const tagData = {
+            users: [user],
+        };
+        await setDoc(doc(db, "hashtags", tag), tagData);
+    }
+};
+
+export const getTagsByQuery = async (field, search) => {
+    try {
+        const tagRef = collection(db, "hashtags");
+        const q = query(tagRef, where(field, ">=", search), where(field, "<=", search + "\uf8ff"));
+        const querySnapshot = await getDocs(q);
+        const result = [];
+        querySnapshot.forEach((doc) => result.push({ ...doc.data(), id: doc.id }));
+        return result;
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getAlltags = async () => {
+    try {
+        const tagRef = collection(db, "hashtags");
+        const q = query(tagRef);
+        const querySnapshot = await getDocs(q);
+        const result = [];
+        querySnapshot.forEach((doc) => result.push({ ...doc.data(), id: doc.id }));
+        return result;
+    } catch (err) {
+        throw err;
     }
 };

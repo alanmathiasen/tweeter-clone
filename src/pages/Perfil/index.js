@@ -8,6 +8,7 @@ import PerfilNav from "../../components/PerfilComponents/PerfilNav";
 import DatosPerfil from "../../components/PerfilComponents/DatosPerfil";
 import TweetsPerfil from "../../components/PerfilComponents/TweetsPerfil";
 import { usePerfilContext } from "../../context/PerfilContext";
+import { Outlet } from "react-router-dom";
 
 const Perfil = () => {
     const [perfilModalOpen, setPerfilModalOpen] = useState(false);
@@ -28,6 +29,7 @@ const Perfil = () => {
             <PerfilModalContainer perfilModalOpen={perfilModalOpen}>
                 <PerfilModal handlePerfilModal={handlePerfilModal} />
             </PerfilModalContainer>
+            <Outlet />
             <TweetsNavbar />
             <TweetsPerfil />
         </PerfilWrapper>

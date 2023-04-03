@@ -7,7 +7,7 @@ const AnimatedInput = ({ title, error, ...props }) => {
         ref.current.focus();
     };
     return (
-        <LabelWrapper htmlFor={title} isError={!!error}>
+        <LabelWrapper htmlFor={title} iserror={!!error}>
             <input placeholder=" " iserror={!!error} {...props} ref={ref} />
             <span onClick={handleClick}>{title}</span>
             {error && <SpanError>{error}</SpanError>}
