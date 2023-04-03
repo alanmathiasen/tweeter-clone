@@ -4,7 +4,7 @@ import { BrowserRouter as Browser, Route, Routes } from "react-router-dom";
 
 import { AppWrapper, ContentWrapper, RouteWrapper } from "./App.styles";
 
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import Sidebar from "./components/Sidebar";
 import Perfil from "./pages/Perfil";
 import Registro from "./pages/Registro";

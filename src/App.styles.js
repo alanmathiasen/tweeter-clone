@@ -4,6 +4,7 @@ export const AppWrapper = styled.div`
     display: flex;
     margin: 0 auto;
     max-width: 1240px;    
+   
     }
 `;
 
@@ -24,6 +25,13 @@ export const ContentWrapper = styled.div`
 // `;
 
 export const RouteWrapper = styled.div`
-    min-width: 600px;
-    flex-grow: 1;
+    width: 600px;
+    min-height: 100vh;
+    border-right: 1px solid #ededed;
+    border-left: 1px solid #ededed;
+    h2 {
+        margin: 0;
+        font-size: 1.3rem;
+        margin-left: 12px;
+    }
 `;

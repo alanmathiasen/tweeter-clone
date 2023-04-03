@@ -153,3 +153,16 @@ export const getTagsByQuery = async (field, search) => {
         throw err;
     }
 };
+
+export const getAlltags = async () => {
+    try {
+        const tagRef = collection(db, "hashtags");
+        const q = query(tagRef);
+        const querySnapshot = await getDocs(q);
+        const result = [];
+        querySnapshot.forEach((doc) => result.push({ ...doc.data(), id: doc.id }));
+        return result;
+    } catch (err) {
+        throw err;
+    }
+};

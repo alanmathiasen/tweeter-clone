@@ -77,7 +77,7 @@ export const ImagenPerfil = styled.img`
 `;
 
 export const InputWrapper = styled.div`
-    width: 100%;
+    width: 90%;
     margin: 0 0.5rem;
     button {
         display: flex;
