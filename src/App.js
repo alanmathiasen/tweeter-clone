@@ -22,6 +22,7 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
 import { ModalProvider, useModalContext } from "./context/ModalContext";
 import Modals from "./components/Modals";
+import Explore from "./pages/Explore";
 const App = () => {
     const { userData } = useGlobalContext();
 
@@ -38,6 +39,7 @@ const App = () => {
                                     <RouteWrapper>
                                         <Routes>
                                             <Route exact path="/" element={<Home />} />
+                                            <Route exact path="/explore" element={<Explore />} />
 
                                             <Route exact path="/:id" element={<Perfil />} />
                                             <Route exact path="/registro" element={<Registro />} />

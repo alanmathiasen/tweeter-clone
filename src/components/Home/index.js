@@ -4,10 +4,12 @@ import { HomeWrapper, NewTweets, TweetFormWrapper } from "./Home.styles";
 import TweetForm from "../TweetForm";
 import TweetGroup from "../TweetGroup";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { Navigate } from "react-router-dom";
 
 const Home = () => {
     const { tweets, loading, queuedTweets, mergeTweets } = useTweets();
     const { userData } = useGlobalContext();
+    if (!userData) return <Navigate to="/explore" replace />;
     return (
         <HomeWrapper>
             <h2>Inicio</h2>

@@ -4,8 +4,9 @@ import { TweetFormWrapper, ImagenPerfil, InputWrapper, TweetInput } from "./Twee
 import FotoPerfil from "../../imgs/perfil.jpg";
 import { ButtonColored } from "../common/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
-import { createTweet } from "../../firebase/tweetCrud";
+import { createTweet, postTag } from "../../firebase/tweetCrud";
 import { getUsersByQuery } from "../../firebase/userCrud";
+import { extractTagsFromRaw } from "../../helpers/tweetHelper";
 
 let container;
 
@@ -15,22 +16,26 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
     const [tweetInput, setTweetInput] = useState("");
 
     const handleInputChange = (e, newValue, newPlainTextValue, mentions) => {
-        console.log({ newValue, newPlainTextValue, mentions });
         setTweetInput(e.target.value);
     };
 
     const handleGetData = async (search, updateSearchResults) => {
-        search = "";
         const users = await getUsersByQuery("route", search);
         const result = users.map((user) => ({ display: user.route, id: user.route }));
-        console.log(result);
         updateSearchResults(result);
+    };
+
+    const handleDatatag = async (search, updateSearchResults) => {
+        const tags = [];
+        if (tags.some((element) => search === element.id)) updateSearchResults(tags);
+        updateSearchResults([{ id: search, display: search }]);
     };
 
     async function postTweet(e) {
         try {
             e.stopPropagation();
             e.preventDefault();
+            const tags = extractTagsFromRaw(tweetInput);
             if (typeof setShowModal === "function") {
                 setShowModal(false);
             }
@@ -43,6 +48,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
                 children: [],
             };
             await createTweet(tweet);
+            if (tags) tags.forEach(async (tag) => await postTag(tag, userData.email));
         } catch (err) {
             console.error(err);
         } finally {
@@ -85,6 +91,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
     //         console.error(error);
     //       }
     //     }
+    //TODO FIX ADD HASHTAG ON SPACEBAR PRESS
     return (
         <TweetFormWrapper>
             <ImagenPerfil src={userData.photoURL ?? FotoPerfil}></ImagenPerfil>
@@ -101,7 +108,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
                     <Mention
                         trigger="#"
                         displayTransform={(tag) => `#${tag}`}
-                        data={[{ display: "example", id: "example" }]}
+                        data={handleDatatag}
                         markup="$$$____id__~~~____display__$$$~~~"
                         className="mentions__mention"
                     />

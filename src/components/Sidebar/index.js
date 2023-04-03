@@ -77,7 +77,7 @@ const Sidebar = () => {
                         ) : (
                             <>
                                 {/*TODO link to explore page*/}
-                                <Link to="/">
+                                <Link to="/explore">
                                     <Icon>
                                         <HiOutlineHashtag />
                                     </Icon>
