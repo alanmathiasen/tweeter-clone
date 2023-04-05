@@ -1,8 +1,12 @@
 import React from "react";
-import { LoaderWrapper } from "./Loader.styles";
+import { Spinner, SpinnerWrapper } from "./Loader.styles";
 
 const Loader = () => {
-    return <LoaderWrapper />;
+    return (
+        <SpinnerWrapper>
+            <Spinner />
+        </SpinnerWrapper>
+    );
 };
 
 export default Loader;

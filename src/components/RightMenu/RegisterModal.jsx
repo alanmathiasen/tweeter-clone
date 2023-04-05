@@ -18,7 +18,7 @@ import { useModalContext } from "../../context/ModalContext";
 import Logo from "../common/Logo";
 
 const RegisterModal = ({ showModal, setShowModal }) => {
-    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
@@ -35,7 +35,7 @@ const RegisterModal = ({ showModal, setShowModal }) => {
                 return;
             }
 
-            await registerWithEmailAndPassword(name, email, password);
+            await registerWithEmailAndPassword(username, email, password);
             setIsRegisterModalOpen(false);
             navigate("/");
         } catch (error) {
@@ -50,8 +50,8 @@ const RegisterModal = ({ showModal, setShowModal }) => {
         if (email.length === 0) validateErrors.email = "Debes ingresar un email";
         if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) validateErrors.email = "Email invalido";
 
-        if (name.length === 0) validateErrors.name = "Debes ingresar un nombre";
-        if (name.length > 50) validateErrors.name = "El nombre no debe superar los 50 caracteres";
+        if (username.length === 0) validateErrors.username = "Debes ingresar un nombre";
+        if (username.length > 50) validateErrors.username = "El nombre no debe superar los 50 caracteres";
 
         if (password.length === 0) validateErrors.password = "Debes ingresar un password";
         if (password.length < 6) validateErrors.password = "El password debe tener mas de 6 caracteres";
@@ -62,7 +62,7 @@ const RegisterModal = ({ showModal, setShowModal }) => {
     const handleChange = (target, setValue) => {
         if (Object.keys(errors) !== 0) {
             const newErrors = { ...errors };
-            delete newErrors[target.name];
+            delete newErrors[target.username];
             setErrors(newErrors);
         }
         setValue(target.value);
@@ -83,11 +83,11 @@ const RegisterModal = ({ showModal, setShowModal }) => {
                 <ModalTitle>Unite hoy a Tweeter</ModalTitle>
                 <RegisterForm>
                     <AnimatedInput
-                        title="Nombre"
-                        name="name"
-                        value={name}
-                        onChange={(e) => handleChange(e.target, setName)}
-                        error={errors.name}
+                        title="Nombre de usuario"
+                        name="username"
+                        value={username}
+                        onChange={(e) => handleChange(e.target, setUsername)}
+                        error={errors.username}
                     />
                     <AnimatedInput
                         title="Email"

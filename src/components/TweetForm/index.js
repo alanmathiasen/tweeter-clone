@@ -6,7 +6,7 @@ import { ButtonColored } from "../common/ButtonColored";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { createTweet, postTag } from "../../firebase/tweetCrud";
 import { getUsersByQuery } from "../../firebase/userCrud";
-import { extractTagsFromRaw } from "../../helpers/tweetHelper";
+import { extractMentionsFromRaw, extractTagsFromRaw } from "../../helpers/tweetHelper";
 
 let container;
 
@@ -17,6 +17,7 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
 
     const handleInputChange = (e, newValue, newPlainTextValue, mentions) => {
         setTweetInput(e.target.value);
+        console.log(mentions);
     };
 
     const handleGetData = async (search, updateSearchResults) => {
@@ -36,16 +37,19 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
             e.stopPropagation();
             e.preventDefault();
             const tags = extractTagsFromRaw(tweetInput);
+            const mentions = extractMentionsFromRaw(tweetInput);
             if (typeof setShowModal === "function") {
                 setShowModal(false);
             }
             const tweet = {
-                usuario: userData.email,
-                descripcion: tweetInput,
+                user: userData.email,
+                description: tweetInput,
                 timestamp: +new Date(),
                 parentId: parentId || null,
                 quoteId: quoteId || null,
                 children: [],
+                tags,
+                mentions,
             };
             await createTweet(tweet);
             if (tags) tags.forEach(async (tag) => await postTag(tag, userData.email));

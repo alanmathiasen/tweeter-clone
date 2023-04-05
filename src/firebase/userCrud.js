@@ -46,8 +46,8 @@ export const getUsersByQuery = async (field, text) => {
 //todo arreglar
 export const getUserByTweet = async (tweet) => {
     try {
-        if (Object.keys(tweet).length !== 0 && tweet !== "ERROR" && tweet.usuario) {
-            const userRef = doc(db, "usuarios", tweet.usuario);
+        if (Object.keys(tweet).length !== 0 && tweet !== "ERROR" && tweet.user) {
+            const userRef = doc(db, "users", tweet.user);
             const userSnap = await getDoc(userRef);
             return userSnap.data() ? userSnap.data() : {};
         } else {

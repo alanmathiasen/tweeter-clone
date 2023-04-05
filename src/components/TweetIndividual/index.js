@@ -28,6 +28,7 @@ import imgPerfil from "../../imgs/perfil.jpg";
 import { parseMentions } from "../../helpers/tweetHelper";
 import ReplyModal from "../Modals/ReplyModal";
 import DisplayUserWithPopover from "../common/Tags/DisplayUserWithPopover";
+import Loader from "../common/Loader";
 
 const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children }) => {
     const {
@@ -80,6 +81,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
         setShowReplyModal(true);
     };
 
+    if (loading) return <Loader />;
     if (mainTweet) {
         return (
             <MainContainer>
@@ -99,14 +101,14 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
 
                             <MainUser>
                                 {author && (
-                                    <DisplayUserWithPopover route={author.ruta}>
-                                        <Username>{author && author.nombre}</Username>
+                                    <DisplayUserWithPopover route={author.route}>
+                                        <Username>{author && author.username}</Username>
                                     </DisplayUserWithPopover>
                                 )}
                                 <span>
                                     {author && (
-                                        <DisplayUserWithPopover route={author.ruta}>
-                                            @{author.ruta}
+                                        <DisplayUserWithPopover route={author.route}>
+                                            @{author.route}
                                         </DisplayUserWithPopover>
                                     )}
                                 </span>
@@ -117,7 +119,7 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                             </BorrarTweet>
                         </TweetHeader>
                         <TweetMainContent>
-                            {tweet.descripcion && <p>{parseMentions(tweet.descripcion)}</p>}
+                            {tweet.description && <p>{parseMentions(tweet.description)}</p>}
                             <span></span>
                             {tweet.quoteId ? <Quote tweetId={tweet.quoteId} /> : ""}
                         </TweetMainContent>
@@ -167,22 +169,24 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
                     <img
                         src={(author && author.photoURL) || imgPerfil}
                         referrerPolicy="no-referrer"
-                        alt={`${author && author.nombre}`}
+                        alt={`${author && author.username}`}
                     />
                 </ImgPerfil>
                 <TweetNav>
                     {author && (
-                        <DisplayUserWithPopover route={author.ruta}>
-                            <Username>{author && author.nombre}</Username>
+                        <DisplayUserWithPopover route={author.route}>
+                            <Username>{author && author.username}</Username>
                         </DisplayUserWithPopover>
                     )}
                     <span>
-                        {author && <DisplayUserWithPopover route={author.ruta}>@{author.ruta}</DisplayUserWithPopover>}
+                        {author && (
+                            <DisplayUserWithPopover route={author.route}>@{author.route}</DisplayUserWithPopover>
+                        )}
                     </span>
                     <span>·</span>
                     <span>{date}</span>
                 </TweetNav>
-                <TweetContent>{tweet.descripcion && parseMentions(tweet.descripcion)}</TweetContent>
+                <TweetContent>{tweet.description && parseMentions(tweet.description)}</TweetContent>
                 <ButtonGroup
                     replies={tweet.children ? tweet.children.length : null}
                     likes={tweet.likes ? tweet.likes.length : null}

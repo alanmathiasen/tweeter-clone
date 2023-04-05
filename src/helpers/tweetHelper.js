@@ -4,6 +4,8 @@ import Hashtag from "../components/common/Tags/Hashtag";
 import { v4 as uuid } from "uuid";
 
 let mentionRegex = /@+__(.*?)\^+__.*?@+\^+/;
+let mentionRegexGlobal = /@+__(.*?)\^+__.*?@+\^+/g;
+
 let tagRegex = /\$+__(.*?)~+__.*?\$+~+/;
 let tagRegexGlobal = /\$+__(.*?)~+__.*?\$+~+/g;
 
@@ -22,4 +24,9 @@ export const parseMentions = (description) => {
 export const extractTagsFromRaw = (description) => {
     const matchedTags = description.match(tagRegexGlobal);
     return matchedTags ? matchedTags.map((tag) => tagRegex.exec(tag)[1]) : [];
+};
+
+export const extractMentionsFromRaw = (description) => {
+    const matchedMentions = description.match(mentionRegexGlobal);
+    return matchedMentions ? matchedMentions.map((mention) => mentionRegex.exec(mention)[1]) : [];
 };
