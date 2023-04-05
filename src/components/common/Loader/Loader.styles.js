@@ -8,7 +8,7 @@ const animate = keyframes`
     transform: rotate(360deg);
   }
 `;
-export const LoaderWrapper = styled.div`
+export const Spinner = styled.div`
   width: 32px;
   height: 32px;
   border: 4px solid ${(props) => props.theme.colors.main};
@@ -18,4 +18,10 @@ export const LoaderWrapper = styled.div`
   box-sizing: border-box;
   animation: ${animate} 1s linear infinite;
   }
+`;
+
+export const SpinnerWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;

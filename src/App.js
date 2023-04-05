@@ -23,6 +23,8 @@ import { theme } from "./styles/theme";
 import { ModalProvider, useModalContext } from "./context/ModalContext";
 import Modals from "./components/Modals";
 import Explore from "./pages/Explore";
+import ExploreTagList from "./components/common/ExploreTagList";
+import TweetsByTag from "./components/TweetsByTag";
 const App = () => {
     const { userData } = useGlobalContext();
 
@@ -39,10 +41,13 @@ const App = () => {
                                     <RouteWrapper>
                                         <Routes>
                                             <Route exact path="/" element={<Home />} />
-                                            <Route exact path="/explore" element={<Explore />} />
+                                            <Route exact path="/explore" element={<Explore />}>
+                                                <Route exact path="" element={<ExploreTagList />} />
+                                                <Route exact path=":tag" element={<TweetsByTag />} />
+                                            </Route>
 
                                             <Route exact path="/:id" element={<Perfil />}>
-                                                <Route exact path="" element={<div>hola</div>}></Route>
+                                                <Route exact path="" element={"hola"}></Route>
                                             </Route>
                                             <Route exact path="/registro" element={<Registro />} />
                                             <Route exact path="/:id/siguiendo" element={<Siguiendo />} />

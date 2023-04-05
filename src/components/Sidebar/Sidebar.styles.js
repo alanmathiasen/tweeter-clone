@@ -35,19 +35,15 @@ export const LogoImg = styled.span`
         background: none;
         border-radius: 50px;
         display: flex;
-        width: 3rem;
+        margin-top: 4px;
+        width: 48px;
+        height: 48px;
         justify-content: center;
         align-items: center;
-        height: 3rem;
         &:hover {
             background: #f7d4d4;
         }
     }
-`;
-
-export const ImageLogo = styled.img`
-    height: 1.5rem;
-    z-index: 10;
 `;
 
 export const ButtonTweet = styled.button`

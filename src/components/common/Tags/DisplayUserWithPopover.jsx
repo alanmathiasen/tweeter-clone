@@ -35,8 +35,9 @@ const PopoverContent = ({ username }) => {
     const [user, setUser] = useState();
     useEffect(() => {
         (async () => {
-            const user = await getUsersByQuery("route", username);
-            setUser(user[0]);
+            const userDB = await getUsersByQuery("route", username);
+            console.log(userDB);
+            setUser(userDB[0]);
         })();
     }, []);
 

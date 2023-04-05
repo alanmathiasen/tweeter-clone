@@ -11,6 +11,8 @@ import {
     arrayUnion,
     addDoc,
     setDoc,
+    increment,
+    orderBy,
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
@@ -132,10 +134,12 @@ export const postTag = async (tag, user) => {
     if (tagSnap.exists()) {
         await updateDoc(doc(db, "hashtags", tag), {
             users: arrayUnion(user),
+            count: increment(1),
         });
     } else {
         const tagData = {
             users: [user],
+            count: 1,
         };
         await setDoc(doc(db, "hashtags", tag), tagData);
     }
@@ -157,7 +161,7 @@ export const getTagsByQuery = async (field, search) => {
 export const getAlltags = async () => {
     try {
         const tagRef = collection(db, "hashtags");
-        const q = query(tagRef);
+        const q = query(tagRef, orderBy("count", "desc"));
         const querySnapshot = await getDocs(q);
         const result = [];
         querySnapshot.forEach((doc) => result.push({ ...doc.data(), id: doc.id }));

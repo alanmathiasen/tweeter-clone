@@ -4,7 +4,7 @@ import { RoundedButton } from "../common/buttons.styles";
 export const Wrapper = styled.div`
     width: 350px;
     overflow: hidden;
-    margin: 0 12px 32px 24px;
+    margin: 16px 12px 32px 24px;
 `;
 
 export const AuthWrapper = styled.div`
