@@ -32,6 +32,7 @@ const App = () => {
         <Browser>
             <ThemeProvider theme={theme}>
                 <AppWrapper>
+                    SACA ESTO
                     <Sidebar />
                     <PerfilProvider>
                         {/* PERFIL CONTEXT PROVIDER */}

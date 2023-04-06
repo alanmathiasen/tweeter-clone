@@ -8,12 +8,12 @@ import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { useState, useEffect } from "react/cjs/react.development";
 
 const TweetPage = () => {
-    let { id } = useParams();
-    const [idState, setIdState] = useState(id);
-    const [children, setChildren] = useState([]);
-    const [childrenIds, setChildrenIds] = useState([]);
-    const [parents, setParents] = useState([]);
-    const tweetRef = doc(db, "tweets", id);
+    // let { id } = useParams();
+    // const [idState, setIdState] = useState(id);
+    // const [children, setChildren] = useState([]);
+    // const [childrenIds, setChildrenIds] = useState([]);
+    // const [parents, setParents] = useState([]);
+    //const tweetRef = doc(db, "tweets", id);
     //TODO use tweetCrud fn
     // const getTweet = async (idTweet) => {
     //     //const tweetRef = doc(db, "tweets", idTweet);
@@ -106,17 +106,17 @@ const TweetPage = () => {
     // useEffect(() => {
     //     setIdState(id);
     // }, [id]);
+    return <>HOLA</>;
+    // return (
+    //     <Wrapper>
+    //         {parents && <TweetGroup tweetArray={parents} parent />}
 
-    return (
-        <Wrapper>
-            {/* {parents && <TweetGroup tweetArray={parents} parent />} */}
-
-            {idState && (
-                <TweetIndividual tweetId={idState} mainTweet key={idState} hasUp={parents.length > 0 ? true : false} />
-            )}
-            {/* {idState && <TweetGroup tweetArray={children} />} */}
-        </Wrapper>
-    );
+    //         {idState && (
+    //             <TweetIndividual tweetId={idState} mainTweet key={idState} hasUp={parents.length > 0 ? true : false} />
+    //         )}
+    //         {idState && <TweetGroup tweetArray={children} />}
+    //     </Wrapper>
+    // );
 };
 
 export default TweetPage;
