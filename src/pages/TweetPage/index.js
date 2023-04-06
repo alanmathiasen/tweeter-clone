@@ -109,12 +109,12 @@ const TweetPage = () => {
 
     return (
         <Wrapper>
-            {parents && <TweetGroup tweetArray={parents} parent />}
+            {/* {parents && <TweetGroup tweetArray={parents} parent />} */}
 
             {idState && (
                 <TweetIndividual tweetId={idState} mainTweet key={idState} hasUp={parents.length > 0 ? true : false} />
             )}
-            {idState && <TweetGroup tweetArray={children} />}
+            {/* {idState && <TweetGroup tweetArray={children} />} */}
         </Wrapper>
     );
 };
