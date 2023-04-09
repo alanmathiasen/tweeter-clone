@@ -8,7 +8,7 @@ import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { useState, useEffect } from "react/cjs/react.development";
 
 const TweetPage = () => {
-    //let { id } = useParams();
+    let { id } = useParams();
     // const [idState, setIdState] = useState(id);
     // const [children, setChildren] = useState([]);
     // const [childrenIds, setChildrenIds] = useState([]);
