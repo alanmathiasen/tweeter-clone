@@ -32,12 +32,12 @@ const App = () => {
         <Browser>
             <ThemeProvider theme={theme}>
                 <AppWrapper>
-                    <Sidebar />
                     <PerfilProvider>
                         {/* PERFIL CONTEXT PROVIDER */}
                         <SugeridosProvider>
                             <ModalProvider>
                                 <ContentWrapper>
+                                    <Sidebar />
                                     <RouteWrapper>
                                         <Routes>
                                             <Route exact path="/" element={<Home />} />

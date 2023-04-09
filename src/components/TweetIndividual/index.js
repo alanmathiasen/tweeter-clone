@@ -43,32 +43,31 @@ const TweetIndividual = ({ tweetId, mainTweet = false, lines, hasUp, children })
         date,
         loading,
     } = useTweet({ tweetId, isMain: mainTweet });
-
     const navigate = useNavigate();
-    const { emailLogueado } = useGlobalContext();
+    const { userData } = useGlobalContext();
 
     async function handleDeleteTweet(e) {
         e.stopPropagation();
-        await deleteTweet({ email: emailLogueado, tweet });
+        await deleteTweet({ email: userData.email, tweet });
     }
 
     async function handleLikeTweet(e) {
         e.stopPropagation();
-        if (!emailLogueado) {
+        if (!userData) {
             alert("please login");
             return 0;
         }
 
-        await likeTweet({ email: emailLogueado, tweetId });
+        await likeTweet({ email: userData.email, tweetId });
     }
 
     async function reTweet(e) {
         e.stopPropagation();
-        if (!emailLogueado) {
+        if (!userData) {
             alert("please login");
             return 0;
         }
-        await retweet({ email: emailLogueado, tweetId });
+        await retweet({ email: userData.email, tweetId });
     }
 
     const goTo = (e) => {

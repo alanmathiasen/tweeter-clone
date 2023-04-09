@@ -1,6 +1,5 @@
 import React from "react";
-import { BuscarWrapper, Buscar, Wrapper } from "./RightMenu.styles";
-import { RiSearchLine } from "react-icons/ri";
+import { Wrapper, StickyWrapper, FixedWrapper, AuthMenuWrapper } from "./RightMenu.styles";
 import AQuienSeguir from "../AQuienSeguir";
 import { useGlobalContext } from "../../context/GlobalContext";
 import AuthMenu from "./AuthMenu";
@@ -12,11 +11,20 @@ const RightMenu = () => {
         <Wrapper>
             {userData ? (
                 <>
-                    <SearchInput />
-                    {userData && <AQuienSeguir />}
+                    {" "}
+                    <FixedWrapper>
+                        <SearchInput />
+                    </FixedWrapper>
+                    {userData && (
+                        <AuthMenuWrapper isSearchBar>
+                            <AQuienSeguir />
+                        </AuthMenuWrapper>
+                    )}
                 </>
             ) : (
-                <AuthMenu />
+                <AuthMenuWrapper>
+                    <AuthMenu />
+                </AuthMenuWrapper>
             )}
         </Wrapper>
     );

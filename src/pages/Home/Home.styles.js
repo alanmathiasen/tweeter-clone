@@ -7,6 +7,15 @@ export const HomeWrapper = styled.div`
     padding: 10px 0;
 `;
 
+export const Header = styled.div`
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(5px);
+`;
+
 export const TweetFormWrapper = styled.div`
     padding: 0 16px;
     border-bottom: 1px solid #ededed;

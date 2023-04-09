@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import { Wrapper } from "./Explore.styles";
-
 const Explore = () => {
     return (
         <Wrapper>

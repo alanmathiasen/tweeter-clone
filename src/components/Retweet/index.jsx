@@ -10,8 +10,11 @@ const Retweet = ({ tweet }) => {
 
     useEffect(() => {
         //TODO abstract this
+
+        console.log({ parent: tweet });
+
         (async function getAuthor() {
-            const userRef = doc(db, "usuarios", tweet.parent);
+            const userRef = doc(db, "users", tweet.parent);
             const userSnap = await getDoc(userRef);
             userSnap.data() ? setRetweetFrom(userSnap.data()) : setRetweetFrom({});
         })();
@@ -23,7 +26,7 @@ const Retweet = ({ tweet }) => {
                 <RetweetIcon>
                     <VscGitCompare />
                 </RetweetIcon>
-                <Text>{retweetFrom ? retweetFrom.ruta : null}</Text>
+                <Text>{retweetFrom ? retweetFrom.route : null}</Text>
             </TweetIndividual>
         </>
     );

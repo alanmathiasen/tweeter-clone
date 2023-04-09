@@ -3,8 +3,7 @@ import { RoundedButton } from "../common/buttons.styles";
 
 export const Wrapper = styled.div`
     width: 350px;
-    overflow: hidden;
-    margin: 16px 12px 32px 24px;
+    margin: 0 12px 32px 24px;
 `;
 
 export const AuthWrapper = styled.div`
@@ -12,11 +11,11 @@ export const AuthWrapper = styled.div`
     border: 1px solid lightgray;
     border-radius: 10px;
     display: block;
+
     div {
         font-size: 12px;
         color: darkgray;
         line-height: 16px;
-        m
     }
 `;
 
@@ -82,4 +81,15 @@ export const GoToLogin = styled.div`
         color: ${({ theme }) => theme.colors.main};
         cursor: pointer;
     }
+`;
+
+export const FixedWrapper = styled.div`
+    position: fixed;
+    width: inherit;
+    padding: 16px 0 4px 0;
+    background: #fff;
+`;
+
+export const AuthMenuWrapper = styled.div`
+    padding-top: ${({ isSearchBar }) => (isSearchBar ? "24px" : "16px")};
 `;
