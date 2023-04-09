@@ -5,6 +5,7 @@ import { getTweet } from "../../firebase/tweetCrud";
 import imgPerfil from "../../imgs/perfil.jpg";
 import { shortDate } from "../../helpers/dateHelper";
 import { useNavigate } from "react-router-dom";
+import { parseMentions } from "../../helpers/tweetHelper";
 const Quote = ({ tweetId = null }) => {
     const [tweet, setTweet] = useState({});
     const [author, setAuthor] = useState({});
@@ -34,15 +35,15 @@ const Quote = ({ tweetId = null }) => {
         <Wrapper onClick={goTo}>
             <Header>
                 <ImgPerfil>
-                    <img alt="" src={author && (author.photoURL || imgPerfil)} />
+                    <img alt={`author.name`} src={author && (author.photoURL || imgPerfil)} />
                 </ImgPerfil>
 
-                <Username>{author && author.nombre}</Username>
-                <span>{author && `@${author.ruta}`}</span>
+                <Username>{author && author.username}</Username>
+                <span>{author && `@${author.route}`}</span>
                 <span>·</span>
                 {<span>{tweet.timestamp && shortDate(tweet.timestamp)}</span>}
             </Header>
-            <TweetContent>{tweet.descripcion && <p>{tweet.descripcion}</p>}</TweetContent>
+            <TweetContent>{tweet.description && <p>{parseMentions(tweet.description)}</p>}</TweetContent>
         </Wrapper>
     );
 };

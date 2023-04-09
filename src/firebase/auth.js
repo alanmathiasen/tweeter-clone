@@ -15,7 +15,7 @@ export const signInWithGoogle = async () => {
     try {
         const res = await signInWithPopup(auth, googleProvider);
         const user = res.user;
-        //delete spaces, limit characters to 10, add 4 random numbers
+        //delete spaces, limit characters to 10, append 4 random numbers
         const newRoute =
             user.displayName.replace(/\s+/g, "").slice(0, 10) + Math.floor(1000 + Math.random() * 9000).toString();
         const q = query(collection(db, "users"), where("email", "==", user.email));

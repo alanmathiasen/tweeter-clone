@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 
-import GoogleSVG from "../common/GoogleSVG";
-import RegisterModal from "./RegisterModal";
-import { AuthWrapper, ButtonGroup, Title, ButtonRegister } from "./RightMenu.styles";
-import { signInWithGoogle } from "../../firebase/auth";
 import { useModalContext } from "../../context/ModalContext";
+
 import GoogleButton from "../common/Buttons/GoogleButton";
+import { AuthWrapper, ButtonGroup, Title, ButtonRegister } from "./RightMenu.styles";
 
 const AuthMenu = () => {
     const { isRegisterModalOpen, setIsRegisterModalOpen } = useModalContext();
