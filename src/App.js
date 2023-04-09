@@ -46,14 +46,13 @@ const App = () => {
                                                 <Route exact path="" element={<ExploreTagList />} />
                                                 <Route exact path=":tag" element={<TweetsByTag />} />
                                             </Route>
+                                            <Route exact path="/tweet/:id" element={<TweetPage />} />
 
-                                            <Route exact path="/:id" element={<Perfil />}>
-                                                <Route exact path="" element={"hola"}></Route>
-                                            </Route>
+                                            <Route exact path="/:id" element={<Perfil />} />
+
                                             <Route exact path="/registro" element={<Registro />} />
                                             <Route exact path="/:id/siguiendo" element={<Siguiendo />} />
                                             <Route exact path="/:id/seguidores" element={<Seguidores />} />
-                                            <Route exact path="/tweet/:id" element={<TweetPage />} />
                                             <Route exact path="/sugeridos" element={<Sugeridos />} />
                                             <Route exact path="/notificaciones" element={<Notificaciones />} />
                                         </Routes>

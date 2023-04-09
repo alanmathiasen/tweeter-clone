@@ -10,7 +10,6 @@ const TweetsByTag = () => {
         value: tag,
     };
     const { tweets, loading, queuedTweets, mergeTweets } = useTweets({ tagQuery });
-    console.log(tweets);
 
     return <TweetGroup tweetArray={tweets} />;
 };
