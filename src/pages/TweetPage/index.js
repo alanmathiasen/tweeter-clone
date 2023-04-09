@@ -9,7 +9,6 @@ import { useState, useEffect } from "react/cjs/react.development";
 
 const TweetPage = () => {
     let { id } = useParams();
-    const [idState, setIdState] = useState(id);
     const [children, setChildren] = useState([]);
     const [childrenIds, setChildrenIds] = useState([]);
     const [parents, setParents] = useState([]);
