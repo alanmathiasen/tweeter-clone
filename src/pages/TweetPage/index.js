@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react/cjs/react.development";
+import { useState, useEffect } from "react";
 import { Wrapper } from "./TweetPage.styles";
 import TweetGroup from "../../components/TweetGroup";
 import TweetIndividual from "../../components/TweetIndividual";
