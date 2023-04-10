@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ReplyWrapper = styled.div`
     width: 100%;
-    padding: 40px 10px 5px;
+    padding: 48px 16px 0px;
 `;
 
 export const RespondingTo = styled.div`

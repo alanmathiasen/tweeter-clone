@@ -11,7 +11,7 @@ const ReplyModal = ({ showModal, setShowModal, author, tweet, tweetId }) => {
             <ReplyWrapper>
                 <BaseTweet author={author} tweet={tweet}>
                     <RespondingTo>
-                        Respondiendo a <span>{author && `@${author.ruta}`}</span>
+                        Respondiendo a <span>{author && `@${author.route}`}</span>
                     </RespondingTo>
                     <RelatedTweetLine hasDown paddingLeft={"24px"} />
                 </BaseTweet>

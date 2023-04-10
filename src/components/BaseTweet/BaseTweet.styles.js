@@ -3,7 +3,7 @@ export const Wrapper = styled.div`
     display: grid;
     width: 100%;
     position: relative;
-    grid-template-columns: 1fr 6fr;
+    grid-template-columns: 1fr 8fr;
 `;
 export const TweetContent = styled.div`
     padding-top: 5px;

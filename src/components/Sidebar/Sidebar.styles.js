@@ -131,6 +131,10 @@ export const ModalWrapper = styled.div`
     box-shadow: rgb(101 119 134 / 20%) 0px 0px 15px, rgb(101 119 134 / 15%) 0px 0px 3px 1px;
 `;
 
+export const TweetModalWrapper = styled.div`
+    padding: 32px 16px 0px;
+`;
+
 export const UserCardOnModal = styled.div`
     display: flex;
     flex-direction: row;

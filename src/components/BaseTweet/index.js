@@ -10,11 +10,11 @@ const BaseTweet = ({ tweet, author, children }) => {
             </ImgPerfil>
             <TweetNav>
                 <Username>Nombre</Username>
-                <span>{author && `@${author.ruta}`}</span>
+                <span>{author && `@${author.route}`}</span>
                 <span>·</span>
                 <span>6h</span>
             </TweetNav>
-            <TweetContent>{tweet.descripcion && <p>{parseMentions(tweet.descripcion)}</p>}</TweetContent>
+            <TweetContent>{tweet.description && <p>{parseMentions(tweet.description)}</p>}</TweetContent>
             {children}
         </Wrapper>
     );

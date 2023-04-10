@@ -59,42 +59,6 @@ const TweetForm = ({ parentId, quoteId = null, setShowModal = null, children, pl
             setTweetInput("");
         }
     }
-    // async function savePost(e) {
-    //     e.preventDefault();
-
-    //     let newContent = content;
-
-    //     newContent = newContent.split("@@@__").join('<a href="/user/');
-    //     newContent = newContent.split("^^^__").join(`">@`);
-    //     newContent = newContent.split("@@@^^^").join("</a>");
-
-    //     newContent = newContent.split("$$$__").join('<a href="/tag/');
-    //     newContent = newContent.split("~~~__").join(`">#`);
-    //     newContent = newContent.split("$$$~~~").join("</a>");
-    //     if (newContent !== "") {
-    //       let body = newContent.trim();
-    //       //Call to your DataBase like backendModule.savePost(body,  along_with_other_params);
-    //       tagNames.map(async (tag) => {
-    //         try {
-    //           await APIservice.post("/tag", {
-    //             name: tag,
-    //           });
-    //         } catch (error) {
-    //           console.log(error);
-    //         }
-    //       });
-    //       console.log(body);
-    //       try {
-    //         await APIservice.post("/post", {
-    //           title,
-    //           content: body,
-    //           createdAt: new Date().getTime(),
-    //         });
-    //         history.push("/");
-    //       } catch (error) {
-    //         console.error(error);
-    //       }
-    //     }
     //TODO FIX ADD HASHTAG ON SPACEBAR PRESS
     return (
         <TweetFormWrapper>

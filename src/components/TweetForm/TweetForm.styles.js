@@ -4,8 +4,15 @@ export const TweetFormWrapper = styled.form`
     display: flex;
     padding: 16px 0px;
     width: 100%;
+    grid: 1fr 8fr;
     position: relative;
     margin: 0;
+
+    display: grid;
+    width: 100%;
+    position: relative;
+    grid-template-columns: 1fr 8fr;
+
     .mentions {
         margin: 0;
         position: relative;
@@ -21,6 +28,7 @@ export const TweetFormWrapper = styled.form`
     }
     .mentions--singleLine .mentions__input {
         padding: 1px;
+        padding-left: 0;
         border: 2px inset;
     }
 
@@ -36,6 +44,7 @@ export const TweetFormWrapper = styled.form`
     .mentions--multiLine .mentions__input {
         border: 1px solid transparent;
         padding: 9px;
+        padding-left: 0;
         outline: 0;
     }
 
@@ -77,8 +86,8 @@ export const ImagenPerfil = styled.img`
 `;
 
 export const InputWrapper = styled.div`
-    width: 90%;
-    margin: 0 0.5rem;
+    //width: 90%;
+    //margin: 0 0.5rem;
     button {
         display: flex;
         float: right;

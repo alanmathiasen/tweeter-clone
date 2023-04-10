@@ -11,6 +11,7 @@ import {
     ModalWrapper,
     UserCardOnModal,
     CerrarSesion,
+    TweetModalWrapper,
 } from "./Sidebar.styles";
 import { Link } from "react-router-dom";
 
@@ -120,7 +121,9 @@ const Sidebar = () => {
                 )}
             </Wrapper>
             <BaseModal showModal={tweetModal} setShowModal={setTweetModal}>
-                <TweetForm className="tweetForm" setShowModal={setTweetModal} />
+                <TweetModalWrapper>
+                    <TweetForm className="tweetForm" setShowModal={setTweetModal} />
+                </TweetModalWrapper>
             </BaseModal>
         </>
     );
