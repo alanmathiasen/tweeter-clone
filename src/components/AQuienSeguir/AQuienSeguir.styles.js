@@ -7,13 +7,6 @@ export const ArticleWrapper = styled.article`
     background: ${({ theme }) => theme.colors.grey}
 `;
 
-export const Tittle = styled.h2`
-    font-size: 20px;
-    font-weight: 700;
-    padding: 8px 16px;
-    margin-bottom: 0;
-`;
-
 export const CardWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -66,11 +59,12 @@ export const InfoUser = styled.div`
     // margin-left: 0.6rem;
 `;
 
-export const MostrarMas = styled.button`
+export const ShowMore = styled.button`
     background: none;
     border: none;
     color: ${(props) => props.theme.colors.main};
-    font-size: 1rem;
+    font-size: 16px;
+    width: 100%;
     margin: 0;
     display: flex;
     border-bottom-left-radius: 18px;

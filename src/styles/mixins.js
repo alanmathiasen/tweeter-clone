@@ -15,6 +15,12 @@ export const profileImgAndContent = css`
 
 export const boxRounded = css`
     border-radius: 10px;
+    h2 {
+        font-size: 20px;
+        font-weight: 700;
+        padding: 8px 16px;
+        margin-bottom: 0;
+    }
 `;
 
 export const greyBackgroundWithHover = css`

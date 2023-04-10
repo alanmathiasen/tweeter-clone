@@ -30,7 +30,6 @@ const ExploreTagList = () => {
     if (!tags) return <Loader />;
     return (
         <>
-            <SearchInput />
             <TagList>
                 {tags.map((el) => {
                     return <ListItemTag key={el.id} hashtag={el} />;

@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
 export const AuthWrapper = styled.div`
     padding: 12px 16px 16px 16px;
     ${boxRounded};
+    border: 1px solid #ededed;
     div {
         font-size: 12px;
         color: darkgray;
@@ -88,6 +89,10 @@ export const FixedWrapper = styled.div`
     background: #fff;
 `;
 
-export const AuthMenuWrapper = styled.div`
+export const AuthMenuWrapper = styled.div``;
+
+export const TrendingWrapper = styled.div`
+    ${boxRounded};
     margin-top: ${({ isSearchBar }) => (isSearchBar ? "76px" : "16px")};
+    background: ${({ theme }) => theme.colors.grey};
 `;

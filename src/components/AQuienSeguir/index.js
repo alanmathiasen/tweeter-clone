@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
     ArticleWrapper,
-    Tittle,
     CardWrapper,
     Card,
     ImagePerfil,
@@ -10,6 +9,7 @@ import {
     MostrarMas,
     ButtonMargin,
     ContentWrapper,
+    ShowMore,
 } from "./AQuienSeguir.styles";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
@@ -124,7 +124,7 @@ const AQuienSeguir = () => {
 
     return (
         <ArticleWrapper>
-            <Tittle>A quién Seguir</Tittle>
+            <h2>A quién seguir</h2>
             <CardWrapper>
                 {moreInCommun.length >= 3 &&
                     moreInCommun.slice(0, 3).map((item, index) => {
@@ -209,9 +209,9 @@ const AQuienSeguir = () => {
                             </Card>
                         );
                     })}
-                <MostrarMas onClick={() => navigate("/sugeridos")}>
+                <ShowMore onClick={() => navigate("/sugeridos")}>
                     <p>Mostrar más</p>
-                </MostrarMas>
+                </ShowMore>
             </CardWrapper>
         </ArticleWrapper>
     );
