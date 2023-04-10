@@ -7,24 +7,29 @@ import SearchInput from "../common/SearchInput";
 
 const RightMenu = () => {
     const { userData } = useGlobalContext();
+    if (!userData)
+        return (
+            <Wrapper>
+                <AuthMenu />
+            </Wrapper>
+        );
     return (
         <Wrapper>
-            {userData ? (
+            {userData && (
                 <>
                     {" "}
                     <FixedWrapper>
                         <SearchInput />
                     </FixedWrapper>
                     {userData && (
-                        <AuthMenuWrapper isSearchBar>
-                            <AQuienSeguir />
-                        </AuthMenuWrapper>
+                        <>
+                            <AuthMenuWrapper isSearchBar>
+                                <AQuienSeguir />
+                            </AuthMenuWrapper>
+                            <AuthMenuWrapper>que esta pasando</AuthMenuWrapper>
+                        </>
                     )}
                 </>
-            ) : (
-                <AuthMenuWrapper>
-                    <AuthMenu />
-                </AuthMenuWrapper>
             )}
         </Wrapper>
     );

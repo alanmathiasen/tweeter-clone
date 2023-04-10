@@ -1,17 +1,11 @@
 import styled from "styled-components";
+import { profileImgAndContent } from "../../styles/mixins";
 
 export const TweetFormWrapper = styled.form`
-    display: flex;
     padding: 16px 0px;
-    width: 100%;
-    grid: 1fr 8fr;
-    position: relative;
     margin: 0;
 
-    display: grid;
-    width: 100%;
-    position: relative;
-    grid-template-columns: 1fr 8fr;
+    ${profileImgAndContent}
 
     .mentions {
         margin: 0;

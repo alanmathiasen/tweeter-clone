@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter as Browser, Route, Routes } from "react-router-dom";
 
@@ -20,7 +20,7 @@ import { PerfilProvider } from "./context/PerfilContext";
 import { SugeridosProvider } from "./context/SugeridosContext";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
-import { ModalProvider, useModalContext } from "./context/ModalContext";
+import { ModalProvider } from "./context/ModalContext";
 import Modals from "./components/Modals";
 import Explore from "./pages/Explore";
 import ExploreTagList from "./components/common/ExploreTagList";

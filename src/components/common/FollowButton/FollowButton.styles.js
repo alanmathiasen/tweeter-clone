@@ -40,11 +40,11 @@ export const Following = styled(RoundedButton)`
     font-size: 15px;
     color: #fff;
     font-weight: bold;
-    background-color: #000;
+    background-color: #0f1419;
     border-color: #000;
     &:hover {
-        background-color: #222;
-        border-color: #222;
+        background-color: #272c30;
+        border-color: #272c30;
     }
 `;
 
@@ -52,8 +52,10 @@ export const StopFollowing = styled(RoundedButton)`
     height: 34px;
     padding: 10px 16px;
     font-weight: bold;
+    background-color: ${({ theme }) => theme.colors.grey};
     &:hover {
-        background-color: rgba(238, 98, 98, 0.1);
+        background-color: #f0dcdd;
+        //TODO FIND THIS COLOR
         border-color: rgba(238, 98, 98, 0.6);
         color: ${({ theme }) => theme.colors.main};
     }

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { boxRounded } from "../../styles/mixins";
 import { RoundedButton } from "../common/buttons.styles";
 
 export const Wrapper = styled.div`
@@ -8,10 +9,7 @@ export const Wrapper = styled.div`
 
 export const AuthWrapper = styled.div`
     padding: 12px 16px 16px 16px;
-    border: 1px solid lightgray;
-    border-radius: 10px;
-    display: block;
-
+    ${boxRounded};
     div {
         font-size: 12px;
         color: darkgray;
@@ -91,5 +89,5 @@ export const FixedWrapper = styled.div`
 `;
 
 export const AuthMenuWrapper = styled.div`
-    padding-top: ${({ isSearchBar }) => (isSearchBar ? "24px" : "16px")};
+    margin-top: ${({ isSearchBar }) => (isSearchBar ? "76px" : "16px")};
 `;

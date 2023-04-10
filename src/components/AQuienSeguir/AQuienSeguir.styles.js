@@ -1,14 +1,16 @@
 import styled from "styled-components";
+import { boxRounded, greyBackgroundWithHover, profileImgAndContent } from "../../styles/mixins";
 
 export const ArticleWrapper = styled.article`
-    margin-top: 3rem;
+    //margin-top: 3rem;
+    ${boxRounded}
+    background: ${({ theme }) => theme.colors.grey}
 `;
 
 export const Tittle = styled.h2`
-    font-size: 1.4rem;
-    font-weight: 800;
-    padding-bottom: 0.5rem;
-    padding-left: 1rem;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 8px 16px;
     margin-bottom: 0;
 `;
 
@@ -22,14 +24,14 @@ export const Card = styled.div`
     justify-content: space-between;
     cursor: pointer;
     align-items: center;
-    padding: 0.5rem 1rem;
+    padding: 11px 16px;
+    font-size: 14px;
 
-    &:hover {
-        background-color: #eee;
-    }
+    ${greyBackgroundWithHover}
 
     h3 {
-        font-size: 1.08rem;
+        font-size: 14px;
+        font-weight: 500;
         margin: 0;
         padding: 0;
         &:hover {
@@ -37,20 +39,21 @@ export const Card = styled.div`
         }
     }
     p {
-        font-size: 1rem;
         margin: 0;
         padding: 0;
         color: #737373;
-    }
-    span {
-        font-size: 1rem;
-        margin: 0;
-        padding: 0;
     }
 `;
 
 export const CardContent = styled.div`
     display: flex;
+    ${profileImgAndContent}
+`;
+
+export const ContentWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `;
 
 export const ImagePerfil = styled.img`
@@ -60,7 +63,7 @@ export const ImagePerfil = styled.img`
 `;
 
 export const InfoUser = styled.div`
-    margin-left: 0.6rem;
+    // margin-left: 0.6rem;
 `;
 
 export const MostrarMas = styled.button`
