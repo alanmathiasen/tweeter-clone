@@ -7,7 +7,7 @@ import { getUserByTweet } from "../firebase/userCrud";
 import { longDate, shortDate } from "../helpers/dateHelper";
 
 export const useTweet = ({ tweetId, isMain }) => {
-    const { emailLogueado } = useGlobalContext();
+    const { userData } = useGlobalContext();
 
     const [tweet, setTweet] = useState({});
     const [isLikedByUser, setIsLikedByUser] = useState(false);
@@ -23,12 +23,12 @@ export const useTweet = ({ tweetId, isMain }) => {
         const unsubscribe = onSnapshot(tweetRef, (snap) => {
             if (snap.data()) {
                 setTweet({ id: tweetId, ...snap.data() });
-                if (snap.data().likes && snap.data().likes.includes(emailLogueado)) {
+                if (snap.data().likes && snap.data().likes.includes(userData.email)) {
                     setIsLikedByUser(true);
                 } else {
                     setIsLikedByUser(false);
                 }
-                if (snap.data().retweets && snap.data().retweets.includes(emailLogueado)) {
+                if (snap.data().retweets && snap.data().retweets.includes(userData.email)) {
                     setIsRetweetedByUser(true);
                 } else {
                     setIsRetweetedByUser(false);
@@ -36,7 +36,7 @@ export const useTweet = ({ tweetId, isMain }) => {
             } else setTweet({});
         });
         return () => unsubscribe();
-    }, [tweetId, emailLogueado]);
+    }, [tweetId]);
 
     useEffect(() => {
         try {
