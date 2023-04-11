@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { boxRounded, greyBackgroundWithHover, profileImgAndContent } from "../../styles/mixins";
+import { boxRounded, greyBackgroundWithHover, profileImgAndContent, titleStyle } from "../../styles/mixins";
 
 export const ArticleWrapper = styled.article`
     //margin-top: 3rem;
     ${boxRounded}
-    background: ${({ theme }) => theme.colors.grey}
+    ${titleStyle}
+    background: ${({ theme }) => theme.colors.grey};
 `;
 
 export const CardWrapper = styled.div`
@@ -57,6 +58,9 @@ export const ImagePerfil = styled.img`
 
 export const InfoUser = styled.div`
     // margin-left: 0.6rem;
+    p {
+        font-weight: 400;
+    }
 `;
 
 export const ShowMore = styled.button`
@@ -71,7 +75,7 @@ export const ShowMore = styled.button`
     border-bottom-right-radius: 18px;
     cursor: pointer;
     &:hover {
-        background-color: #eee;
+        background-color: ${({ theme }) => theme.colors.darkGrey};
     }
     p {
         padding-left: 1rem;

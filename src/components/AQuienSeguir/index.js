@@ -67,7 +67,6 @@ const AQuienSeguir = () => {
         const filterData = () => {
             let forDelete = userData.email;
             let newArray = arrayDatos.filter((item) => item.followers && !item.followers.includes(forDelete));
-            console.log(newArray);
             setFilteredArray(newArray);
         };
 
@@ -106,7 +105,6 @@ const AQuienSeguir = () => {
                 if (result.length < 3) {
                     let newArray = arrayUsersEnComun.filter((el) => result.indexOf(el) === -1);
                     let concatArr = result.concat(newArray);
-                    console.log({ concatArr });
                     setMoreInCommun(concatArr);
                 } else {
                     setMoreInCommun(result);

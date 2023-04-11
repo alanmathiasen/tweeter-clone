@@ -38,6 +38,7 @@ const App = () => {
                             <ModalProvider>
                                 <ContentWrapper>
                                     <Sidebar />
+
                                     <RouteWrapper>
                                         <Routes>
                                             <Route exact path="/" element={<Home />} />
@@ -57,6 +58,7 @@ const App = () => {
                                         </Routes>
                                     </RouteWrapper>
                                     <RightMenu />
+
                                     <Modals />
                                     {!userData && <LoginBar />}
                                 </ContentWrapper>

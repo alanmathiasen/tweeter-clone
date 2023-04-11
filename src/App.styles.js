@@ -1,7 +1,7 @@
 import styled from "styled-components";
+import { titleStyle } from "./styles/mixins";
 
 export const AppWrapper = styled.div`
-    display: flex;
     margin: 0 auto;
     max-width: 1240px;    
    
@@ -10,6 +10,7 @@ export const AppWrapper = styled.div`
 
 export const ContentWrapper = styled.div`
     display: flex;
+    align-items: flex-start;
     width: 100%;
 `;
 
@@ -31,7 +32,7 @@ export const RouteWrapper = styled.div`
     border-left: 1px solid #ededed;
     h2 {
         margin: 0;
-        font-size: 1.3rem;
-        margin-left: 12px;
+        ${titleStyle}
+        padding-left: 16px;
     }
 `;

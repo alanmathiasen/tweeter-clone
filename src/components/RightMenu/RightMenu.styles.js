@@ -1,10 +1,20 @@
-import styled from "styled-components";
-import { boxRounded } from "../../styles/mixins";
+import styled, { css } from "styled-components";
+import { boxRounded, titleStyle } from "../../styles/mixins";
 import { RoundedButton } from "../common/buttons.styles";
+
+const sticky = css`
+    position: fixed;
+    bottom: 10px;
+    z-index: 999;
+    animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+`;
 
 export const Wrapper = styled.div`
     width: 350px;
+    min-width: 350px;
+    height: 100vh;
     margin: 0 12px 32px 24px;
+    ${({ isSticky }) => isSticky && sticky}
 `;
 
 export const AuthWrapper = styled.div`
@@ -87,12 +97,17 @@ export const FixedWrapper = styled.div`
     width: inherit;
     padding: 16px 0 4px 0;
     background: #fff;
+    z-index: 9999;
 `;
 
 export const AuthMenuWrapper = styled.div``;
 
 export const TrendingWrapper = styled.div`
     ${boxRounded};
-    margin-top: ${({ isSearchBar }) => (isSearchBar ? "76px" : "16px")};
+    h2 {
+        ${titleStyle};
+        padding: 8px 16px;
+    }
+    margin: ${({ isSearchBar }) => (isSearchBar ? "0 0 16px" : "16px 0")};
     background: ${({ theme }) => theme.colors.grey};
 `;
